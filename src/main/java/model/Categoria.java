@@ -2,58 +2,69 @@
 package model;
 
 public class Categoria {
-    private String nome;
-    private String Tamanho; //(Pequeno, Médio, Grande)
-    private String Embalagem; // (Lata, Vidro, Plástico)
 
-    public Categoria() {
+    private int id;
+    private String nome;
+    private Tamanho tamanho;
+    private Embalagem embalagem;
+
+    public enum Tamanho {
+        PEQUENO, MEDIO, GRANDE
     }
 
-    public Categoria(String nome, String Tamanho, String Embalagem) {
+    public enum Embalagem {
+        LATA, VIDRO, PLASTICO
+    }
+
+    // Construtor
+    public Categoria(int id, String nome, Tamanho tamanho, Embalagem embalagem) {
+        this.id = id;
         this.nome = nome;
-        this.Tamanho = Tamanho;
-        this.Embalagem = Embalagem;
+        this.tamanho = tamanho;
+        this.embalagem = embalagem;
+    }
+
+    // Getters
+    public int getId() {
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
+    public Tamanho getTamanho() {
+        return tamanho;
+    }
+
+    public Embalagem getEmbalagem() {
+        return embalagem;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getTamanho() {
-        return Tamanho;
+    public void setTamanho(Tamanho tamanho) {
+        this.tamanho = tamanho;
     }
 
-    public void setTamanho(String Tamanho) {
-        this.Tamanho = Tamanho;
-    }
-    
-    public String getEmbalagem() {
-        return Embalagem;
-    }
-
-    public void setEmbalagem(String Embalagem) {
-        this.Embalagem = Embalagem;
+    public void setEmbalagem(Embalagem embalagem) {
+        this.embalagem = embalagem;
     }
 
     @Override
     public String toString() {
-        return nome;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Categoria)) return false;
-        Categoria c = (Categoria) obj;
-        return this.nome.equalsIgnoreCase(c.getNome());
-    }
-    
-    @Override
-    public int hashCode() {
-        return nome.toLowerCase().hashCode();
+        return "Categoria{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", tamanho=" + tamanho +
+                ", embalagem=" + embalagem +
+                '}';
     }
 }
