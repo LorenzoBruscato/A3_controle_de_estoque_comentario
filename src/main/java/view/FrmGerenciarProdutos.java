@@ -40,9 +40,9 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
         JTFqtdEstoque = new javax.swing.JTextField();
         JTFqtdMinima = new javax.swing.JTextField();
         JTFqtdMaxima = new javax.swing.JTextField();
-        JBApagar = new javax.swing.JButton();
         JBAdicionar = new javax.swing.JButton();
         JBAlterar = new javax.swing.JButton();
+        JBApagar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gerenciar Produtos");
@@ -81,26 +81,11 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
         JLGerenciamentoProdutos.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         JLGerenciamentoProdutos.setText("Gerenciamento de Produtos");
 
-        JBApagar.setText("Apagar");
-        JBApagar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBApagarActionPerformed(evt);
-            }
-        });
-
         JBAdicionar.setText("Adicionar");
-        JBAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBAdicionarActionPerformed(evt);
-            }
-        });
 
         JBAlterar.setText("Alterar");
-        JBAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBAlterarActionPerformed(evt);
-            }
-        });
+
+        JBApagar.setText("Apagar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,13 +117,12 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
                     .addComponent(JTFqtdMinima, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JTFqtdMaxima, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                     .addComponent(JTFnome))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JBAdicionar)
-                .addGap(18, 18, 18)
-                .addComponent(JBAlterar)
-                .addGap(18, 18, 18)
-                .addComponent(JBApagar)
-                .addGap(96, 96, 96))
+                .addGap(296, 296, 296)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JBAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {JLNome, JLPrecoUnitario, JLQtdEstoque, JLQtdMaxima, JLQtdMinima, JLUnidade});
@@ -148,26 +132,20 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(JLGerenciamentoProdutos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JLNome)
-                    .addComponent(JTFnome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JTFprecoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JLPrecoUnitario))
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JTFunidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JLUnidade)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JBAdicionar)
-                            .addComponent(JBAlterar)
-                            .addComponent(JBApagar))))
+                    .addComponent(JTFnome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBAdicionar))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JTFprecoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JLPrecoUnitario))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JTFunidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JLUnidade)
+                    .addComponent(JBAlterar))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JLQtdEstoque)
@@ -175,118 +153,19 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JTFqtdMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JLQtdMinima))
-                .addGap(5, 5, 5)
+                    .addComponent(JLQtdMinima)
+                    .addComponent(JBApagar))
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JTFqtdMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JLQtdMaxima))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void JBApagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBApagarActionPerformed
-        try {
-            // validando dados da interface gráfica.
-            int id = 0;
-            if (this.JTableAlunos.getSelectedRow() == -1) {
-                throw new Mensagem("Primeiro Selecione um Aluno para APAGAR");
-            } else {
-                id = Integer.parseInt(this.JTableAlunos.getValueAt(this.JTableAlunos.getSelectedRow(), 0).toString());
-            }
-
-            // retorna 0 -> primeiro botão | 1 -> segundo botão | 2 -> terceiro botão
-            int respostaUsuario = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja apagar este Aluno ?");
-
-            if (respostaUsuario == 0) {// clicou em SIM
-                // envia os dados para o Aluno processar
-                if (this.objetoaluno.deleteAlunoBD(id)) {
-                    // limpa os campos
-                    this.JTFNome.setText("");
-                    this.JTFIdade.setText("");
-                    this.JTFCurso.setText("");
-                    this.JTFFase.setText("");
-                    JOptionPane.showMessageDialog(rootPane, "Aluno Apagado com Sucesso!");
-                }
-            }
-            // atualiza a tabela.
-            System.out.println(this.objetoaluno.getMinhaLista().toString());
-        } catch (Mensagem erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
-        } finally {
-            // atualiza a tabela.
-            carregaTabela();
-        }
-    }//GEN-LAST:event_JBApagarActionPerformed
-
-    private void JBAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAdicionarActionPerformed
-        //Libera todos os recurso da interface gráfica
-        this.dispose();
-    }//GEN-LAST:event_JBAdicionarActionPerformed
-
-    private void JBAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarActionPerformed
-        try {
-            // recebendo e validando dados da interface gr�fica.
-            int id = 0;
-            String nome = "";
-            int idade = 0;
-            String curso = "";
-            int fase = 0;
-
-            if (this.JTFNome.getText().length() < 2) {
-                throw new Mensagem("Nome deve conter ao menos 2 caracteres.");
-            } else {
-                nome = this.JTFNome.getText();
-            }
-
-            if (this.JTFIdade.getText().length() <= 0) {
-                throw new Mensagem("Idade deve ser n�mero e maior que zero.");
-            } else {
-                idade = Integer.parseInt(this.JTFIdade.getText());
-            }
-
-            if (this.JTFCurso.getText().length() < 2) {
-                throw new Mensagem("Curso deve conter ao menos 2 caracteres.");
-            } else {
-                curso = this.JTFCurso.getText();
-            }
-
-            if (this.JTFFase.getText().length() <= 0) {
-                throw new Mensagem("Fase deve ser número e maior que zero.");
-            } else {
-                fase = Integer.parseInt(this.JTFFase.getText());
-            }
-
-            if (this.JTableAlunos.getSelectedRow() == -1) {
-                throw new Mensagem("Primeiro Selecione um Aluno para Alterar");
-            } else {
-                id = Integer.parseInt(this.JTableAlunos.getValueAt(this.JTableAlunos.getSelectedRow(), 0).toString());
-            }
-
-            // envia os dados para o Aluno processar
-            if (this.objetoaluno.updateAlunoBD(id, nome, idade, curso, fase)) {
-                // limpa os campos
-                this.JTFNome.setText("");
-                this.JTFIdade.setText("");
-                this.JTFCurso.setText("");
-                this.JTFFase.setText("");
-                JOptionPane.showMessageDialog(null, "Aluno Alterado com Sucesso!");
-
-            }
-            // Exibe no console o aluno cadastrado
-            System.out.println(this.objetoaluno.getMinhaLista().toString());
-        } catch (Mensagem erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
-        } catch (NumberFormatException erro2) {
-            JOptionPane.showMessageDialog(null, "Informe um número válido.");
-        } finally {
-            // atualiza a tabela.
-            carregaTabela();
-        }
-    }//GEN-LAST:event_JBAlterarActionPerformed
 
     /**
      * @param args the command line arguments
