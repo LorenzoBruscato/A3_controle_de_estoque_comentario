@@ -1,12 +1,15 @@
 package principal;
 
+import view.FrmMenuPrincipal;
+
 /**
  *
- * @author INTEL
+ * @author Andradevh
  */
 public class Principal {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        FrmMenuPrincipal janela = new FrmMenuPrincipal();
+        janela.setVisible(true);
     }
 }
