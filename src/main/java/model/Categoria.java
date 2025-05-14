@@ -84,7 +84,7 @@ public class Categoria {
     }
 
     //Adicionar o indice ID
-    public boolean inserCategoriaId(int Id){
+    public boolean inserCategoriaId(Categoria Id){
         CategoriaDAO.getListaCategoria().add(Id);
         return true;
     }
