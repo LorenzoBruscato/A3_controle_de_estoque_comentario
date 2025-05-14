@@ -144,19 +144,25 @@ public class Produto {
     }
 
 // Remove um produto com base no nome
-    public boolean deletarProdutoNome(String nome) {
+    public boolean deleteProdutoNome(String nome) {
         int indice = this.procurarIndiceProdutoNome(nome);
         ProdutoDAO.getListaProduto().remove(indice);
         return true;
     }
 
 // Atualiza o nome de um produto
-    public boolean updateProdutoNome(String nomeantigo, String nomenovo) {
-        int indice = this.procurarIndiceProdutoNome(nomeantigo);
+    public boolean updateProdutoNome(String nome, String nomenovo) {
+        int indice = this.procurarIndiceProdutoNome(nome);
         ProdutoDAO.getListaProduto().get(indice).setNome(nomenovo);
         return true;
     }
 
+    // Insere um preço na lista usando um objeto Produto
+     public boolean insertProdutoPreco(Produto preco) {
+        ProdutoDAO.getListaProduto().add(preco);
+        return true;
+    }
+    
 // Procura o índice de um produto pelo preço
     private int procurarIndiceProdutoPreco(double preco) {
         int indice = -1;
@@ -177,8 +183,8 @@ public class Produto {
     }
 
 // Atualiza o preço de um produto
-    public boolean updateProdutoPreco(double precoAntigo, double precoNovo) {
-        int indice = this.procurarIndiceProdutoPreco(precoAntigo);
+    public boolean updateProdutoPreco(double preco, double precoNovo) {
+        int indice = this.procurarIndiceProdutoPreco(preco);
         ProdutoDAO.getListaProduto().get(indice).setPreco(precoNovo);
         return true;
     }
@@ -202,13 +208,10 @@ public class Produto {
     }
 
 // Remove produto com base na unidade
-    public boolean deletarProdutoUnidade(String unidade) {
-        int indice = this.procurarIndicePorUnidade(unidade);
-        if (indice != -1) {
-            ProdutoDAO.getListaProduto().remove(indice);
-            return true;
-        }
-        return false; // retorna false se não encontrar
+    public boolean deleteProdutoUnidade(String unidade) {
+        int indice = procurarIndicePorUnidade(unidade);
+        ProdutoDAO.getListaProduto().remove(indice);
+        return true;
     }
 
 // Atualiza o produto com base na unidade
@@ -237,22 +240,22 @@ public class Produto {
     }
 
 // Remove produto com base na quantidade
-    public boolean deletarProdutoQuantidade(int quantidade) {
-        int quantidadeant = this.procurarIndicePorQuantidade(quantidade);
-        ProdutoDAO.getListaProduto().remove(quantidadeant);
+    public boolean deleteProdutoQuantidade(int quantidade) {
+        int indice = this.procurarIndicePorQuantidade(quantidade);
+        ProdutoDAO.getListaProduto().remove(indice);
         return true;
     }
 
 // Atualiza produto com base na quantidade
-    public boolean updateProdutoquantidade(int quantidadeantiga, Produto quantidadenovo) {
-        int indice = this.procurarIndicePorQuantidade(quantidadeantiga);
+    public boolean updateProdutoquantidade(int quantidade, Produto quantidadenovo) {
+        int indice = this.procurarIndicePorQuantidade(quantidade);
         ProdutoDAO.getListaProduto().set(indice, quantidadenovo);
         return true;
     }
 
 // Insere produto com quantidade mínima
-    public boolean insertIndiceProdutoQuantidadeMinima(Produto quantidademin) {
-        ProdutoDAO.getListaProduto().add(quantidademin);
+    public boolean insertIndiceProdutoQuantidadeMinima(Produto quantidadeMin) {
+        ProdutoDAO.getListaProduto().add(quantidadeMin);
         return true;
     }
 
@@ -269,7 +272,7 @@ public class Produto {
     }
 
 // Remove produto com base na quantidade mínima
-    public boolean deletarProdutoQuantidadeMinima(int quantidadeMinima) {
+    public boolean deleteProdutoQuantidadeMinima(int quantidadeMinima) {
         int indice = this.procuraIndiceProdutoQuantidadeMinima(quantidadeMinima);
         ProdutoDAO.getListaProduto().remove(indice);
         return true;
@@ -301,7 +304,7 @@ public class Produto {
     }
 
 // Remove produto com base na quantidade máxima
-    public boolean deletarProdutoQuantidadeMaxima(int quantidadeMaxima) {
+    public boolean deleteProdutoQuantidadeMaxima(int quantidadeMaxima) {
         int indice = this.procurarIndiceProdutoQuantidadeMaxima(quantidadeMaxima);
         ProdutoDAO.getListaProduto().remove(indice);
         return true;
