@@ -83,17 +83,18 @@ public class Categoria {
         return true;
     }
 
-    public boolean inserCategoriaId(int objetoId){
-        CategoriaDAO.getListaCategoria().add(objetoId);
+    //Adicionar o indice ID
+    public boolean inserCategoriaId(int Id){
+        CategoriaDAO.getListaCategoria().add(Id);
         return true;
     }
     
     // Procura o índice da categoria pelo ID
-    private int procuraIndiceId(int id) {
+    private int procuraIndiceId(int Id) {
         int indice = -1;
         ArrayList<Categoria> lista = CategoriaDAO.getListaCategoria();
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getId() == id) {
+            if (lista.get(i).getId() == Id) {
                 return i;
             }
         }
@@ -101,22 +102,22 @@ public class Categoria {
     }
 
     // Remove uma categoria da lista com base no ID
-    public boolean deleteCategoriaId(int id) {
-        int indice = this.procuraIndiceId(id);
+    public boolean deleteCategoriaId(int objetoId) {
+        int indice = this.procuraIndiceId(objetoId);
         CategoriaDAO.getListaCategoria().remove(indice);
         return true;
     }
 
     // Atualiza os dados de uma categoria com base no ID
-    public boolean updateCategoriaId(int id, Categoria objetoId) {
-        int indice = this.procuraIndiceId(id);
+    public boolean updateCategoriaId(int Id, Categoria objetoId) {
+        int indice = this.procuraIndiceId(Id);
         CategoriaDAO.getListaCategoria().set(indice, objetoId);
         return true;
     }
 
     // Insere uma categoria na lista com base em um objeto
-    public boolean insertCategoriaNome(Categoria objetonomeP) {
-        CategoriaDAO.getListaCategoria().add(objetonomeP);
+    public boolean insertCategoriaNome(Categoria nome) {
+        CategoriaDAO.getListaCategoria().add(nome);
         return true;
     }
 
@@ -147,8 +148,8 @@ public class Categoria {
     }
 
     // Insere uma categoria na lista com base no tamanho
-    public boolean insertCategoriaTamanho(Categoria objetoTamanho) {
-        CategoriaDAO.getListaCategoria().add(objetoTamanho);
+    public boolean insertCategoriaTamanho(Categoria tamanho) {
+        CategoriaDAO.getListaCategoria().add(tamanho);
         return true;
     }
 
@@ -179,8 +180,8 @@ public class Categoria {
     }
 
     // Insere uma categoria na lista com base na embalagem
-    public boolean insertCategoriaEmbalagem(Categoria objetoEmbalagem) {
-        CategoriaDAO.getListaCategoria().add(objetoEmbalagem);
+    public boolean insertCategoriaEmbalagem(Embalagem Embalagem) {
+        CategoriaDAO.getListaCategoria().add(Embalagem);
         return true;
     }
 
