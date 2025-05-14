@@ -237,14 +237,14 @@ public class Produto {
     }
 
 // Remove produto com base na quantidade
-    private boolean deletarProdutoQuantidade(int quantidade) {
+    public boolean deletarProdutoQuantidade(int quantidade) {
         int quantidadeant = this.procurarIndicePorQuantidade(quantidade);
         ProdutoDAO.getListaProduto().remove(quantidadeant);
         return true;
     }
 
 // Atualiza produto com base na quantidade
-    private boolean updateProdutoquantidade(int quantidadeantiga, Produto quantidadenovo) {
+    public boolean updateProdutoquantidade(int quantidadeantiga, Produto quantidadenovo) {
         int indice = this.procurarIndicePorQuantidade(quantidadeantiga);
         ProdutoDAO.getListaProduto().set(indice, quantidadenovo);
         return true;
