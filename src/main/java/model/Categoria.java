@@ -83,6 +83,11 @@ public class Categoria {
         return true;
     }
 
+    public boolean inserCategoriaId(int objetoId){
+        CategoriaDAO.getListaCategoria().add(objetoId);
+        return true;
+    }
+    
     // Procura o índice da categoria pelo ID
     private int procuraIndiceId(int id) {
         int indice = -1;
@@ -103,20 +108,20 @@ public class Categoria {
     }
 
     // Atualiza os dados de uma categoria com base no ID
-    public boolean updateCategoriaId(int id, Categoria objeto) {
+    public boolean updateCategoriaId(int id, Categoria objetoId) {
         int indice = this.procuraIndiceId(id);
-        CategoriaDAO.getListaCategoria().set(indice, objeto);
+        CategoriaDAO.getListaCategoria().set(indice, objetoId);
         return true;
     }
 
     // Insere uma categoria na lista com base em um objeto
-    public boolean insertCategoriaNome(Categoria objeto) {
-        CategoriaDAO.getListaCategoria().add(objeto);
+    public boolean insertCategoriaNome(Categoria objetonomeP) {
+        CategoriaDAO.getListaCategoria().add(objetonomeP);
         return true;
     }
 
     // Procura o índice da categoria pelo nome
-    public int procurarIndicePorNome(String nome) {
+    private int procurarIndicePorNome(String nome) {
         int indice = -1;
         ArrayList<Categoria> lista = CategoriaDAO.getListaCategoria();
         for (int i = 0; i < lista.size(); i++) {
@@ -135,9 +140,73 @@ public class Categoria {
     }
 
     // Atualiza os dados de uma categoria com base no nome
-    public boolean updateCategoriaNome(String nome, Categoria objeto) {
+    public boolean updateCategoriaNome(String nome, Categoria objetonomeP) {
         int indice = this.procurarIndicePorNome(nome);
-        CategoriaDAO.getListaCategoria().set(indice, objeto);
+        CategoriaDAO.getListaCategoria().set(indice, objetonomeP);
+        return true;
+    }
+
+    // Insere uma categoria na lista com base no tamanho
+    public boolean insertCategoriaTamanho(Categoria objetoTamanho) {
+        CategoriaDAO.getListaCategoria().add(objetoTamanho);
+        return true;
+    }
+
+    // Procura o índice de uma categoria pelo atributo 'tamanho'
+    private int procurarIndicePorTamanho(Tamanho tamanho) {
+        int indice = -1;
+        ArrayList<Categoria> lista = CategoriaDAO.getListaCategoria();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getTamanho().equals(tamanho)) {
+                return i;
+            }
+        }
+        return indice;
+    }
+
+    // Remove uma categoria da lista com base no tamanho informado
+    public boolean deleteCategoriaPorTamanho(Tamanho tamanho) {
+        int indice = this.procurarIndicePorTamanho(tamanho);
+        CategoriaDAO.getListaCategoria().remove(indice);
+        return true;
+    }
+
+    // Atualiza uma categoria existente com base no tamanho
+    public boolean updateCategoriaTamanho(Tamanho tamanho, Categoria objetoTamanho) {
+        int indice = this.procurarIndicePorTamanho(tamanho);
+        CategoriaDAO.getListaCategoria().set(indice, objetoTamanho);
+        return true;
+    }
+
+    // Insere uma categoria na lista com base na embalagem
+    public boolean insertCategoriaEmbalagem(Categoria objetoEmbalagem) {
+        CategoriaDAO.getListaCategoria().add(objetoEmbalagem);
+        return true;
+    }
+
+    // Procura o índice de uma categoria pelo atributo 'embalagem'
+    private int procurarIndicePorEmbalagem(Embalagem embalagem) {
+        int indice = -1;
+        ArrayList<Categoria> lista = CategoriaDAO.getListaCategoria();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getEmbalagem().equals(embalagem)) {
+                return i;
+            }
+        }
+        return indice;
+    }
+
+    // Remove uma categoria da lista com base na embalagem
+    public boolean deleteCategoriaPorEmabalagem(Embalagem embalagem) {
+        int indice = this.procurarIndicePorEmbalagem(embalagem);
+        CategoriaDAO.getListaCategoria().remove(indice);
+        return true;
+    }
+
+    // Atualiza uma categoria existente com base na embalagem
+    public boolean updateCategoriaEmbalagem(Embalagem embalagem, Categoria objetoEmbalagem) {
+        int indice = this.procurarIndicePorEmbalagem(embalagem);
+        CategoriaDAO.getListaCategoria().set(indice, objetoEmbalagem);
         return true;
     }
 }
