@@ -1,6 +1,6 @@
 package model;
 
-import DAO.ProdutoDAO;
+import dao.ProdutoDAO;
 import java.util.ArrayList;
 
 public class Produto {
