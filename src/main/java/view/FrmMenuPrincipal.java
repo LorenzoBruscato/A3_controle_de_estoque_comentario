@@ -198,7 +198,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JBEmitirRelatoriosActionPerformed
 
     private void JBGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarCategoriasActionPerformed
-        // TODO add your handling code here:
+        FrmGerenciarCategorias janela = new FrmGerenciarCategorias();
+        janela.setVisible(true);
     }//GEN-LAST:event_JBGerenciarCategoriasActionPerformed
 
     private void jMenuMovimentarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMovimentarEstoqueActionPerformed

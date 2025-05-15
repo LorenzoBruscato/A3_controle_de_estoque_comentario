@@ -44,7 +44,7 @@ public class FrmGerenciarProdutos extends javax.swing.JFrame {
         JBAlterar = new javax.swing.JButton();
         JBApagar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Produtos");
 
         JTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
