@@ -2,6 +2,7 @@ package model;
 
 public class Produto {
 
+    private int idp;
     private String nome;
     private double preco;
     private String unidade; // Ex: "kg", "litro", "unidade"
@@ -13,7 +14,8 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
+    public Produto(int idp, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
+        this.idp = idp;
         this.nome = nome;
         this.preco = preco;
         this.unidade = unidade;
@@ -21,6 +23,14 @@ public class Produto {
         this.quantidade = quantidade;
         this.quantidadeMinima = quantidadeMinima;
         this.quantidadeMaxima = quantidadeMaxima;
+    }
+
+    public int getIdp() {
+        return idp;
+    }
+
+    public void setIdp(int idp) {
+        this.idp = idp;
     }
 
     public String getNome() {
@@ -89,7 +99,7 @@ public class Produto {
     }
 
     public double ValorTotal() {
-        return this.preco += quantidade;
+        return this.preco * quantidade; // corrigido para multiplicar preço por quantidade
     }
 
     public void entrada() {
@@ -106,7 +116,7 @@ public class Produto {
 
     @Override
     public String toString() {
-        return String.format("%s | %.2f | %s | %s | Qtd: %d",
-                nome, preco, unidade, categoria.getNome(), quantidade);
+        return String.format("%d | %s | %.2f | %s | %s | Qtd: %d",
+                idp, nome, preco, unidade, categoria.getNome(), quantidade);
     }
 }
