@@ -25,8 +25,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     @Override
     public void cadastrarProduto(Produto obj) {
         String sql = "INSERT INTO produto "
-                + "(nome, preco, unidade, quantidade, quantidade_minima, quantidade_maxima) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "(nome, preco, unidade, quantidade, quantidade_minima, quantidade_maxima, categoria_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, obj.getNome());
@@ -35,6 +35,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
+            st.setInt(7, obj.getCategoria().getIdc());
 
             int rowsAffected = st.executeUpdate();
 
@@ -55,7 +56,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 + "unidade = ?, "
                 + "quantidade = ?, "
                 + "quantidade_minima = ?, "
-                + "quantidade_maxima = ? "
+                + "quantidade_maxima = ?, "
+                + "categoria_id = ? "
                 + "WHERE idp = ?";
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
@@ -65,7 +67,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
-            st.setInt(7, obj.getIdp());  // Usa o idp como filtro
+            st.setInt(7, obj.getCategoria().getIdc());
+            st.setInt(8, obj.getIdp());
 
             int rowsAffected = st.executeUpdate();
 
@@ -99,10 +102,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     @Override
     public List<Produto> resgatarProdutos() {
         List<Produto> lista = new ArrayList<>();
-        String sql = "SELECT id AS idp, nome, preco_unitario AS preco, unidade, quantidade_estoque AS quantidade, quantidade_minima, quantidade_maxima FROM produto ORDER BY nome";
+        String sql = "SELECT p.id AS idp, p.nome, p.preco, p.unidade, p.quantidade, "
+                + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id, "
+                + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
+                + "FROM produto p "
+                + "JOIN categoria c ON p.categoria_id = c.id "
+                + "ORDER BY p.nome";
 
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
-
             while (rs.next()) {
                 Produto prod = instantiateProduto(rs);
                 lista.add(prod);
@@ -124,10 +131,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         prod.setQuantidade(rs.getInt("quantidade"));
         prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
         prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
-
-        prod.setCategoria(null);
-
         return prod;
-    
-}
+    }
 }
