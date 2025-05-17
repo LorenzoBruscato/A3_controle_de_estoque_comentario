@@ -27,15 +27,14 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         JBReajustarPrecos = new javax.swing.JButton();
         JBSair = new javax.swing.JButton();
         JBGerenciarProdutos = new javax.swing.JButton();
-        JBMovimentarEstoque = new javax.swing.JButton();
         JBEmitirRelatorios = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuArquivo = new javax.swing.JMenu();
         jMenuGerenciarProdutos = new javax.swing.JMenuItem();
         jMenuGerenciarCategorias = new javax.swing.JMenuItem();
-        jMenuMovimentarEstoque = new javax.swing.JMenuItem();
         jMenuReajustarPrecos = new javax.swing.JMenuItem();
         jMenuEmitirRelatorios = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuSobre = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,6 +55,11 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         JBReajustarPrecos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         JBReajustarPrecos.setText("Reajustar Preços");
+        JBReajustarPrecos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBReajustarPrecosActionPerformed(evt);
+            }
+        });
 
         JBSair.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         JBSair.setText("Sair");
@@ -70,14 +74,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         JBGerenciarProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBGerenciarProdutosActionPerformed(evt);
-            }
-        });
-
-        JBMovimentarEstoque.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        JBMovimentarEstoque.setText("Movimentar Estoque");
-        JBMovimentarEstoque.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBMovimentarEstoqueActionPerformed(evt);
             }
         });
 
@@ -111,22 +107,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         });
         jMenuArquivo.add(jMenuGerenciarCategorias);
 
-        jMenuMovimentarEstoque.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, 0));
-        jMenuMovimentarEstoque.setText("Movimentar Estoque");
-        jMenuMovimentarEstoque.addActionListener(new java.awt.event.ActionListener() {
+        jMenuReajustarPrecos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, 0));
+        jMenuReajustarPrecos.setText("Reajustar Preços");
+        jMenuReajustarPrecos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuMovimentarEstoqueActionPerformed(evt);
+                jMenuReajustarPrecosActionPerformed(evt);
             }
         });
-        jMenuArquivo.add(jMenuMovimentarEstoque);
-
-        jMenuReajustarPrecos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, 0));
-        jMenuReajustarPrecos.setText("Reajustar Preços");
         jMenuArquivo.add(jMenuReajustarPrecos);
 
-        jMenuEmitirRelatorios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_5, 0));
+        jMenuEmitirRelatorios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, 0));
         jMenuEmitirRelatorios.setText("Emitir Relatórios");
         jMenuArquivo.add(jMenuEmitirRelatorios);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_5, 0));
+        jMenuItem1.setText("Sair");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenuArquivo.add(jMenuItem1);
 
         jMenuBar.add(jMenuArquivo);
 
@@ -144,18 +145,20 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(227, 227, 227)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(JBMovimentarEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(JBGerenciarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(JBGerenciarCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(322, 322, 322)
                         .addComponent(JLMenuPrincipal)))
                 .addContainerGap(227, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(327, 327, 327))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,12 +171,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(JBGerenciarCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JBMovimentarEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(163, Short.MAX_VALUE))
         );
 
@@ -181,17 +182,13 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JBSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBSairActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_JBSairActionPerformed
 
     private void JBGerenciarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarProdutosActionPerformed
         FrmGerenciarProdutos janela = new FrmGerenciarProdutos();
         janela.setVisible(true);
     }//GEN-LAST:event_JBGerenciarProdutosActionPerformed
-
-    private void JBMovimentarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBMovimentarEstoqueActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JBMovimentarEstoqueActionPerformed
 
     private void JBEmitirRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBEmitirRelatoriosActionPerformed
         // TODO add your handling code here:
@@ -202,12 +199,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         janela.setVisible(true);
     }//GEN-LAST:event_JBGerenciarCategoriasActionPerformed
 
-    private void jMenuMovimentarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMovimentarEstoqueActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuMovimentarEstoqueActionPerformed
-
     private void jMenuGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGerenciarCategoriasActionPerformed
-        // TODO add your handling code here:
+        FrmGerenciarCategorias janela = new FrmGerenciarCategorias();
+        janela.setVisible(true);
     }//GEN-LAST:event_jMenuGerenciarCategoriasActionPerformed
 
     private void jMenuGerenciarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGerenciarProdutosActionPerformed
@@ -215,6 +209,20 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         FrmGerenciarProdutos objeto = new FrmGerenciarProdutos();
         objeto.setVisible(true);
     }//GEN-LAST:event_jMenuGerenciarProdutosActionPerformed
+
+    private void JBReajustarPrecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBReajustarPrecosActionPerformed
+        FrmReajustarPrecos janela = new FrmReajustarPrecos();
+        janela.setVisible(true);
+    }//GEN-LAST:event_JBReajustarPrecosActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuReajustarPrecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReajustarPrecosActionPerformed
+        FrmReajustarPrecos janela = new FrmReajustarPrecos();
+        janela.setVisible(true);
+    }//GEN-LAST:event_jMenuReajustarPrecosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,7 +263,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton JBEmitirRelatorios;
     private javax.swing.JButton JBGerenciarCategorias;
     private javax.swing.JButton JBGerenciarProdutos;
-    private javax.swing.JButton JBMovimentarEstoque;
     private javax.swing.JButton JBReajustarPrecos;
     private javax.swing.JButton JBSair;
     private javax.swing.JLabel JLMenuPrincipal;
@@ -264,7 +271,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuEmitirRelatorios;
     private javax.swing.JMenuItem jMenuGerenciarCategorias;
     private javax.swing.JMenuItem jMenuGerenciarProdutos;
-    private javax.swing.JMenuItem jMenuMovimentarEstoque;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuReajustarPrecos;
     private javax.swing.JMenu jMenuSobre;
     // End of variables declaration//GEN-END:variables

@@ -36,32 +36,35 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuGerenciarCategoriasActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuMovimentarEstoque">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuReajustarPrecos">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="3"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Movimentar Estoque"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuMovimentarEstoqueActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuReajustarPrecos">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="4"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Reajustar Pre&#xe7;os"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuReajustarPrecosActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuEmitirRelatorios">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="5"/>
+                  <KeyStroke key="4"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Emitir Relat&#xf3;rios"/>
               </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="5"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Sair"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -102,15 +105,13 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="227" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="JBMovimentarEstoque" max="32767" attributes="0"/>
                           <Component id="JBGerenciarProdutos" max="32767" attributes="0"/>
-                          <Component id="JBEmitirRelatorios" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="JBReajustarPrecos" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="JBGerenciarCategorias" max="32767" attributes="0"/>
-                          <Component id="JBReajustarPrecos" alignment="0" max="32767" attributes="0"/>
-                          <Component id="JBSair" alignment="0" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="JBEmitirRelatorios" min="-2" pref="152" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -119,6 +120,11 @@
                   </Group>
               </Group>
               <EmptySpace pref="227" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="JBSair" min="-2" pref="152" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="327" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -134,14 +140,11 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JBMovimentarEstoque" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
                   <Component id="JBReajustarPrecos" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
+                  <Component id="JBEmitirRelatorios" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JBEmitirRelatorios" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
-                  <Component id="JBSair" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
-              </Group>
+              <Component id="JBSair" min="-2" pref="57" max="-2" attributes="0"/>
               <EmptySpace pref="163" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -178,6 +181,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Reajustar Pre&#xe7;os"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBReajustarPrecosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="JBSair">
       <Properties>
@@ -199,17 +205,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBGerenciarProdutosActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="JBMovimentarEstoque">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="12" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Movimentar Estoque"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBMovimentarEstoqueActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="JBEmitirRelatorios">
