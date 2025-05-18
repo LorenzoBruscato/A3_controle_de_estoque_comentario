@@ -1,5 +1,10 @@
 package model;
 
+/**
+ *
+ * @author HenriqueBrosa
+ */
+
 public class Produto {
 
     private int idp;

@@ -7,7 +7,8 @@ import model.dao.CategoriaDao;
 import model.dao.impl.CategoriaDaoJDBC;
 
 /**
- * Controller responsável por intermediar a comunicação entre a interface e o DAO de Categoria.
+ *
+ * @author HenriqueBrosa
  */
 public class CategoriaController {
 

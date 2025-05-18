@@ -7,8 +7,10 @@ import model.dao.ProdutoDao;
 import model.dao.impl.ProdutoDaoJDBC;
 
 /**
- * Controller responsável por gerenciar as operações de Produto.
+ *
+ * @author HenriqueBrosa
  */
+
 public class ProdutoController {
 
     private ProdutoDao produtoDao;
