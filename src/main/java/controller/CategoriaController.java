@@ -5,7 +5,6 @@ import java.util.List;
 import model.Categoria;
 import model.dao.CategoriaDao;
 import model.dao.impl.CategoriaDaoJDBC;
-
 /**
  *
  * @author HenriqueBrosa
