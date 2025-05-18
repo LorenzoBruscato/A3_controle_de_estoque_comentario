@@ -143,14 +143,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         prod.setQuantidade(rs.getInt("quantidade"));
         prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
         prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
-        prod.setCategoria(cat); // Adicionando a categoria ao produto
+        prod.setCategoria(cat);
         return prod;
     }
 
     private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
         Categoria cat = new Categoria();
-        cat.setId(rs.getInt("categoria_id")); // Utiliza o alias correto do SELECT
-        cat.setNome(rs.getString("categoria_nome")); // Utiliza o alias correto do SELECT
+        cat.setId(rs.getInt("categoria_id"));
+        cat.setNome(rs.getString("categoria_nome"));
         cat.setTamanho(rs.getString("tamanho"));
         cat.setEmbalagem(rs.getString("embalagem"));
         return cat;
