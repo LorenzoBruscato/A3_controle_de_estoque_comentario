@@ -121,11 +121,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 
                 Categoria cat = map.get(rs.getInt("Idc"));
                 if(cat == null){
-                    cat = instanciarCategoria(rs);
+//                    cat = instanciarCategoria(rs);
                     map.put(rs.getInt("Idc"), cat);
                 }
-                Produto prod = instanciarProduto(rs, cat);
-                lista.add(prod);
+//                Produto prod = instanciarProduto(rs, cat);
+//                lista.add(prod);
             }
         } catch (SQLException e) {
             throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
@@ -133,26 +133,26 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         return lista;
     }
-
-    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
-        Produto prod = new Produto();
-        prod.setIdp(rs.getInt("idp"));
-        prod.setNome(rs.getString("nome"));
-        prod.setPreco(rs.getDouble("preco"));
-        prod.setUnidade(rs.getString("unidade"));
-        prod.setQuantidade(rs.getInt("quantidade"));
-        prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
-        prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
-        prod.setCategoria(cat);
-        return prod;
-    }
-
-    private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
-        Categoria cat = new Categoria();
-        cat.setId(rs.getInt("categoria_id"));
-        cat.setNome(rs.getString("categoria_nome"));
-        cat.setTamanho(rs.getString("tamanho"));
-        cat.setEmbalagem(rs.getString("embalagem"));
-        return cat;
-    }
+//
+//    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
+//        Produto prod = new Produto();
+//        prod.setIdp(rs.getInt("idp"));
+//        prod.setNome(rs.getString("nome"));
+//        prod.setPreco(rs.getDouble("preco"));
+//        prod.setUnidade(rs.getString("unidade"));
+//        prod.setQuantidade(rs.getInt("quantidade"));
+//        prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
+//        prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
+//        prod.setCategoria(cat);
+//        return prod;
+//    }
+//
+//    private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
+//        Categoria cat = new Categoria();
+//        cat.setId(rs.getInt("categoria_id"));
+//        cat.setNome(rs.getString("categoria_nome"));
+//        cat.setTamanho(rs.getString("tamanho"));
+//        cat.setEmbalagem(rs.getString("embalagem"));
+//        return cat;
+//    }
 }
