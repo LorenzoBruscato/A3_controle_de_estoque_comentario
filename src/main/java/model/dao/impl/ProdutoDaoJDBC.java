@@ -38,7 +38,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
-            st.setInt(7, obj.getCategoria().getIdc());
+            st.setInt(7, obj.getCategoria().getId());
 
             int rowsAffected = st.executeUpdate();
 
@@ -61,7 +61,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 + "quantidade_minima = ?, "
                 + "quantidade_maxima = ?, "
                 + "categoria_id = ? "
-                + "WHERE idp = ?";
+                + "WHERE id = ?";
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, obj.getNome());
@@ -70,8 +70,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
-            st.setInt(7, obj.getCategoria().getIdc());
-            st.setInt(8, obj.getIdp());
+            st.setInt(7, obj.getCategoria().getId());
+            st.setInt(8, obj.getId());
 
             int rowsAffected = st.executeUpdate();
 
@@ -86,7 +86,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     @Override
     public void deletarProdutoPorId(int objId) {
-        String sql = "DELETE FROM produto WHERE idp = ?";
+        String sql = "DELETE FROM produto WHERE id = ?";
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, objId);
@@ -105,7 +105,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     @Override
     public List<Produto> resgatarProdutos() {
         List<Produto> lista = new ArrayList<>();
-        String sql = "SELECT p.id AS idp, p.nome, p.preco, p.unidade, p.quantidade, "
+        String sql = "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
                 + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
                 + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
                 + "FROM produto p "
@@ -119,10 +119,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             
             while (rs.next()) {
                 
-                Categoria cat = map.get(rs.getInt("Idc"));
+                Categoria cat = map.get(rs.getInt("Id"));
                 if(cat == null){
 //                    cat = instanciarCategoria(rs);
-                    map.put(rs.getInt("Idc"), cat);
+                    map.put(rs.getInt("Id"), cat);
                 }
 //                Produto prod = instanciarProduto(rs, cat);
 //                lista.add(prod);
@@ -136,7 +136,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 //
 //    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
 //        Produto prod = new Produto();
-//        prod.setIdp(rs.getInt("idp"));
+//        prod.setId(rs.getInt("id"));
 //        prod.setNome(rs.getString("nome"));
 //        prod.setPreco(rs.getDouble("preco"));
 //        prod.setUnidade(rs.getString("unidade"));
