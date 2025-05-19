@@ -27,7 +27,7 @@ public class ProdutoController {
     }
 
     public void atualizarProduto(Produto produto) {
-        if (produto == null || produto.getIdp() <= 0) {
+        if (produto == null || produto.getId() <= 0) {
             throw new IllegalArgumentException("Produto inválido ou sem ID.");
         }
         produtoDao.atualizarProduto(produto);
