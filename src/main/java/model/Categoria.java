@@ -21,16 +21,15 @@ public class Categoria {
     }
 
     // Construtor
-    public Categoria(int idc, String nome, Tamanho tamanho, Embalagem embalagem) {
-        this.id = idc;
+    public Categoria(int id, String nome, Tamanho tamanho, Embalagem embalagem) {
+        this.id = id;
         this.nome = nome;
         this.tamanho = tamanho;
         this.embalagem = embalagem;
     }
-   
 
     // Getters
-    public int getIdc() {
+    public int getId() {
         return id;
     }
 
@@ -47,8 +46,8 @@ public class Categoria {
     }
 
     // Setters
-    public void setIdc(int idc) {
-        this.id = idc;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
@@ -62,12 +61,11 @@ public class Categoria {
     public void setEmbalagem(Embalagem embalagem) {
         this.embalagem = embalagem;
     }
-    
 
     @Override
     public String toString() {
         return "Categoria{"
-                + "id_Categoria=" + id
+                + "id=" + id
                 + ", nome='" + nome + '\''
                 + ", tamanho=" + tamanho
                 + ", embalagem=" + embalagem

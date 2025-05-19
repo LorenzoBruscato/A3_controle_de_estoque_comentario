@@ -26,7 +26,7 @@ public class CategoriaController {
     }
 
     public void atualizarCategoria(Categoria categoria) {
-        if (categoria == null || categoria.getIdc()<= 0) {
+        if (categoria == null || categoria.getId()<= 0) {
             throw new IllegalArgumentException("Categoria inválida ou sem ID.");
         }
         categoriaDao.atualizarCategoria(categoria);
