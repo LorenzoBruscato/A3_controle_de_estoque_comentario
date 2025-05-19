@@ -7,7 +7,7 @@ package model;
 
 public class Categoria {
 
-    private int idc;
+    private int id;
     private String nome;
     private Tamanho tamanho;
     private Embalagem embalagem;
@@ -22,7 +22,7 @@ public class Categoria {
 
     // Construtor
     public Categoria(int idc, String nome, Tamanho tamanho, Embalagem embalagem) {
-        this.idc = idc;
+        this.id = idc;
         this.nome = nome;
         this.tamanho = tamanho;
         this.embalagem = embalagem;
@@ -31,7 +31,7 @@ public class Categoria {
 
     // Getters
     public int getIdc() {
-        return idc;
+        return id;
     }
 
     public String getNome() {
@@ -48,7 +48,7 @@ public class Categoria {
 
     // Setters
     public void setIdc(int idc) {
-        this.idc = idc;
+        this.id = idc;
     }
 
     public void setNome(String nome) {
@@ -67,7 +67,7 @@ public class Categoria {
     @Override
     public String toString() {
         return "Categoria{"
-                + "id_Categoria=" + idc
+                + "id_Categoria=" + id
                 + ", nome='" + nome + '\''
                 + ", tamanho=" + tamanho
                 + ", embalagem=" + embalagem

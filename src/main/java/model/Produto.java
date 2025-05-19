@@ -7,7 +7,7 @@ package model;
 
 public class Produto {
 
-    private int idp;
+    private int id;
     private String nome;
     private double preco;
     private String unidade; // Ex: "kg", "litro", "unidade"
@@ -19,8 +19,8 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(int idp, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
-        this.idp = idp;
+    public Produto(int id, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
+        this.id = id;
         this.nome = nome;
         this.preco = preco;
         this.unidade = unidade;
@@ -30,12 +30,12 @@ public class Produto {
         this.quantidadeMaxima = quantidadeMaxima;
     }
 
-    public int getIdp() {
-        return idp;
+    public int getId() {
+        return id;
     }
 
-    public void setIdp(int idp) {
-        this.idp = idp;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -122,6 +122,6 @@ public class Produto {
     @Override
     public String toString() {
         return String.format("%d | %s | %.2f | %s | %s | Qtd: %d",
-                idp, nome, preco, unidade, categoria.getNome(), quantidade);
+                id, nome, preco, unidade, categoria.getNome(), quantidade);
     }
 }
