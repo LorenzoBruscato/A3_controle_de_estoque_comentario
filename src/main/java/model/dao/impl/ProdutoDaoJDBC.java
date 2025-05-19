@@ -1,5 +1,6 @@
 package model.dao.impl;
 
+import db.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,11 +28,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     @Override
     public void cadastrarProduto(Produto obj) {
-        String sql = "INSERT INTO produto "
-                + "(nome, preco, unidade, quantidade, quantidade_minima, quantidade_maxima, categoria_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement st = null;
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try {
+            st = conn.prepareStatement(
+                    "INSERT INTO produto "
+                    + "(nome, preco, unidade, quantidade, quantidade_minima, quantidade_maxima, categoria_id) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
             st.setString(3, obj.getUnidade());
@@ -42,28 +46,37 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             int rowsAffected = st.executeUpdate();
 
-            if (rowsAffected == 0) {
+            if (rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
+                }
+            } else {
                 throw new DbException("Erro: Nenhuma linha foi inserida.");
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao inserir produto: " + e.getMessage());
+            throw new DbException("Erro ao cadastrar produto: " + e.getMessage());
+        } finally {
+            Database.closeStatement(st);
         }
     }
 
     @Override
     public void atualizarProduto(Produto obj) {
-        String sql = "UPDATE produto SET "
-                + "nome = ?, "
-                + "preco = ?, "
-                + "unidade = ?, "
-                + "quantidade = ?, "
-                + "quantidade_minima = ?, "
-                + "quantidade_maxima = ?, "
-                + "categoria_id = ? "
-                + "WHERE id = ?";
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement("UPDATE produto SET "
+                    + "nome = ?, "
+                    + "preco = ?, "
+                    + "unidade = ?, "
+                    + "quantidade = ?, "
+                    + "quantidade_minima = ?, "
+                    + "quantidade_maxima = ?, "
+                    + "categoria_id = ? "
+                    + "WHERE id = ?");
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
             st.setString(3, obj.getUnidade());
@@ -73,66 +86,77 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(7, obj.getCategoria().getId());
             st.setInt(8, obj.getId());
 
-            int rowsAffected = st.executeUpdate();
-
-            if (rowsAffected == 0) {
-                throw new DbException("Nenhum produto encontrado com esse ID.");
-            }
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DbException("Erro ao atualizar produto: " + e.getMessage());
+        } finally {
+            Database.closeStatement(st);
         }
     }
 
     @Override
     public void deletarProdutoPorId(int objId) {
-        String sql = "DELETE FROM produto WHERE id = ?";
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement("DELETE FROM produto WHERE id = ?");
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, objId);
 
-            int rowsAffected = st.executeUpdate();
-
-            if (rowsAffected == 0) {
-                throw new DbException("Nenhum produto encontrado com esse ID.");
+            int rows = st.executeUpdate();
+            if (rows == 0) {
+                throw new DbException("ID do produto não foi encontrado");
             }
-
         } catch (SQLException e) {
             throw new DbException("Erro ao deletar produto: " + e.getMessage());
+        } finally {
+            Database.closeStatement(st);
         }
     }
 
     @Override
     public List<Produto> resgatarProdutos() {
-        List<Produto> lista = new ArrayList<>();
-        String sql = "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
-                + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
-                + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
-                + "FROM produto p "
-                + "JOIN categoria c ON p.categoria_id = c.id "
-                + "ORDER BY p.nome";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
-
-            List<Produto> list = new ArrayList<>();
-            Map<Integer, Categoria> map = new HashMap<>();
-            
-            while (rs.next()) {
-                
-                Categoria cat = map.get(rs.getInt("Id"));
-                if(cat == null){
-//                    cat = instanciarCategoria(rs);
-                    map.put(rs.getInt("Id"), cat);
-                }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+//        List<Produto> lista = new ArrayList<>();
+//        PreparedStatement st = null;
+//        ResultSet rs = null;
+//
+//        try {
+//            st = conn.prepareStatement(
+//                    "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
+//                    + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
+//                    + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
+//                    + "FROM produto p "
+//                    + "JOIN categoria c ON p.categoria_id = c.id "
+//                    + "ORDER BY p.nome"
+//            );
+//
+//            rs = st.executeQuery();
+//
+//            Map<Integer, Categoria> map = new HashMap<>();
+//
+//            while (rs.next()) {
+//                int categoriaId = rs.getInt("categoria_id");
+//
+//                Categoria cat = map.get(categoriaId);
+//                if (cat == null) {
+//                    cat = instanciarCategoria(rs, categoriaId);
+//                    map.put(categoriaId, cat);
+//                }
+//
 //                Produto prod = instanciarProduto(rs, cat);
 //                lista.add(prod);
-            }
-        } catch (SQLException e) {
-            throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
-        }
-
-        return lista;
-    }
+//            }
+//        } catch (SQLException e) {
+//            throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
+//        } finally {
+//            Database.closeResultSet(rs);
+//            Database.closeStatement(st);
+//        }
+//
+//        return lista;
+//    }
 //
 //    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
 //        Produto prod = new Produto();
