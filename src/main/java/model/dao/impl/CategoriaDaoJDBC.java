@@ -35,7 +35,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
                 + "(nome, tamanho, embalagem) "
                 + " VALUES (?, ?, ?)";
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, obj.getNome());
             st.setString(2, obj.getTamanho().name());
             st.setString(3, obj.getEmbalagem().name());
