@@ -35,12 +35,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement(
                     "INSERT INTO produto "
-                    + "(nome, preco, unidade, quantidade, quantidade_minima, quantidade_maxima, categoria_id) "
+                    + "(nome, unidade, preco_unitario, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria_id) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             st.setString(1, obj.getNome());
-            st.setDouble(2, obj.getPreco());
-            st.setString(3, obj.getUnidade());
+            st.setString(2, obj.getUnidade());
+            st.setDouble(3, obj.getPreco());
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
@@ -71,9 +71,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement("UPDATE produto SET "
                     + "nome = ?, "
-                    + "preco = ?, "
+                    + "preco_unitario = ?, "
                     + "unidade = ?, "
-                    + "quantidade = ?, "
+                    + "quantidade_estoque = ?, "
                     + "quantidade_minima = ?, "
                     + "quantidade_maxima = ?, "
                     + "categoria_id = ? "
@@ -85,7 +85,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
-            st.setInt(7, obj.getCategoria().getId());
+            st.setString(7, obj.getCategoria().getNome());
             st.setInt(8, obj.getId());
 
             st.executeUpdate();
