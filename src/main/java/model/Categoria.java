@@ -21,6 +21,10 @@ public class Categoria {
     }
 
     // Construtor
+
+    public Categoria() {
+    }
+    
     public Categoria(int id, String nome, Tamanho tamanho, Embalagem embalagem) {
         this.id = id;
         this.nome = nome;
