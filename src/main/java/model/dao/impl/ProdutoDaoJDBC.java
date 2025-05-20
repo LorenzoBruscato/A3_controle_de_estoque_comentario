@@ -11,6 +11,8 @@ import db.DbException;
 import java.util.HashMap;
 import java.util.Map;
 import model.Categoria;
+import model.Categoria.Embalagem;
+import model.Categoria.Tamanho;
 import model.Produto;
 import model.dao.ProdutoDao;
 
@@ -53,7 +55,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     obj.setId(id);
                 }
             } else {
-                throw new DbException("Erro: Nenhuma linha foi inserida.");
+                throw new DbException("Unexpected error! No rows affected");
             }
 
         } catch (SQLException e) {
@@ -116,67 +118,65 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     @Override
     public List<Produto> resgatarProdutos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Produto> lista = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
+                    + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
+                    + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
+                    + "FROM produto p "
+                    + "JOIN categoria c ON p.categoria_id = c.id "
+                    + "ORDER BY p.nome"
+            );
+
+            rs = st.executeQuery();
+
+            Map<Integer, Categoria> map = new HashMap<>();
+
+            while (rs.next()) {
+                int categoriaId = rs.getInt("categoria_id");
+
+                Categoria cat = map.get(categoriaId);
+                if (cat == null) {
+                    cat = instanciarCategoria(rs, categoriaId);
+                    map.put(categoriaId, cat);
+                }
+
+                Produto prod = instanciarProduto(rs, cat);
+                lista.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
+        } finally {
+            Database.closeResultSet(rs);
+            Database.closeStatement(st);
+        }
+
+        return lista;
     }
-//        List<Produto> lista = new ArrayList<>();
-//        PreparedStatement st = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            st = conn.prepareStatement(
-//                    "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
-//                    + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
-//                    + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
-//                    + "FROM produto p "
-//                    + "JOIN categoria c ON p.categoria_id = c.id "
-//                    + "ORDER BY p.nome"
-//            );
-//
-//            rs = st.executeQuery();
-//
-//            Map<Integer, Categoria> map = new HashMap<>();
-//
-//            while (rs.next()) {
-//                int categoriaId = rs.getInt("categoria_id");
-//
-//                Categoria cat = map.get(categoriaId);
-//                if (cat == null) {
-//                    cat = instanciarCategoria(rs, categoriaId);
-//                    map.put(categoriaId, cat);
-//                }
-//
-//                Produto prod = instanciarProduto(rs, cat);
-//                lista.add(prod);
-//            }
-//        } catch (SQLException e) {
-//            throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
-//        } finally {
-//            Database.closeResultSet(rs);
-//            Database.closeStatement(st);
-//        }
-//
-//        return lista;
-//    }
-//
-//    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
-//        Produto prod = new Produto();
-//        prod.setId(rs.getInt("id"));
-//        prod.setNome(rs.getString("nome"));
-//        prod.setPreco(rs.getDouble("preco"));
-//        prod.setUnidade(rs.getString("unidade"));
-//        prod.setQuantidade(rs.getInt("quantidade"));
-//        prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
-//        prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
-//        prod.setCategoria(cat);
-//        return prod;
-//    }
-//
-//    private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
-//        Categoria cat = new Categoria();
-//        cat.setId(rs.getInt("categoria_id"));
-//        cat.setNome(rs.getString("categoria_nome"));
-//        cat.setTamanho(rs.getString("tamanho"));
-//        cat.setEmbalagem(rs.getString("embalagem"));
-//        return cat;
-//    }
+
+    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
+        Produto prod = new Produto();
+        prod.setId(rs.getInt("id"));
+        prod.setNome(rs.getString("nome"));
+        prod.setPreco(rs.getDouble("preco"));
+        prod.setUnidade(rs.getString("unidade"));
+        prod.setQuantidade(rs.getInt("quantidade"));
+        prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
+        prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
+        prod.setCategoria(cat);
+        return prod;
+    }
+
+    private Categoria instanciarCategoria(ResultSet rs, int categoriaId) throws SQLException {
+        Categoria cat = new Categoria();
+        cat.setId(categoriaId);
+        cat.setNome(rs.getString("categoria_nome"));
+        cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho")));
+        cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem")));
+        return cat;
+    }
 }
