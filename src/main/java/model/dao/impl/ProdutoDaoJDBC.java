@@ -35,16 +35,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement(
                     "INSERT INTO produto "
-                    + "(nome, unidade, preco_unitario, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria_id) "
+                    + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria_id) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             st.setString(1, obj.getNome());
-            st.setString(2, obj.getUnidade());
-            st.setDouble(3, obj.getPreco());
+            st.setDouble(2, obj.getPreco());
+            st.setString(3, obj.getUnidade());
             st.setInt(4, obj.getQuantidade());
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
-            st.setInt(7, obj.getCategoria().getId());
+            st.setString(7, obj.getCategoria().getNome());
 
             int rowsAffected = st.executeUpdate();
 
@@ -124,12 +124,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         try {
             st = conn.prepareStatement(
-                    "SELECT p.id AS id, p.nome, p.preco, p.unidade, p.quantidade, "
-                    + "p.quantidade_minima, p.quantidade_maxima, p.categoria_id AS categoria_id, "
-                    + "c.nome AS categoria_nome, c.tamanho, c.embalagem "
-                    + "FROM produto p "
-                    + "JOIN categoria c ON p.categoria_id = c.id "
-                    + "ORDER BY p.nome"
+                    "SELECT produto.*, categoria.nome AS categoria_nome "
+                    + "FROM produto INNER JOIN categoria" 
+                    + "ON produto.categoria_id = categoria.Id "
+                    + "ORDER BY nome"
             );
 
             rs = st.executeQuery();
@@ -162,9 +160,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         Produto prod = new Produto();
         prod.setId(rs.getInt("id"));
         prod.setNome(rs.getString("nome"));
-        prod.setPreco(rs.getDouble("preco"));
+        prod.setPreco(rs.getDouble("preco_unitario"));
         prod.setUnidade(rs.getString("unidade"));
-        prod.setQuantidade(rs.getInt("quantidade"));
+        prod.setQuantidade(rs.getInt("quantidade_estoque"));
         prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
         prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
         prod.setCategoria(cat);
