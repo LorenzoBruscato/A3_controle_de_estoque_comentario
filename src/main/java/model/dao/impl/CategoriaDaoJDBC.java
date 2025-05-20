@@ -85,7 +85,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 
     @Override
     public void deletarCategoriaPorId(int id) {
-        String sql = "DELETE FROM department WHERE Id = ?";
+        String sql = "DELETE FROM categoria WHERE Id = ?";
 
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -93,7 +93,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
             int rowsAffected = st.executeUpdate();
 
             if (rowsAffected == 0) {
-                throw new DbException("No department found with the given Id");
+                throw new DbException("No categoria found with the given Id");
             }
 
         } catch (SQLException e) {
