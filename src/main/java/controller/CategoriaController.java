@@ -19,8 +19,9 @@ public class CategoriaController {
     }
 
     public void cadastrarCategoria(Categoria categoria) {
-        if (categoria == null || categoria.getNome() == null || categoria.getNome().isBlank()) {
-            throw new IllegalArgumentException("Categoria inválida. Nome é obrigatório.");
+        if (categoria == null || categoria.getNome() == null || categoria.getNome().isBlank() || 
+            categoria.getTamanho() == null || categoria.getEmbalagem() == null) {
+            throw new IllegalArgumentException("Categoria inválida. Nome, Tamanho e Embalagem é obrigatório.");
         }
         categoriaDao.cadastrarCategoria(categoria);
     }
