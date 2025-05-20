@@ -7,7 +7,7 @@ package model;
 
 public class Categoria {
 
-    private int id;
+    private Integer id;
     private String nome;
     private Tamanho tamanho;
     private Embalagem embalagem;
@@ -25,7 +25,7 @@ public class Categoria {
     public Categoria() {
     }
     
-    public Categoria(int id, String nome, Tamanho tamanho, Embalagem embalagem) {
+    public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {
         this.id = id;
         this.nome = nome;
         this.tamanho = tamanho;
