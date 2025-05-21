@@ -126,8 +126,8 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         Categoria cat = new Categoria();
         cat.setId(rs.getInt("id"));
         cat.setNome(rs.getString("nome"));
-        cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho")));
-        cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem")));
+        cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho").toUpperCase()));
+        cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem").toUpperCase()));
 
         return cat;
     }
