@@ -104,7 +104,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 
     @Override
     public List<Categoria> resgatarCategorias() {
-        String sql = "SELECT * FROM categoria ORDER BY Name";
+        String sql = "SELECT * FROM categoria ORDER BY Nome";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             try (ResultSet rs = st.executeQuery()) {
 
