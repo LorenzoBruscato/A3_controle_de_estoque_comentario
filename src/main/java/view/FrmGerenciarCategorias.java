@@ -32,11 +32,11 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        JBNovoGerenciamentoC = new javax.swing.JButton();
+        JBAlterarGerenciamentoC = new javax.swing.JButton();
+        JBExcluirGerenciamentoC = new javax.swing.JButton();
+        JBVoltarGerenciamentoC = new javax.swing.JButton();
+        JTFNomeDeCategoria = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
 
@@ -67,13 +67,19 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Novo");
+        JBNovoGerenciamentoC.setText("Novo");
 
-        jButton2.setText("Alterar");
+        JBAlterarGerenciamentoC.setText("Alterar");
 
-        jButton3.setText("Excluir");
+        JBExcluirGerenciamentoC.setText("Excluir");
 
-        jButton5.setText("Voltar");
+        JBVoltarGerenciamentoC.setText("Voltar");
+
+        JTFNomeDeCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JTFNomeDeCategoriaActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeno", "Médio", "Grande" }));
 
@@ -99,18 +105,18 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
                                     .addComponent(jLabel3))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
+                                    .addComponent(JTFNomeDeCategoria)
                                     .addComponent(jComboBox1, 0, 231, Short.MAX_VALUE)
                                     .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(169, 169, 169)
-                        .addComponent(jButton1)
+                        .addComponent(JBNovoGerenciamentoC)
                         .addGap(50, 50, 50)
-                        .addComponent(jButton2)
+                        .addComponent(JBAlterarGerenciamentoC)
                         .addGap(50, 50, 50)
-                        .addComponent(jButton3)
+                        .addComponent(JBExcluirGerenciamentoC)
                         .addGap(50, 50, 50)
-                        .addComponent(jButton5)))
+                        .addComponent(JBVoltarGerenciamentoC)))
                 .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -121,7 +127,7 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -134,15 +140,19 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5))
+                    .addComponent(JBNovoGerenciamentoC)
+                    .addComponent(JBAlterarGerenciamentoC)
+                    .addComponent(JBExcluirGerenciamentoC)
+                    .addComponent(JBVoltarGerenciamentoC))
                 .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void JTFNomeDeCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFNomeDeCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JTFNomeDeCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,11 +190,12 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JBAlterarGerenciamentoC;
+    private javax.swing.JButton JBExcluirGerenciamentoC;
+    private javax.swing.JButton JBNovoGerenciamentoC;
+    private javax.swing.JButton JBVoltarGerenciamentoC;
     private javax.swing.JLabel JLGerenciamentoProdutos;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JTextField JTFNomeDeCategoria;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -192,6 +203,5 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
