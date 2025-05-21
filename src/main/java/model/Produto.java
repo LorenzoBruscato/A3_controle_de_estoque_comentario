@@ -7,7 +7,7 @@ package model;
 
 public class Produto {
 
-    private int id;
+    private Integer id;
     private String nome;
     private double preco;
     private String unidade; // Ex: "kg", "litro", "unidade"
@@ -19,7 +19,7 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(int id, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
+    public Produto(Integer id, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -30,11 +30,11 @@ public class Produto {
         this.quantidadeMaxima = quantidadeMaxima;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,7 +93,7 @@ public class Produto {
     public void setQuantidadeMaxima(int quantidadeMaxima) {
         this.quantidadeMaxima = quantidadeMaxima;
     }
-
+    
     //Métodos auxiliares
     public boolean acimadoMAX() {
         return this.quantidade > quantidadeMaxima;
