@@ -104,7 +104,7 @@ public class Produto {
     }
 
     public double ValorTotal() {
-        return this.preco * quantidade; // corrigido para multiplicar preço por quantidade
+        return this.preco * quantidade;
     }
 
     public void entrada() {
