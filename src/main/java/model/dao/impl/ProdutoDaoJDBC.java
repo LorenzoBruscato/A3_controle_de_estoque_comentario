@@ -1,6 +1,5 @@
 package model.dao.impl;
 
-import db.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,14 +29,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     @Override
     public void cadastrarProduto(Produto obj) {
-        PreparedStatement st = null;
+        String sql = "INSERT INTO produto "
+                + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            st = conn.prepareStatement(
-                    "INSERT INTO produto "
-                    + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria_id) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
             st.setString(3, obj.getUnidade());
@@ -60,25 +56,23 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         } catch (SQLException e) {
             throw new DbException("Erro ao cadastrar produto: " + e.getMessage());
-        } finally {
-            Database.closeStatement(st);
         }
     }
 
     @Override
     public void atualizarProduto(Produto obj) {
-        PreparedStatement st = null;
-        try {
-            st = conn.prepareStatement("UPDATE produto SET "
-                    + "nome = ?, "
-                    + "preco_unitario = ?, "
-                    + "unidade = ?, "
-                    + "quantidade_estoque = ?, "
-                    + "quantidade_minima = ?, "
-                    + "quantidade_maxima = ?, "
-                    + "categoria_id = ? "
-                    + "WHERE id = ?");
+        String sql
+                = "UPDATE produto SET "
+                + "nome = ?, "
+                + "preco_unitario = ?, "
+                + "unidade = ?, "
+                + "quantidade_estoque = ?, "
+                + "quantidade_minima = ?, "
+                + "quantidade_maxima = ?, "
+                + "categoria = ? "
+                + "WHERE id = ?";
 
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
             st.setString(3, obj.getUnidade());
@@ -92,50 +86,37 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         } catch (SQLException e) {
             throw new DbException("Erro ao atualizar produto: " + e.getMessage());
-        } finally {
-            Database.closeStatement(st);
         }
     }
 
     @Override
     public void deletarProdutoPorId(int objId) {
-        PreparedStatement st = null;
-        try {
-            st = conn.prepareStatement("DELETE FROM produto WHERE id = ?");
+        String sql
+                = "DELETE FROM produto "
+                + "WHERE id = ?";
 
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, objId);
-
-            int rows = st.executeUpdate();
-            if (rows == 0) {
-                throw new DbException("ID do produto não foi encontrado");
-            }
+            st.executeUpdate();
         } catch (SQLException e) {
-            throw new DbException("Erro ao deletar produto: " + e.getMessage());
-        } finally {
-            Database.closeStatement(st);
+            throw new DbException(e.getMessage());
         }
     }
 
     @Override
     public List<Produto> resgatarProdutos() {
         List<Produto> lista = new ArrayList<>();
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Map<Integer, Categoria> map = new HashMap<>();
 
-        try {
-            st = conn.prepareStatement(
-                    "SELECT produto.*, categoria.nome AS categoria_nome "
-                    + "FROM produto INNER JOIN categoria" 
-                    + "ON produto.categoria_id = categoria.Id "
-                    + "ORDER BY nome"
-            );
+        String sql = "SELECT produto.*, categoria.nome AS categoria_nome "
+                + "FROM produto INNER JOIN categoria"
+                + "ON produto.categoria_id = categoria.Id "
+                + "ORDER BY nome";
 
-            rs = st.executeQuery();
-
-            Map<Integer, Categoria> map = new HashMap<>();
-
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int categoriaId = rs.getInt("categoria_id");
+                int categoriaId = rs.getInt("categoria");
 
                 Categoria cat = map.get(categoriaId);
                 if (cat == null) {
@@ -148,9 +129,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         } catch (SQLException e) {
             throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
-        } finally {
-            Database.closeResultSet(rs);
-            Database.closeStatement(st);
         }
 
         return lista;
