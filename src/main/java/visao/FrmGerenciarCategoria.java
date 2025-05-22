@@ -18,9 +18,13 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     public FrmGerenciarCategoria() {
         initComponents();
         categoriaDao = DaoFactory.instanciarCategoriaDao();
-        tabela = new DefaultTableModel(dados, colunas);
+        tabela = new DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0; // coluna 0 (ID) não pode ser editada
+            }
+        };
         JTInformacoesProduto.setModel(tabela);
-        
 
     }
 
@@ -86,7 +90,15 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             new String [] {
                 "id", "Nome", "Tamanho", "Embalagem"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(JTInformacoesProduto);
 
         JBNovoGerenciamentoC.setText("Novo");
@@ -101,6 +113,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         JBExcluirGerenciamentoC.setText("Excluir");
 
         JBVoltarGerenciamentoC.setText("Voltar");
+        JBVoltarGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBVoltarGerenciamentoCActionPerformed(evt);
+            }
+        });
 
         JTFNomeDeCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,41 +223,12 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         carregarCategoriasNaTela();
     }//GEN-LAST:event_formWindowOpened
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmGerenciarCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmGerenciarCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmGerenciarCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmGerenciarCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void JBVoltarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarGerenciamentoCActionPerformed
+        FrmMenuPrincipal janela = new FrmMenuPrincipal();
+        janela.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_JBVoltarGerenciamentoCActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmGerenciarCategoria().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBAlterarGerenciamentoC;

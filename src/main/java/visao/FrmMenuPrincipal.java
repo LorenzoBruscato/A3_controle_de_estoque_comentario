@@ -180,6 +180,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void JBGerenciarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarProdutosActionPerformed
         FrmGerenciarProduto janela = new FrmGerenciarProduto();
         janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_JBGerenciarProdutosActionPerformed
 
     private void JBEmitirRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBEmitirRelatoriosActionPerformed
@@ -189,22 +190,26 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void JBGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarCategoriasActionPerformed
         FrmGerenciarCategoria janela = new FrmGerenciarCategoria();
         janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_JBGerenciarCategoriasActionPerformed
 
     private void jMenuGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGerenciarCategoriasActionPerformed
         FrmGerenciarCategoria janela = new FrmGerenciarCategoria();
         janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuGerenciarCategoriasActionPerformed
 
     private void jMenuGerenciarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGerenciarProdutosActionPerformed
         // Instancia a tela de cadastro de aluno
         FrmGerenciarProduto objeto = new FrmGerenciarProduto();
         objeto.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuGerenciarProdutosActionPerformed
 
     private void JBReajustarPrecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBReajustarPrecosActionPerformed
         FrmReajustarPreco janela = new FrmReajustarPreco();
         janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_JBReajustarPrecosActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -214,6 +219,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void jMenuReajustarPrecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReajustarPrecosActionPerformed
         FrmReajustarPreco janela = new FrmReajustarPreco();
         janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuReajustarPrecosActionPerformed
 
     /**
