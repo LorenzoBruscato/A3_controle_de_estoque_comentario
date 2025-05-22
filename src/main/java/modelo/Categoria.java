@@ -1,9 +1,4 @@
-package model;
-
-/**
- *
- * @author HenriqueBrosa
- */
+package modelo;
 
 public class Categoria {
 
@@ -20,11 +15,9 @@ public class Categoria {
         LATA, VIDRO, PLASTICO
     }
 
-    // Construtor
-
     public Categoria() {
     }
-    
+
     public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {
         this.id = id;
         this.nome = nome;
@@ -32,7 +25,6 @@ public class Categoria {
         this.embalagem = embalagem;
     }
 
-    // Getters
     public int getId() {
         return id;
     }
@@ -49,7 +41,6 @@ public class Categoria {
         return embalagem;
     }
 
-    // Setters
     public void setId(int id) {
         this.id = id;
     }
@@ -68,11 +59,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "Categoria{"
-                + "id=" + id
-                + ", nome='" + nome + '\''
-                + ", tamanho=" + tamanho
-                + ", embalagem=" + embalagem
-                + '}';
+        return String.format("ID: %d |nome: %s |tamanho: %s |Embalagem: %s", id, nome, tamanho, embalagem);
+
     }
 }

@@ -1,15 +1,11 @@
-package controller;
+package controladores;
 
 import java.sql.Connection;
 import java.util.List;
-import model.Categoria;
-import model.dao.CategoriaDao;
-import model.dao.impl.CategoriaDaoJDBC;
+import modelo.Categoria;
+import modelo.dao.CategoriaDao;
+import modelo.dao.impl.CategoriaDaoJDBC;
 
-/**
- *
- * @author HenriqueBrosa
- */
 public class CategoriaController {
 
     private CategoriaDao categoriaDao;

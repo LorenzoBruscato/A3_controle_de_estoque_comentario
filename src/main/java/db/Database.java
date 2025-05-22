@@ -10,10 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- *
- * @author Diiego
- */
 public class Database {
 
     /**
@@ -105,7 +101,7 @@ public class Database {
      * @throws IOException se ocorrer erro ao ler o arquivo
      */
  private static Properties loadProperties() {
-    try (InputStream in = Database.class.getClassLoader().getResourceAsStream("db.properties")) {
+    try (InputStream in = Database.class.getClassLoader().getResourceAsStream("recursos/db.propriedades")) {
         Properties props = new Properties();
         props.load(in);
         System.out.println("URL do banco carregada: " + props.getProperty("dburl"));

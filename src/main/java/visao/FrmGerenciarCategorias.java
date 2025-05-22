@@ -1,18 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package view;
 
-/**
- *
- * @author Andradevh
- */
+package visao;
+
 public class FrmGerenciarCategorias extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmGerenciarCategorias
-     */
     public FrmGerenciarCategorias() {
         initComponents();
     }
@@ -42,7 +32,6 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Categoria");
-        setPreferredSize(new java.awt.Dimension(772, 613));
         setResizable(false);
 
         JLGerenciamentoProdutos.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N

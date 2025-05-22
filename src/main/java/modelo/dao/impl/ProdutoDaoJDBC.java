@@ -1,4 +1,4 @@
-package model.dao.impl;
+package modelo.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,16 +9,12 @@ import java.util.List;
 import db.DbException;
 import java.util.HashMap;
 import java.util.Map;
-import model.Categoria;
-import model.Categoria.Embalagem;
-import model.Categoria.Tamanho;
-import model.Produto;
-import model.dao.ProdutoDao;
+import modelo.Categoria;
+import modelo.Categoria.Embalagem;
+import modelo.Categoria.Tamanho;
+import modelo.Produto;
+import modelo.dao.ProdutoDao;
 
-/**
- *
- * @author Lorenzo
- */
 public class ProdutoDaoJDBC implements ProdutoDao {
 
     private Connection conn;

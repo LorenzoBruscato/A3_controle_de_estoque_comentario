@@ -1,16 +1,9 @@
-package view;
+package visao;
 
 import javax.swing.JFrame;
 
-/**
- *
- * @author Andradevh
- */
 public class FrmGerenciarProdutos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmGerenciarProdutos
-     */
     public FrmGerenciarProdutos() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

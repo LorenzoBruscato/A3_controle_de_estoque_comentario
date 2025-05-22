@@ -1,14 +1,6 @@
-package view;
+package visao;
 
-/**
- *
- * @author Andradevh
- */
 public class FrmMenuPrincipal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FrmMenuPrincipal
-     */
     public FrmMenuPrincipal() {
         initComponents();
     }

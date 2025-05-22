@@ -1,15 +1,10 @@
-package controller;
+package controladores;
 
 import java.sql.Connection;
 import java.util.List;
-import model.Produto;
-import model.dao.ProdutoDao;
-import model.dao.impl.ProdutoDaoJDBC;
-
-/**
- *
- * @author HenriqueBrosa
- */
+import modelo.Produto;
+import modelo.dao.ProdutoDao;
+import modelo.dao.impl.ProdutoDaoJDBC;
 
 public class ProdutoController {
 

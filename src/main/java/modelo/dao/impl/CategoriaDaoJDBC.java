@@ -1,4 +1,9 @@
+<<<<<<< HEAD:src/main/java/model/dao/impl/CategoriaDaoJDBC.java
 package model.dao.impl;
+=======
+
+package modelo.dao.impl;
+>>>>>>> 44aa295 (Atualização nos nomes dos pacotes):src/main/java/modelo/dao/impl/CategoriaDaoJDBC.java
 
 import db.DbException;
 import java.sql.Connection;
@@ -8,15 +13,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Categoria;
-import model.Categoria.Embalagem;
-import model.Categoria.Tamanho;
-import model.dao.CategoriaDao;
+import modelo.Categoria;
+import modelo.Categoria.Embalagem;
+import modelo.Categoria.Tamanho;
+import modelo.dao.CategoriaDao;
 
-/**
- *
- * @author Diiego
- */
 public class CategoriaDaoJDBC implements CategoriaDao {
 
     private Connection conn;

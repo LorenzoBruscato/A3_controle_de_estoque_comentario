@@ -1,16 +1,11 @@
-package model;
-
-/**
- *
- * @author HenriqueBrosa
- */
+package modelo;
 
 public class Produto {
 
     private Integer id;
     private String nome;
     private double preco;
-    private String unidade; // Ex: "kg", "litro", "unidade"
+    private String unidade;
     private Categoria categoria;
     private int quantidade;
     private int quantidadeMinima;
@@ -93,8 +88,7 @@ public class Produto {
     public void setQuantidadeMaxima(int quantidadeMaxima) {
         this.quantidadeMaxima = quantidadeMaxima;
     }
-    
-    //Métodos auxiliares
+
     public boolean acimadoMAX() {
         return this.quantidade > quantidadeMaxima;
     }
@@ -121,7 +115,7 @@ public class Produto {
 
     @Override
     public String toString() {
-        return String.format("%d | %s | %.2f | %s | %s | Qtd: %d",
+        return String.format("ID: %d |nome: %s |preço %.2f |unidade %s |categoria %s |Qtd: %d",
                 id, nome, preco, unidade, categoria.getNome(), quantidade);
     }
 }
