@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import db.DbException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import modelo.Categoria;
@@ -29,7 +30,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
             st.setString(3, obj.getUnidade());
@@ -37,7 +38,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
             st.setString(7, obj.getCategoria().getNome());
-
             int rowsAffected = st.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -104,15 +104,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         List<Produto> lista = new ArrayList<>();
         Map<Integer, Categoria> map = new HashMap<>();
 
-        String sql = "SELECT produto.*, categoria.nome AS categoria_nome "
-                + "FROM produto INNER JOIN categoria"
-                + "ON produto.categoria_id = categoria.Id "
-                + "ORDER BY nome";
+        String sql = "SELECT produto.*, categoria.id AS categoria_id, categoria.nome AS categoria_nome, "
+                + "categoria.tamanho, categoria.embalagem "
+                + "FROM produto "
+                + "INNER JOIN categoria ON produto.categoria = categoria.nome "
+                + "ORDER BY produto.nome";
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
             while (rs.next()) {
-                int categoriaId = rs.getInt("categoria");
+                int categoriaId = rs.getInt("categoria_id");
 
                 Categoria cat = map.get(categoriaId);
                 if (cat == null) {
@@ -123,6 +124,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 Produto prod = instanciarProduto(rs, cat);
                 lista.add(prod);
             }
+
         } catch (SQLException e) {
             throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
         }
@@ -147,8 +149,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         Categoria cat = new Categoria();
         cat.setId(categoriaId);
         cat.setNome(rs.getString("categoria_nome"));
-        cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho")));
-        cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem")));
+        cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho").toUpperCase()));
+        cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem").toUpperCase()));
         return cat;
     }
 }
