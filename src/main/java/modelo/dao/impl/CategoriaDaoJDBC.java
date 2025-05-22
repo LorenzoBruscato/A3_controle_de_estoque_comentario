@@ -1,9 +1,5 @@
-<<<<<<< HEAD:src/main/java/model/dao/impl/CategoriaDaoJDBC.java
-package model.dao.impl;
-=======
 
 package modelo.dao.impl;
->>>>>>> 44aa295 (Atualização nos nomes dos pacotes):src/main/java/modelo/dao/impl/CategoriaDaoJDBC.java
 
 import db.DbException;
 import java.sql.Connection;
