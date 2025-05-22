@@ -6,10 +6,6 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import visao.FrmMenuPrincipal;
 
-/**
- *
- * @author Andradevh
- */
 public class Principal {
 
     public static void main(String[] args) {
@@ -17,8 +13,8 @@ public class Principal {
         CategoriaDao categoriaDao = DaoFactory.instanciarCategoriaDao();
         ProdutoDao produtoDao = DaoFactory.instanciarProdutoDao();
 
-        //FrmMenuPrincipal janela = new FrmMenuPrincipal();
-        // janela.setVisible(true);
+        FrmMenuPrincipal janela = new FrmMenuPrincipal();
+        janela.setVisible(true);
         //Categoria c1 = new Categoria(null, "Eletronico", Categoria.Tamanho.MEDIO, Categoria.Embalagem.LATA);
         // Categoria c2 = new Categoria(null, "Alimentos", Categoria.Tamanho.GRANDE, Categoria.Embalagem.LATA);
         // Categoria c3 = new Categoria(null, "Brinquedos", Categoria.Tamanho.PEQUENO, Categoria.Embalagem.PLASTICO);

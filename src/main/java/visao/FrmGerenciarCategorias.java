@@ -1,10 +1,18 @@
 
 package visao;
 
-public class FrmGerenciarCategorias extends javax.swing.JFrame {
+import modelo.Categoria;
+import modelo.Categoria.Embalagem;
+import modelo.Categoria.Tamanho;
+import modelo.dao.CategoriaDao;
+import modelo.dao.DaoFactory;
 
+public class FrmGerenciarCategorias extends javax.swing.JFrame {
+    CategoriaDao categoriaDao = DaoFactory.instanciarCategoriaDao();
+    
     public FrmGerenciarCategorias() {
         initComponents();
+        
     }
 
     /**
@@ -57,6 +65,11 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
         jScrollPane1.setViewportView(JTInformaçõesProduto);
 
         JBNovoGerenciamentoC.setText("Novo");
+        JBNovoGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBNovoGerenciamentoCActionPerformed(evt);
+            }
+        });
 
         JBAlterarGerenciamentoC.setText("Alterar");
 
@@ -151,6 +164,18 @@ public class FrmGerenciarCategorias extends javax.swing.JFrame {
     private void JCBTipoTamanhoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCBTipoTamanhoGerenciamentoCActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JCBTipoTamanhoGerenciamentoCActionPerformed
+
+    private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
+        String catNome = JTFNomeDeCategoria.getText().trim();
+        String catTamanhoString = JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString();
+        Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
+        String catEmbalagemString = JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString();
+        Embalagem catEmbalagem = Embalagem.valueOf(catEmbalagemString.toUpperCase());
+        Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
+        categoriaDao.cadastrarCategoria(cat);
+
+// metodo para adicionar categoria
+    }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
 
     /**
      * @param args the command line arguments
