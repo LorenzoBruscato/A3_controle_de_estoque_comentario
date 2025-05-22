@@ -1,4 +1,3 @@
-
 package visao;
 
 import javax.swing.JFrame;
