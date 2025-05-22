@@ -13,4 +13,8 @@ public interface CategoriaDao {
 
     public List<Categoria> resgatarCategorias();
 
+    Categoria procurarCategoriaPorId(Integer id);
+
+    Categoria CategoriabuscarPorNome(String nome);
+
 }

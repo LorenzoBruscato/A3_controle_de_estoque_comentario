@@ -1,6 +1,5 @@
 package principal;
 
-import modelo.Categoria;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
@@ -12,6 +11,7 @@ public class Principal {
 
         CategoriaDao categoriaDao = DaoFactory.instanciarCategoriaDao();
         ProdutoDao produtoDao = DaoFactory.instanciarProdutoDao();
+
 
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
@@ -27,5 +27,6 @@ public class Principal {
         // categoriaDao.cadastrarCategoria(c4);
         //  categoriaDao.cadastrarCategoria(c5);
         //  categoriaDao.cadastrarCategoria(c6);
+
     }
 }

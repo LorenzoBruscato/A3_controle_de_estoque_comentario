@@ -1,6 +1,4 @@
 
-
-
 package modelo.dao.impl;
 
 
@@ -116,6 +114,44 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
+    }
+
+    @Override
+    public Categoria procurarCategoriaPorId(Integer id) {
+        String sql = "SELECT * FROM categoria WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setInt(1, id);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return instantiateCategoria(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Erro ao buscar categoria: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public Categoria CategoriabuscarPorNome(String nome) {
+        String sql = "SELECT * FROM categoria WHERE nome = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, nome);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return instantiateCategoria(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Erro ao buscar categoria por nome: " + e.getMessage());
+        }
+        return null;
     }
 
     private Categoria instantiateCategoria(ResultSet rs) throws SQLException {
