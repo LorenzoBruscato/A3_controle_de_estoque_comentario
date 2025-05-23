@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="JLPrecoUnitario" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -43,17 +43,16 @@
                   <Component id="JTFqtdMaxima" alignment="1" pref="110" max="32767" attributes="0"/>
                   <Component id="JTFnome" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="296" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="JBAdicionar" max="32767" attributes="0"/>
-                  <Component id="JBApagar" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JBAlterar" alignment="0" max="32767" attributes="0"/>
-              </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="JBVoltarGerenciamentoP" min="-2" pref="83" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="JBExcluir" max="32767" attributes="0"/>
+                  <Component id="JBAlterar" alignment="0" max="32767" attributes="0"/>
+                  <Component id="JBVoltarGerenciamentoP" alignment="0" max="32767" attributes="0"/>
+                  <Component id="JBNovo" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
           </Group>
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
@@ -71,41 +70,63 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JLNome" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JTFnome" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JBAdicionar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace pref="80" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="JLNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="JTFnome" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="JTFprecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="JLPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="JTFunidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="JBNovo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="JBAlterar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JTFprecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JTFunidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JBAlterar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JBVoltarGerenciamentoP" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JLQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JTFqtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JTFqtdMinima" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLQtdMinima" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JBApagar" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JTFqtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLQtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JLQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JTFqtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JTFqtdMinima" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JLQtdMinima" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JTFqtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JLQtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="JBExcluir" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="JBVoltarGerenciamentoP" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="302" max="-2" attributes="0"/>
@@ -220,10 +241,19 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="JTFnome">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JTFnomeActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="JTFprecoUnitario">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JTFprecoUnitarioActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="JTFunidade">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JTFunidadeActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="JTFqtdEstoque">
     </Component>
@@ -231,19 +261,22 @@
     </Component>
     <Component class="javax.swing.JTextField" name="JTFqtdMaxima">
     </Component>
-    <Component class="javax.swing.JButton" name="JBAdicionar">
+    <Component class="javax.swing.JButton" name="JBNovo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Adicionar"/>
+        <Property name="text" type="java.lang.String" value="Novo"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBNovoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="JBAlterar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Alterar"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="JBApagar">
+    <Component class="javax.swing.JButton" name="JBExcluir">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Apagar"/>
+        <Property name="text" type="java.lang.String" value="Excluir"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="JBVoltarGerenciamentoP">
