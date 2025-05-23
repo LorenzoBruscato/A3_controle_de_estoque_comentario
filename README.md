@@ -41,7 +41,6 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 | quantidade_minima  | INT           | quantidade minima permitida      |
 | quantidade_maxima  | INT           | quantidade maxima permitida      |
 | categoria          | categoria     | categoria do produto             |
-| categoria          | categoria     | categoria do produto             |
 
 ## ⚙️ Tecnologias Utilizadas
 
