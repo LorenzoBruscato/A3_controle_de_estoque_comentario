@@ -1,5 +1,6 @@
 package visao;
 
+import java.text.Normalizer;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
@@ -26,6 +27,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         };
         JTInformacoesProduto.setModel(tabela);
 
+    }
+
+    public static String removerAcentos(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
     private void carregarCategoriasNaTela() {
@@ -214,12 +220,17 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
         String catNome = JTFNomeDeCategoria.getText().trim();
-        String catTamanhoString = JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString();
+        
+        String catTamanhoString = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
         Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
-        String catEmbalagemString = JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString();
+        
+        String catEmbalagemString = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
         Embalagem catEmbalagem = Embalagem.valueOf(catEmbalagemString.toUpperCase());
+        
         Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
         categoriaDao.cadastrarCategoria(cat);
+
+        carregarCategoriasNaTela();
 
 
     }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
@@ -256,8 +267,9 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
         // Atualizar categoria no banco de dados
         categoriaDao.atualizarCategoria(cat);
-        
+
         System.out.println("Botão Atualizar clicado");
+
 
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
