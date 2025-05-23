@@ -1,4 +1,4 @@
-package controladores;
+package Controlador;
 
 import java.sql.Connection;
 import java.util.List;
@@ -6,11 +6,11 @@ import modelo.Produto;
 import modelo.dao.ProdutoDao;
 import modelo.dao.impl.ProdutoDaoJDBC;
 
-public class ProdutoController {
+public class ProdutoControle {
 
     private ProdutoDao produtoDao;
 
-    public ProdutoController(Connection conn) {
+    public ProdutoControle(Connection conn) {
         this.produtoDao = new ProdutoDaoJDBC(conn);
     }
 

@@ -1,4 +1,4 @@
-package controladores;
+package Controlador;
 
 import java.sql.Connection;
 import java.util.List;
@@ -6,11 +6,11 @@ import modelo.Categoria;
 import modelo.dao.CategoriaDao;
 import modelo.dao.impl.CategoriaDaoJDBC;
 
-public class CategoriaController {
+public class CategoriaControle {
 
     private CategoriaDao categoriaDao;
 
-    public CategoriaController(Connection conn) {
+    public CategoriaControle(Connection conn) {
         this.categoriaDao = new CategoriaDaoJDBC(conn);
     }
 
