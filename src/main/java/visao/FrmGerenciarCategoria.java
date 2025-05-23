@@ -88,7 +88,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "id", "Nome", "Tamanho", "Embalagem"
+                "ID", "Nome", "Tamanho", "Embalagem"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -109,6 +109,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         });
 
         JBAlterarGerenciamentoC.setText("Alterar");
+        JBAlterarGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBAlterarGerenciamentoCActionPerformed(evt);
+            }
+        });
 
         JBExcluirGerenciamentoC.setText("Excluir");
 
@@ -228,6 +233,33 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         janela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_JBVoltarGerenciamentoCActionPerformed
+
+    private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
+        // Alterar categoria de acordo com a linha selecionada da JTInformacoesProduto
+        // linha selecionada
+        int linhaSelecionada = JTInformacoesProduto.getSelectedRow();
+
+        // Pega os valores da linha selecionada
+        int id = (Integer) JTInformacoesProduto.getValueAt(linhaSelecionada, 0);
+        //System.out.println("Id: " + id);
+        String nome = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 1);
+        //System.out.println("nome: " + nome);
+        String tamanhoStr = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 2);
+        //System.out.println("Tamanho: " + tamanhoStr);
+        Tamanho tamanho = Tamanho.valueOf(tamanhoStr);
+        String embalagemStr = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 3);
+        //System.out.println("Embalagem" + embalagemStr);
+        Embalagem embalagem = Embalagem.valueOf(embalagemStr);
+
+        // Instanciar categoria
+        Categoria cat = new Categoria(id, nome, tamanho, embalagem);
+
+        // Atualizar categoria no banco de dados
+        categoriaDao.atualizarCategoria(cat);
+        
+        System.out.println("Botão Atualizar clicado");
+
+    }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
