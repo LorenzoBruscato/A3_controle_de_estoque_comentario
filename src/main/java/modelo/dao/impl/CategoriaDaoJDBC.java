@@ -1,7 +1,7 @@
 package modelo.dao.impl;
 
 
-import db.DbException;
+import modelo.dao.db.DbException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

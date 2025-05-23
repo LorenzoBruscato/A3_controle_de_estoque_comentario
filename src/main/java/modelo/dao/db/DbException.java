@@ -1,4 +1,4 @@
-package db;
+package modelo.dao.db;
 
 public class DbException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package db;
+package modelo.dao.db;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
