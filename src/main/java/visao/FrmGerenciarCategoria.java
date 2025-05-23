@@ -96,15 +96,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nome", "Tamanho", "Embalagem"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(JTInformacoesProduto);
 
         JBNovoGerenciamentoC.setText("Novo");
@@ -220,15 +212,16 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
         String catNome = JTFNomeDeCategoria.getText().trim();
-        
+
         String catTamanhoString = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
         Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
-        
+
         String catEmbalagemString = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
         Embalagem catEmbalagem = Embalagem.valueOf(catEmbalagemString.toUpperCase());
-        
+
         Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
         categoriaDao.cadastrarCategoria(cat);
+        this.JTFNomeDeCategoria.setText("");
 
         carregarCategoriasNaTela();
 
