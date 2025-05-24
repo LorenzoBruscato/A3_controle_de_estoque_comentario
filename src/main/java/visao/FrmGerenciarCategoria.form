@@ -61,7 +61,7 @@
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="JBExcluirGerenciamentoC" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="JBVoltarGerenciamentoC" min="-2" max="-2" attributes="0"/>
+                      <Component id="JBVoltarCategoria" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="96" max="32767" attributes="0"/>
@@ -95,7 +95,7 @@
                   <Component id="JBNovoGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBAlterarGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBExcluirGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JBVoltarGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JBVoltarCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
           </Group>
@@ -198,12 +198,12 @@
         <Property name="text" type="java.lang.String" value="Excluir"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="JBVoltarGerenciamentoC">
+    <Component class="javax.swing.JButton" name="JBVoltarCategoria">
       <Properties>
         <Property name="text" type="java.lang.String" value="Voltar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBVoltarGerenciamentoCActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBVoltarCategoriaActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="JTFNomeDeCategoria">

@@ -63,7 +63,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         JBNovoGerenciamentoC = new javax.swing.JButton();
         JBAlterarGerenciamentoC = new javax.swing.JButton();
         JBExcluirGerenciamentoC = new javax.swing.JButton();
-        JBVoltarGerenciamentoC = new javax.swing.JButton();
+        JBVoltarCategoria = new javax.swing.JButton();
         JTFNomeDeCategoria = new javax.swing.JTextField();
         JCBTipoTamanhoGerenciamentoC = new javax.swing.JComboBox<>();
         JCBTipoEmbalagemGerenciamentoC = new javax.swing.JComboBox<>();
@@ -121,10 +121,10 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
         JBExcluirGerenciamentoC.setText("Excluir");
 
-        JBVoltarGerenciamentoC.setText("Voltar");
-        JBVoltarGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
+        JBVoltarCategoria.setText("Voltar");
+        JBVoltarCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBVoltarGerenciamentoCActionPerformed(evt);
+                JBVoltarCategoriaActionPerformed(evt);
             }
         });
 
@@ -174,7 +174,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addComponent(JBExcluirGerenciamentoC)
                         .addGap(50, 50, 50)
-                        .addComponent(JBVoltarGerenciamentoC)))
+                        .addComponent(JBVoltarCategoria)))
                 .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -201,7 +201,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                     .addComponent(JBNovoGerenciamentoC)
                     .addComponent(JBAlterarGerenciamentoC)
                     .addComponent(JBExcluirGerenciamentoC)
-                    .addComponent(JBVoltarGerenciamentoC))
+                    .addComponent(JBVoltarCategoria))
                 .addGap(30, 30, 30))
         );
 
@@ -238,11 +238,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         carregarCategoriasNaTela();
     }//GEN-LAST:event_formWindowOpened
 
-    private void JBVoltarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarGerenciamentoCActionPerformed
+    private void JBVoltarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarCategoriaActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_JBVoltarGerenciamentoCActionPerformed
+    }//GEN-LAST:event_JBVoltarCategoriaActionPerformed
 
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
         // Alterar categoria de acordo com a linha selecionada da JTInformacoesProduto
@@ -307,7 +307,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private javax.swing.JButton JBAlterarGerenciamentoC;
     private javax.swing.JButton JBExcluirGerenciamentoC;
     private javax.swing.JButton JBNovoGerenciamentoC;
-    private javax.swing.JButton JBVoltarGerenciamentoC;
+    private javax.swing.JButton JBVoltarCategoria;
     private javax.swing.JComboBox<String> JCBTipoEmbalagemGerenciamentoC;
     private javax.swing.JComboBox<String> JCBTipoTamanhoGerenciamentoC;
     private javax.swing.JLabel JLEmbalagemGerenciamentoC;
