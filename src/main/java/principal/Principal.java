@@ -1,5 +1,8 @@
 package principal;
 
+import java.util.List;
+import modelo.Categoria;
+import modelo.Produto;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
@@ -11,7 +14,6 @@ public class Principal {
 
         CategoriaDao categoriaDao = DaoFactory.instanciarCategoriaDao();
         ProdutoDao produtoDao = DaoFactory.instanciarProdutoDao();
-
 
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
@@ -28,5 +30,27 @@ public class Principal {
         //  categoriaDao.cadastrarCategoria(c5);
         //  categoriaDao.cadastrarCategoria(c6);
 
+//        Categoria categoria = null;
+//        List<Categoria> categorias = categoriaDao.resgatarCategorias();
+//
+//        for (Categoria c : categorias) {
+//            if (c.getNome().equalsIgnoreCase("Refrigerante")) {
+//                categoria = c;
+//                break;
+//            }
+//        }
+//        if (categoria == null) {
+//            System.out.println("Categoria 'Refrigerante' não encontrada.");
+//        } else {
+//        Produto pro = new Produto();
+//        pro.setNome("Coca_Cola");
+//        pro.setPreco(10);
+//        pro.setUnidade("Litro");
+//        pro.setQuantidade(20);
+//        pro.setQuantidadeMinima(100);
+//        pro.setQuantidadeMaxima(200);
+//        pro.setCategoria(categoria);
+//        produtoDao.cadastrarProduto(pro);
+//        }
     }
 }

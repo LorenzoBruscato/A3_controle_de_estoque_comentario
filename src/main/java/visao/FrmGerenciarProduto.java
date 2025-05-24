@@ -1,16 +1,53 @@
 package visao;
 
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 import modelo.Produto;
+import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
+    private ProdutoDao produtoDao;
+    private DefaultTableModel tabela;
+    private Object[][] dados = new Object[0][0];
+    private String[] colunas = {"ID", "Nome", "Preço", "Unidade", "Qtd Estoque", "Qtd Mínima", "Qtd Máxima", "Categoria"};
+
     public FrmGerenciarProduto() {
         initComponents();
+        produtoDao = DaoFactory.instanciarProdutoDao();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        tabela = new DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0; // ID não pode ser editado
+            }
+        };
+        JTableProdutos.setModel(tabela);
+            carregarProdutosNaTela();
+
     }
 
+    private void carregarProdutosNaTela() {
+    tabela.setRowCount(0); // Limpa a tabela
+
+    List<Produto> produtos = produtoDao.resgatarProdutos();
+
+    for (Produto p : produtos) {
+        tabela.addRow(new Object[]{
+            p.getId(),
+            p.getNome(),
+            p.getPreco(),
+            p.getUnidade(),
+            p.getQuantidade(),
+            p.getQuantidadeMinima(),
+            p.getQuantidadeMaxima(),
+            p.getCategoria().getNome()
+        });
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
