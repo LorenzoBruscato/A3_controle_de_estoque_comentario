@@ -45,13 +45,13 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
         JTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nome", "Preço", "Estoque", "Categoria"
+                "ID", "Nome", "Preço", "Quantidade", "QtdMinima", "QtdMaxima", "Categoria"
             }
         ));
         jScrollPane1.setViewportView(JTableProdutos);
