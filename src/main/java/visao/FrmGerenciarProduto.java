@@ -29,16 +29,16 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         JLQtdMinima = new javax.swing.JLabel();
         JLQtdMaxima = new javax.swing.JLabel();
         JLGerenciamentoProdutos = new javax.swing.JLabel();
-        JTFnome = new javax.swing.JTextField();
-        JTFprecoUnitario = new javax.swing.JTextField();
-        JTFunidade = new javax.swing.JTextField();
-        JTFqtdEstoque = new javax.swing.JTextField();
-        JTFqtdMinima = new javax.swing.JTextField();
-        JTFqtdMaxima = new javax.swing.JTextField();
-        JBNovo = new javax.swing.JButton();
-        JBAlterar = new javax.swing.JButton();
-        JBExcluir = new javax.swing.JButton();
-        JBVoltarGerenciamentoP = new javax.swing.JButton();
+        JTFNomeProduto = new javax.swing.JTextField();
+        JTFPrecoUnitario = new javax.swing.JTextField();
+        JTFUnidade = new javax.swing.JTextField();
+        JTFQtdEstoque = new javax.swing.JTextField();
+        JTFQtdMinima = new javax.swing.JTextField();
+        JTFQtdMaxima = new javax.swing.JTextField();
+        JBNovoProduto = new javax.swing.JButton();
+        JBAlterarProduto = new javax.swing.JButton();
+        JBExcluirProduto = new javax.swing.JButton();
+        JBVoltarProduto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Produtos");
@@ -78,39 +78,39 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         JLGerenciamentoProdutos.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         JLGerenciamentoProdutos.setText("Gerenciamento de Produtos");
 
-        JTFnome.addActionListener(new java.awt.event.ActionListener() {
+        JTFNomeProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTFnomeActionPerformed(evt);
+                JTFNomeProdutoActionPerformed(evt);
             }
         });
 
-        JTFprecoUnitario.addActionListener(new java.awt.event.ActionListener() {
+        JTFPrecoUnitario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTFprecoUnitarioActionPerformed(evt);
+                JTFPrecoUnitarioActionPerformed(evt);
             }
         });
 
-        JTFunidade.addActionListener(new java.awt.event.ActionListener() {
+        JTFUnidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTFunidadeActionPerformed(evt);
+                JTFUnidadeActionPerformed(evt);
             }
         });
 
-        JBNovo.setText("Novo");
-        JBNovo.addActionListener(new java.awt.event.ActionListener() {
+        JBNovoProduto.setText("Novo");
+        JBNovoProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBNovoActionPerformed(evt);
+                JBNovoProdutoActionPerformed(evt);
             }
         });
 
-        JBAlterar.setText("Alterar");
+        JBAlterarProduto.setText("Alterar");
 
-        JBExcluir.setText("Excluir");
+        JBExcluirProduto.setText("Excluir");
 
-        JBVoltarGerenciamentoP.setText("Voltar");
-        JBVoltarGerenciamentoP.addActionListener(new java.awt.event.ActionListener() {
+        JBVoltarProduto.setText("Voltar");
+        JBVoltarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBVoltarGerenciamentoPActionPerformed(evt);
+                JBVoltarProdutoActionPerformed(evt);
             }
         });
 
@@ -129,18 +129,18 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     .addComponent(JLQtdMaxima))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(JTFprecoUnitario, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JTFunidade, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JTFqtdEstoque, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JTFqtdMinima, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JTFqtdMaxima, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                    .addComponent(JTFnome))
+                    .addComponent(JTFPrecoUnitario, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JTFUnidade, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JTFQtdEstoque, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JTFQtdMinima, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JTFQtdMaxima, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                    .addComponent(JTFNomeProduto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JBExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBVoltarGerenciamentoP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(JBExcluirProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBAlterarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBVoltarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(92, 92, 92))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,38 +169,38 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(JLNome)
-                                    .addComponent(JTFnome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(JTFNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(5, 5, 5)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JTFprecoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JTFPrecoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(JLPrecoUnitario))
                                 .addGap(5, 5, 5)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JTFunidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JTFUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(JLUnidade))
                                 .addGap(6, 6, 6))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(JBNovo)
+                                .addComponent(JBNovoProduto)
                                 .addGap(20, 20, 20)
-                                .addComponent(JBAlterar)
+                                .addComponent(JBAlterarProduto)
                                 .addGap(20, 20, 20)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(JLQtdEstoque)
-                            .addComponent(JTFqtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JTFQtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JTFqtdMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JTFQtdMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(JLQtdMinima))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JTFqtdMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JTFQtdMaxima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(JLQtdMaxima)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(JBExcluir)
+                        .addComponent(JBExcluirProduto)
                         .addGap(20, 20, 20)
-                        .addComponent(JBVoltarGerenciamentoP)))
+                        .addComponent(JBVoltarProduto)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
@@ -209,35 +209,35 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JBVoltarGerenciamentoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarGerenciamentoPActionPerformed
+    private void JBVoltarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarProdutoActionPerformed
         // TODO add your handling code here:
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_JBVoltarGerenciamentoPActionPerformed
+    }//GEN-LAST:event_JBVoltarProdutoActionPerformed
 
-    private void JBNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoActionPerformed
+    private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
 
-    }//GEN-LAST:event_JBNovoActionPerformed
+    }//GEN-LAST:event_JBNovoProdutoActionPerformed
 
-    private void JTFnomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFnomeActionPerformed
+    private void JTFNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFNomeProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JTFnomeActionPerformed
+    }//GEN-LAST:event_JTFNomeProdutoActionPerformed
 
-    private void JTFprecoUnitarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFprecoUnitarioActionPerformed
+    private void JTFPrecoUnitarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFPrecoUnitarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JTFprecoUnitarioActionPerformed
+    }//GEN-LAST:event_JTFPrecoUnitarioActionPerformed
 
-    private void JTFunidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFunidadeActionPerformed
+    private void JTFUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFUnidadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JTFunidadeActionPerformed
+    }//GEN-LAST:event_JTFUnidadeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JBAlterar;
-    private javax.swing.JButton JBExcluir;
-    private javax.swing.JButton JBNovo;
-    private javax.swing.JButton JBVoltarGerenciamentoP;
+    private javax.swing.JButton JBAlterarProduto;
+    private javax.swing.JButton JBExcluirProduto;
+    private javax.swing.JButton JBNovoProduto;
+    private javax.swing.JButton JBVoltarProduto;
     private javax.swing.JLabel JLGerenciamentoProdutos;
     private javax.swing.JLabel JLNome;
     private javax.swing.JLabel JLPrecoUnitario;
@@ -245,12 +245,12 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private javax.swing.JLabel JLQtdMaxima;
     private javax.swing.JLabel JLQtdMinima;
     private javax.swing.JLabel JLUnidade;
-    private javax.swing.JTextField JTFnome;
-    private javax.swing.JTextField JTFprecoUnitario;
-    private javax.swing.JTextField JTFqtdEstoque;
-    private javax.swing.JTextField JTFqtdMaxima;
-    private javax.swing.JTextField JTFqtdMinima;
-    private javax.swing.JTextField JTFunidade;
+    private javax.swing.JTextField JTFNomeProduto;
+    private javax.swing.JTextField JTFPrecoUnitario;
+    private javax.swing.JTextField JTFQtdEstoque;
+    private javax.swing.JTextField JTFQtdMaxima;
+    private javax.swing.JTextField JTFQtdMinima;
+    private javax.swing.JTextField JTFUnidade;
     private javax.swing.JTable JTableProdutos;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
