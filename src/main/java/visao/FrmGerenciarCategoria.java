@@ -25,7 +25,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 return column != 0; // coluna 0 (ID) não pode ser editada
             }
         };
-        JTInformacoesProduto.setModel(tabela);
+        JTableCategoria.setModel(tabela);
 
     }
 
@@ -59,7 +59,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         JLTamanhoGerenciamentoC = new javax.swing.JLabel();
         JLEmbalagemGerenciamentoC = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        JTInformacoesProduto = new javax.swing.JTable();
+        JTableCategoria = new javax.swing.JTable();
         JBNovoGerenciamentoC = new javax.swing.JButton();
         JBAlterarGerenciamentoC = new javax.swing.JButton();
         JBExcluirGerenciamentoC = new javax.swing.JButton();
@@ -86,7 +86,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
         JLEmbalagemGerenciamentoC.setText("Embalagem");
 
-        JTInformacoesProduto.setModel(new javax.swing.table.DefaultTableModel(
+        JTableCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -97,7 +97,12 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 "ID", "Nome", "Tamanho", "Embalagem"
             }
         ));
-        jScrollPane1.setViewportView(JTInformacoesProduto);
+        JTableCategoria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JTableCategoriaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(JTableCategoria);
 
         JBNovoGerenciamentoC.setText("Novo");
         JBNovoGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
@@ -241,17 +246,17 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
         // Alterar categoria de acordo com a linha selecionada da JTInformacoesProduto
         // linha selecionada
-        int linhaSelecionada = JTInformacoesProduto.getSelectedRow();
+        int linhaSelecionada = JTableCategoria.getSelectedRow();
 
         // Pega os valores da linha selecionada
-        int id = (Integer) JTInformacoesProduto.getValueAt(linhaSelecionada, 0);
+        int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
         //System.out.println("Id: " + id);
-        String nome = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 1);
+        String nome = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
         //System.out.println("nome: " + nome);
-        String tamanhoStr = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 2);
+        String tamanhoStr = (String) JTableCategoria.getValueAt(linhaSelecionada, 2);
         //System.out.println("Tamanho: " + tamanhoStr);
         Tamanho tamanho = Tamanho.valueOf(tamanhoStr);
-        String embalagemStr = (String) JTInformacoesProduto.getValueAt(linhaSelecionada, 3);
+        String embalagemStr = (String) JTableCategoria.getValueAt(linhaSelecionada, 3);
         //System.out.println("Embalagem" + embalagemStr);
         Embalagem embalagem = Embalagem.valueOf(embalagemStr);
 
@@ -266,6 +271,36 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
+    private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
+        if(this.JTableCategoria.getSelectedRow() != -1){
+        String nome = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 1).toString();
+        String tamanho = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 2).toString();
+        String embalagem = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 3).toString();
+        
+        JTFNomeDeCategoria.setText(nome);
+
+        // ComboBox de Tamanho
+        String tamanhoTabela = removerAcentos(tamanho).toLowerCase();
+        for (int i = 0; i < JCBTipoTamanhoGerenciamentoC.getItemCount(); i++) {
+            String itemCombo = removerAcentos(JCBTipoTamanhoGerenciamentoC.getItemAt(i).toString()).toLowerCase();
+            if (itemCombo.equals(tamanhoTabela)) {
+                JCBTipoTamanhoGerenciamentoC.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        // ComboBox de Embalagem
+        String embalagemTabela = removerAcentos(embalagem).toLowerCase();
+        for (int i = 0; i < JCBTipoEmbalagemGerenciamentoC.getItemCount(); i++) {
+            String itemCombo = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getItemAt(i).toString()).toLowerCase();
+            if (itemCombo.equals(embalagemTabela)) {
+                JCBTipoEmbalagemGerenciamentoC.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+    }//GEN-LAST:event_JTableCategoriaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBAlterarGerenciamentoC;
@@ -279,7 +314,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private javax.swing.JLabel JLNomeGerenciamentoC;
     private javax.swing.JLabel JLTamanhoGerenciamentoC;
     private javax.swing.JTextField JTFNomeDeCategoria;
-    private javax.swing.JTable JTInformacoesProduto;
+    private javax.swing.JTable JTableCategoria;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
