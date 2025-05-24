@@ -54,6 +54,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 "ID", "Nome", "Preço", "Quantidade", "QtdMinima", "QtdMaxima", "Categoria"
             }
         ));
+        JTableProdutos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(JTableProdutos);
 
         JLNome.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N

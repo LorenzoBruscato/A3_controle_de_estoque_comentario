@@ -97,6 +97,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 "ID", "Nome", "Tamanho", "Embalagem"
             }
         ));
+        JTableCategoria.getTableHeader().setReorderingAllowed(false);
         JTableCategoria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JTableCategoriaMouseClicked(evt);
