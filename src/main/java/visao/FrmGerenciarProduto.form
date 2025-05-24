@@ -24,34 +24,6 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="JLPrecoUnitario" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLNome" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLUnidade" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLQtdEstoque" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLQtdMinima" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="JLQtdMaxima" linkSize="1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="JTFPrecoUnitario" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JTFUnidade" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JTFQtdEstoque" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JTFQtdMinima" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JTFQtdMaxima" alignment="1" pref="110" max="32767" attributes="0"/>
-                  <Component id="JTFNomeProduto" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="JBExcluirProduto" max="32767" attributes="0"/>
-                  <Component id="JBAlterarProduto" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JBVoltarProduto" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JBNovoProduto" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -65,6 +37,45 @@
               </Group>
               <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="JLPrecoUnitario" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="JLNome" linkSize="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="JLUnidade" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="JLQtdEstoque" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="JLQtdMinima" linkSize="1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="JLQtdMaxima" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="ComboBoxCategoria" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="JTFPrecoUnitario" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JTFUnidade" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JTFQtdEstoque" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JTFQtdMinima" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JTFQtdMaxima" alignment="1" max="32767" attributes="0"/>
+                          <Component id="JTFNomeProduto" min="-2" pref="110" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="JBExcluirProduto" max="32767" attributes="0"/>
+                          <Component id="JBAlterarProduto" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JBVoltarProduto" alignment="0" max="32767" attributes="0"/>
+                          <Component id="JBNovoProduto" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -72,41 +83,35 @@
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                      <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="JBNovoProduto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="JBAlterarProduto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="JBExcluirProduto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="JBVoltarProduto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="80" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JLNome" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JTFNomeProduto" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JTFPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JLPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JTFUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="JBNovoProduto" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="JBAlterarProduto" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JLNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JTFNomeProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JTFPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JLPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JTFUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="JLQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JTFQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -121,16 +126,16 @@
                           <Component id="JTFQtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JLQtdMaxima" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="JBExcluirProduto" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="JBVoltarProduto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ComboBoxCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="302" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -149,7 +154,7 @@
               <Table columnCount="7" rowCount="4">
                 <Column editable="true" title="ID" type="java.lang.Object"/>
                 <Column editable="true" title="Nome" type="java.lang.Object"/>
-                <Column editable="true" title="Pre&#xe7;o" type="java.lang.Object"/>
+                <Column editable="false" title="Pre&#xe7;o" type="java.lang.Object"/>
                 <Column editable="true" title="Quantidade" type="java.lang.Object"/>
                 <Column editable="true" title="QtdMinima" type="java.lang.Object"/>
                 <Column editable="true" title="QtdMaxima" type="java.lang.Object"/>
@@ -304,6 +309,26 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBVoltarProdutoActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="ComboBoxCategoria">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Categoria:"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
