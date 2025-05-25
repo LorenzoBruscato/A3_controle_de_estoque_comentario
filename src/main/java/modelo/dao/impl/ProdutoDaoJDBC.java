@@ -51,7 +51,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao cadastrar produto: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao atualizar produto: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -126,7 +126,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao resgatar produtos: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
 
         return lista;

@@ -74,7 +74,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao atualizar produto: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao buscar categoria: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
 
         return null;
@@ -150,7 +150,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro ao buscar categoria por nome: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
         return null;
     }
