@@ -90,10 +90,10 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         JTFQtdMaxima = new javax.swing.JTextField();
         JBNovoProduto = new javax.swing.JButton();
         JBAlterarProduto = new javax.swing.JButton();
-        JBExcluirProduto = new javax.swing.JButton();
         JBVoltarProduto = new javax.swing.JButton();
         ComboBoxCategoria = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        JBExcluirProduto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Produtos");
@@ -180,18 +180,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             }
         });
 
-        JBExcluirProduto.setText("Excluir");
-        JBExcluirProduto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JBExcluirProdutoMouseClicked(evt);
-            }
-        });
-        JBExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBExcluirProdutoActionPerformed(evt);
-            }
-        });
-
         JBVoltarProduto.setText("Voltar");
         JBVoltarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,6 +190,13 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         ComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setText("Categoria:");
+
+        JBExcluirProduto.setText("Excluir");
+        JBExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBExcluirProdutoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -241,11 +236,12 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                             .addComponent(JTFQtdMaxima)
                             .addComponent(JTFNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JBExcluirProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBAlterarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBVoltarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(JBAlterarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JBVoltarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JBNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(JBExcluirProduto, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(92, 92, 92))))
         );
 
@@ -260,9 +256,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                         .addComponent(JBNovoProduto)
                         .addGap(20, 20, 20)
                         .addComponent(JBAlterarProduto)
-                        .addGap(20, 20, 20)
+                        .addGap(18, 18, 18)
                         .addComponent(JBExcluirProduto)
-                        .addGap(20, 20, 20)
+                        .addGap(22, 22, 22)
                         .addComponent(JBVoltarProduto)
                         .addGap(32, 32, 32))
                     .addGroup(layout.createSequentialGroup()
@@ -368,7 +364,88 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_JTFUnidadeActionPerformed
 
-    private void JBExcluirProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JBExcluirProdutoMouseClicked
+    private void JTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProdutosMouseClicked
+        int linhaSelecionada = JTableProdutos.getSelectedRow();
+        if (linhaSelecionada != -1) {
+            JTFNomeProduto.setText(tabela.getValueAt(linhaSelecionada, 1).toString());
+            JTFPrecoUnitario.setText(tabela.getValueAt(linhaSelecionada, 2).toString());
+            JTFUnidade.setText(tabela.getValueAt(linhaSelecionada, 3).toString());
+            JTFQtdEstoque.setText(tabela.getValueAt(linhaSelecionada, 4).toString());
+            JTFQtdMinima.setText(tabela.getValueAt(linhaSelecionada, 5).toString());
+            JTFQtdMaxima.setText(tabela.getValueAt(linhaSelecionada, 6).toString());
+
+            String categoriaNome = tabela.getValueAt(linhaSelecionada, 7).toString();
+            for (int i = 0; i < ComboBoxCategoria.getItemCount(); i++) {
+                if (ComboBoxCategoria.getItemAt(i).equals(categoriaNome)) {
+                    ComboBoxCategoria.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_JTableProdutosMouseClicked
+
+    private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
+        // TODO add your handling code here:
+        // Alterar produto de acordo com a linha selecionada da tabela
+        int linhaSelecionada = JTableProdutos.getSelectedRow();
+
+        if (linhaSelecionada != -1) {
+            try {
+                // Pega os valores da linha selecionada da tabela
+                int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
+                String nome = JTFNomeProduto.getText().trim();
+                double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim());
+                String unidade = JTFUnidade.getText().trim();
+                int qtdEstoque = Integer.parseInt(JTFQtdEstoque.getText().trim());
+                int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
+                int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
+
+                String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+                Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+                if (categoria == null) {
+                    throw new DbException("Categoria não encontrada: " + nomeCategoria);
+                }
+
+                // Criar e preencher o objeto Produto
+                Produto produto = new Produto();
+                produto.setId(id);
+                produto.setNome(nome);
+                produto.setPreco(preco);
+                produto.setUnidade(unidade);
+                produto.setQuantidade(qtdEstoque);
+                produto.setQuantidadeMinima(qtdMinima);
+                produto.setQuantidadeMaxima(qtdMaxima);
+                produto.setCategoria(categoria);
+
+                // Atualizar produto no banco de dados
+                produtoDao.atualizarProduto(produto);
+
+                System.out.println("Produto atualizado com sucesso!");
+
+                // Recarregar a tabela
+                carregarProdutosNaTela();
+
+                // Limpar os campos
+                JTFNomeProduto.setText("");
+                JTFPrecoUnitario.setText("");
+                JTFUnidade.setText("");
+                JTFQtdEstoque.setText("");
+                JTFQtdMinima.setText("");
+                JTFQtdMaxima.setText("");
+
+            } catch (NumberFormatException e) {
+                throw new DbException("Erro ao converter número: " + e.getMessage());
+            } catch (Exception e) {
+                throw new DbException("Erro ao atualizar produto: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Nenhuma linha selecionada para atualizar.");
+        }
+
+    }//GEN-LAST:event_JBAlterarProdutoActionPerformed
+
+    private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
         int linhaSelecionada = JTableProdutos.getSelectedRow();
 
         if (linhaSelecionada == -1) {
@@ -392,92 +469,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         } catch (Exception e) {
             throw new DbException(e.getMessage());
         }
-    }//GEN-LAST:event_JBExcluirProdutoMouseClicked
-
-    private void JTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProdutosMouseClicked
-int linhaSelecionada = JTableProdutos.getSelectedRow();
-        if (linhaSelecionada != -1) {
-            JTFNomeProduto.setText(tabela.getValueAt(linhaSelecionada, 1).toString());
-            JTFPrecoUnitario.setText(tabela.getValueAt(linhaSelecionada, 2).toString());
-            JTFUnidade.setText(tabela.getValueAt(linhaSelecionada, 3).toString());
-            JTFQtdEstoque.setText(tabela.getValueAt(linhaSelecionada, 4).toString());
-            JTFQtdMinima.setText(tabela.getValueAt(linhaSelecionada, 5).toString());
-            JTFQtdMaxima.setText(tabela.getValueAt(linhaSelecionada, 6).toString());
-
-            String categoriaNome = tabela.getValueAt(linhaSelecionada, 7).toString();
-            for (int i = 0; i < ComboBoxCategoria.getItemCount(); i++) {
-                if (ComboBoxCategoria.getItemAt(i).equals(categoriaNome)) {
-                    ComboBoxCategoria.setSelectedIndex(i);
-                    break;
-                }
-            }
-        }
-    }//GEN-LAST:event_JTableProdutosMouseClicked
-
-    private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_JBExcluirProdutoActionPerformed
-
-    private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
-        // TODO add your handling code here:
-        // Alterar produto de acordo com a linha selecionada da tabela
-    int linhaSelecionada = JTableProdutos.getSelectedRow();
-
-    if (linhaSelecionada != -1) {
-        try {
-            // Pega os valores da linha selecionada da tabela
-            int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
-            String nome = JTFNomeProduto.getText().trim();
-            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim());
-            String unidade = JTFUnidade.getText().trim();
-            int qtdEstoque = Integer.parseInt(JTFQtdEstoque.getText().trim());
-            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
-            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
-
-            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
-            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
-
-            if (categoria == null) {
-                throw new DbException("Categoria não encontrada: " + nomeCategoria);
-            }
-
-            // Criar e preencher o objeto Produto
-            Produto produto = new Produto();
-            produto.setId(id);
-            produto.setNome(nome);
-            produto.setPreco(preco);
-            produto.setUnidade(unidade);
-            produto.setQuantidade(qtdEstoque);
-            produto.setQuantidadeMinima(qtdMinima);
-            produto.setQuantidadeMaxima(qtdMaxima);
-            produto.setCategoria(categoria);
-
-            // Atualizar produto no banco de dados
-            produtoDao.atualizarProduto(produto);
-
-            System.out.println("Produto atualizado com sucesso!");
-
-            // Recarregar a tabela
-            carregarProdutosNaTela();
-
-            // Limpar os campos
-            JTFNomeProduto.setText("");
-            JTFPrecoUnitario.setText("");
-            JTFUnidade.setText("");
-            JTFQtdEstoque.setText("");
-            JTFQtdMinima.setText("");
-            JTFQtdMaxima.setText("");
-
-        } catch (NumberFormatException e) {
-            throw new DbException("Erro ao converter número: " + e.getMessage());
-        } catch (Exception e) {
-            throw new DbException("Erro ao atualizar produto: " + e.getMessage());
-        }
-    } else {
-        System.out.println("Nenhuma linha selecionada para atualizar.");
-    }
-
-    }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

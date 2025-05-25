@@ -66,11 +66,13 @@
                           <Component id="JTFNomeProduto" min="-2" pref="110" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="JBExcluirProduto" max="32767" attributes="0"/>
-                          <Component id="JBAlterarProduto" alignment="0" max="32767" attributes="0"/>
-                          <Component id="JBVoltarProduto" alignment="0" max="32767" attributes="0"/>
-                          <Component id="JBNovoProduto" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="JBAlterarProduto" alignment="0" max="32767" attributes="0"/>
+                              <Component id="JBVoltarProduto" alignment="0" max="32767" attributes="0"/>
+                              <Component id="JBNovoProduto" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="JBExcluirProduto" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
                   </Group>
@@ -87,9 +89,9 @@
                       <Component id="JBNovoProduto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="JBAlterarProduto" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="JBExcluirProduto" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Component id="JBVoltarProduto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
@@ -304,15 +306,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBAlterarProdutoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="JBExcluirProduto">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Excluir"/>
-      </Properties>
-      <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JBExcluirProdutoMouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBExcluirProdutoActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="JBVoltarProduto">
       <Properties>
         <Property name="text" type="java.lang.String" value="Voltar"/>
@@ -340,6 +333,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Categoria:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="JBExcluirProduto">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Excluir"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBExcluirProdutoActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
