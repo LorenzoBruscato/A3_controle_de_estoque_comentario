@@ -1,6 +1,11 @@
 package visao;
 
+import controlador.ProdutoControle;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import modelo.dao.db.DbException;
 
 public class FrmReajustarPreco extends javax.swing.JFrame {
 
@@ -23,6 +28,8 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         JTFAumentarPorcentagem = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         JBVoltar = new javax.swing.JButton();
+        jBAumentarPreco = new javax.swing.JButton();
+        jBDiminuirPreco = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reajustar Preços");
@@ -42,12 +49,26 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
             }
         });
 
+        jBAumentarPreco.setText("Aumentar");
+        jBAumentarPreco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAumentarPrecoActionPerformed(evt);
+            }
+        });
+
+        jBDiminuirPreco.setText("Diminuir");
+        jBDiminuirPreco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDiminuirPrecoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -61,9 +82,13 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
                                 .addComponent(JLReajuste)
                                 .addComponent(JLAumentarPreço))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(189, 189, 189)
-                        .addComponent(JBVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(139, Short.MAX_VALUE))
+                        .addGap(69, 69, 69)
+                        .addComponent(JBVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBAumentarPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBDiminuirPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,12 +101,16 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JTFAumentarPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(JBVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JBVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBAumentarPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBDiminuirPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void JBVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarActionPerformed
@@ -90,12 +119,52 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_JBVoltarActionPerformed
 
+    private void jBAumentarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAumentarPrecoActionPerformed
+        try {
+            double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
+            if (percentual <= 0) {
+                return;
+            }
+
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
+            ProdutoControle controle = new ProdutoControle(conn);
+            controle.aumentarPreco(percentual);
+            conn.close();
+
+        } catch (NumberFormatException e) {
+            throw new DbException(e.getMessage());
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+     }//GEN-LAST:event_jBAumentarPrecoActionPerformed
+
+    private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
+        try {
+            double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
+            if (percentual <= 0) {
+                return;
+            }
+
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
+            ProdutoControle controle = new ProdutoControle(conn);
+            controle.diminuirPreco(percentual);
+            conn.close();
+
+        } catch (NumberFormatException e) {
+            throw new DbException(e.getMessage());
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }//GEN-LAST:event_jBDiminuirPrecoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBVoltar;
     private javax.swing.JLabel JLAumentarPreço;
     private javax.swing.JLabel JLReajuste;
     private javax.swing.JTextField JTFAumentarPorcentagem;
+    private javax.swing.JButton jBAumentarPreco;
+    private javax.swing.JButton jBDiminuirPreco;
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
