@@ -13,4 +13,7 @@ public interface ProdutoDao {
 
     public List<Produto> resgatarProdutos();
 
+    void aumentarPreco(double percentual);
+
+    void diminuirPreco(double percentual);
 }
