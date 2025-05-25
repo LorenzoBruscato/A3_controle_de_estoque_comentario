@@ -312,7 +312,48 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JBVoltarProdutoActionPerformed
 
     private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
+        try {
+            String proNome = JTFNomeProduto.getText().trim();
+            String proPreco = JTFPrecoUnitario.getText().trim();
+            String unidade = JTFUnidade.getText().trim();
+            String proQtdEstoque = JTFQtdEstoque.getText().trim();
+            String proQtdMIN = JTFQtdMinima.getText().trim();
+            String proQtdMAX = JTFQtdMaxima.getText().trim();
 
+            double preco = Double.parseDouble(proPreco);
+            int qtdEstoque = Integer.parseInt(proQtdEstoque);
+            int qtdMinima = Integer.parseInt(proQtdMIN);
+            int qtdMaxima = Integer.parseInt(proQtdMAX);
+
+            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+            Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+            Produto pro = new Produto();
+            pro.setNome(proNome);
+            pro.setPreco(preco);
+            pro.setUnidade(unidade);
+            pro.setQuantidade(qtdEstoque);
+            pro.setQuantidadeMinima(qtdMinima);
+            pro.setQuantidadeMaxima(qtdMaxima);
+            pro.setCategoria(categoriaExistente);
+
+            produtoDao.cadastrarProduto(pro);
+
+            carregarProdutosNaTela();
+
+            // Limpar campos após cadastro
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFUnidade.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
+        } catch (NumberFormatException e) {
+            throw new DbException(e.getMessage());
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        }
     }//GEN-LAST:event_JBNovoProdutoActionPerformed
 
     private void JTFNomeProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFNomeProdutoActionPerformed
