@@ -174,11 +174,21 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         });
 
         JBAlterarProduto.setText("Alterar");
+        JBAlterarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBAlterarProdutoActionPerformed(evt);
+            }
+        });
 
         JBExcluirProduto.setText("Excluir");
         JBExcluirProduto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JBExcluirProdutoMouseClicked(evt);
+            }
+        });
+        JBExcluirProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBExcluirProdutoActionPerformed(evt);
             }
         });
 
@@ -362,6 +372,14 @@ int linhaSelecionada = JTableProdutos.getSelectedRow();
             }
         }
     }//GEN-LAST:event_JTableProdutosMouseClicked
+
+    private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JBExcluirProdutoActionPerformed
+
+    private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

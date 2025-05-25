@@ -8,6 +8,7 @@ import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
+import modelo.dao.db.DbException;
 
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
@@ -120,6 +121,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         });
 
         JBExcluirGerenciamentoC.setText("Excluir");
+        JBExcluirGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBExcluirGerenciamentoCActionPerformed(evt);
+            }
+        });
 
         JBVoltarCategoria.setText("Voltar");
         JBVoltarCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -273,34 +279,54 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
     private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
-        if(this.JTableCategoria.getSelectedRow() != -1){
-        String nome = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 1).toString();
-        String tamanho = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 2).toString();
-        String embalagem = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 3).toString();
-        
-        JTFNomeDeCategoria.setText(nome);
+        if (this.JTableCategoria.getSelectedRow() != -1) {
+            String nome = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 1).toString();
+            String tamanho = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 2).toString();
+            String embalagem = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 3).toString();
 
-        // ComboBox de Tamanho
-        String tamanhoTabela = removerAcentos(tamanho).toLowerCase();
-        for (int i = 0; i < JCBTipoTamanhoGerenciamentoC.getItemCount(); i++) {
-            String itemCombo = removerAcentos(JCBTipoTamanhoGerenciamentoC.getItemAt(i).toString()).toLowerCase();
-            if (itemCombo.equals(tamanhoTabela)) {
-                JCBTipoTamanhoGerenciamentoC.setSelectedIndex(i);
-                break;
+            JTFNomeDeCategoria.setText(nome);
+
+            // ComboBox de Tamanho
+            String tamanhoTabela = removerAcentos(tamanho).toLowerCase();
+            for (int i = 0; i < JCBTipoTamanhoGerenciamentoC.getItemCount(); i++) {
+                String itemCombo = removerAcentos(JCBTipoTamanhoGerenciamentoC.getItemAt(i).toString()).toLowerCase();
+                if (itemCombo.equals(tamanhoTabela)) {
+                    JCBTipoTamanhoGerenciamentoC.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            // ComboBox de Embalagem
+            String embalagemTabela = removerAcentos(embalagem).toLowerCase();
+            for (int i = 0; i < JCBTipoEmbalagemGerenciamentoC.getItemCount(); i++) {
+                String itemCombo = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getItemAt(i).toString()).toLowerCase();
+                if (itemCombo.equals(embalagemTabela)) {
+                    JCBTipoEmbalagemGerenciamentoC.setSelectedIndex(i);
+                    break;
+                }
             }
         }
-
-        // ComboBox de Embalagem
-        String embalagemTabela = removerAcentos(embalagem).toLowerCase();
-        for (int i = 0; i < JCBTipoEmbalagemGerenciamentoC.getItemCount(); i++) {
-            String itemCombo = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getItemAt(i).toString()).toLowerCase();
-            if (itemCombo.equals(embalagemTabela)) {
-                JCBTipoEmbalagemGerenciamentoC.setSelectedIndex(i);
-                break;
-            }
-        }
-    }
     }//GEN-LAST:event_JTableCategoriaMouseClicked
+
+    private void JBExcluirGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirGerenciamentoCActionPerformed
+        int linhaSelecionada = JTableCategoria.getSelectedRow();
+
+        if (linhaSelecionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
+            return;
+        }
+
+        int idParaDeletarProduto = (int) tabela.getValueAt(linhaSelecionada, 0);
+
+        try {
+            categoriaDao.deletarCategoriaPorId(idParaDeletarProduto);
+            carregarCategoriasNaTela();
+            this.JTFNomeDeCategoria.setText("");
+
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        }
+    }//GEN-LAST:event_JBExcluirGerenciamentoCActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
