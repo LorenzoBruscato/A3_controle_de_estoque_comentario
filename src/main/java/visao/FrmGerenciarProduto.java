@@ -420,6 +420,63 @@ int linhaSelecionada = JTableProdutos.getSelectedRow();
 
     private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
         // TODO add your handling code here:
+        // Alterar produto de acordo com a linha selecionada da tabela
+    int linhaSelecionada = JTableProdutos.getSelectedRow();
+
+    if (linhaSelecionada != -1) {
+        try {
+            // Pega os valores da linha selecionada da tabela
+            int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
+            String nome = JTFNomeProduto.getText().trim();
+            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim());
+            String unidade = JTFUnidade.getText().trim();
+            int qtdEstoque = Integer.parseInt(JTFQtdEstoque.getText().trim());
+            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
+            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
+
+            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+            if (categoria == null) {
+                throw new DbException("Categoria não encontrada: " + nomeCategoria);
+            }
+
+            // Criar e preencher o objeto Produto
+            Produto produto = new Produto();
+            produto.setId(id);
+            produto.setNome(nome);
+            produto.setPreco(preco);
+            produto.setUnidade(unidade);
+            produto.setQuantidade(qtdEstoque);
+            produto.setQuantidadeMinima(qtdMinima);
+            produto.setQuantidadeMaxima(qtdMaxima);
+            produto.setCategoria(categoria);
+
+            // Atualizar produto no banco de dados
+            produtoDao.atualizarProduto(produto);
+
+            System.out.println("Produto atualizado com sucesso!");
+
+            // Recarregar a tabela
+            carregarProdutosNaTela();
+
+            // Limpar os campos
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFUnidade.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
+        } catch (NumberFormatException e) {
+            throw new DbException("Erro ao converter número: " + e.getMessage());
+        } catch (Exception e) {
+            throw new DbException("Erro ao atualizar produto: " + e.getMessage());
+        }
+    } else {
+        System.out.println("Nenhuma linha selecionada para atualizar.");
+    }
+
     }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
 
