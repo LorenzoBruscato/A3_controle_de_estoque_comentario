@@ -57,8 +57,6 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
         JLGerenciamentoProdutos = new javax.swing.JLabel();
         JLNomeGerenciamentoC = new javax.swing.JLabel();
-        JLTamanhoGerenciamentoC = new javax.swing.JLabel();
-        JLEmbalagemGerenciamentoC = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         JTableCategoria = new javax.swing.JTable();
         JBNovoGerenciamentoC = new javax.swing.JButton();
@@ -81,11 +79,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         JLGerenciamentoProdutos.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         JLGerenciamentoProdutos.setText("Gerenciamento de Categorias");
 
-        JLNomeGerenciamentoC.setText("Nome da Categoria");
-
-        JLTamanhoGerenciamentoC.setText("Tamanho");
-
-        JLEmbalagemGerenciamentoC.setText("Embalagem");
+        JLNomeGerenciamentoC.setText("Nome da Categoria:");
 
         JTableCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -154,33 +148,31 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(96, 96, 96)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(JLGerenciamentoProdutos))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
+                        .addComponent(JLNomeGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JLGerenciamentoProdutos)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(JLNomeGerenciamentoC)
-                                    .addComponent(JLTamanhoGerenciamentoC)
-                                    .addComponent(JLEmbalagemGerenciamentoC))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(JBNovoGerenciamentoC)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(JBAlterarGerenciamentoC)))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(JTFNomeDeCategoria)
-                                    .addComponent(JCBTipoTamanhoGerenciamentoC, 0, 231, Short.MAX_VALUE)
-                                    .addComponent(JCBTipoEmbalagemGerenciamentoC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(JBNovoGerenciamentoC)
-                        .addGap(50, 50, 50)
-                        .addComponent(JBAlterarGerenciamentoC)
-                        .addGap(50, 50, 50)
-                        .addComponent(JBExcluirGerenciamentoC)
-                        .addGap(50, 50, 50)
-                        .addComponent(JBVoltarCategoria)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(JBExcluirGerenciamentoC)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(JBVoltarCategoria))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(JCBTipoEmbalagemGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -188,27 +180,21 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(JLGerenciamentoProdutos)
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLNomeGerenciamentoC)
-                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLTamanhoGerenciamentoC)
-                    .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JLEmbalagemGerenciamentoC)
-                    .addComponent(JCBTipoEmbalagemGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JBNovoGerenciamentoC)
                     .addComponent(JBAlterarGerenciamentoC)
                     .addComponent(JBExcluirGerenciamentoC)
                     .addComponent(JBVoltarCategoria))
-                .addGap(30, 30, 30))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JCBTipoEmbalagemGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JLNomeGerenciamentoC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         pack();
@@ -336,10 +322,8 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private javax.swing.JButton JBVoltarCategoria;
     private javax.swing.JComboBox<String> JCBTipoEmbalagemGerenciamentoC;
     private javax.swing.JComboBox<String> JCBTipoTamanhoGerenciamentoC;
-    private javax.swing.JLabel JLEmbalagemGerenciamentoC;
     private javax.swing.JLabel JLGerenciamentoProdutos;
     private javax.swing.JLabel JLNomeGerenciamentoC;
-    private javax.swing.JLabel JLTamanhoGerenciamentoC;
     private javax.swing.JTextField JTFNomeDeCategoria;
     private javax.swing.JTable JTableCategoria;
     private javax.swing.JScrollPane jScrollPane1;

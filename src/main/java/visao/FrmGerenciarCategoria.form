@@ -29,39 +29,38 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="235" max="-2" attributes="0"/>
-                      <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jScrollPane1" min="-2" pref="588" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="JLNomeGerenciamentoC" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="JLNomeGerenciamentoC" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JLTamanhoGerenciamentoC" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JLEmbalagemGerenciamentoC" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="JTFNomeDeCategoria" min="-2" pref="134" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="JBNovoGerenciamentoC" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="JBAlterarGerenciamentoC" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="JTFNomeDeCategoria" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="JCBTipoTamanhoGerenciamentoC" alignment="0" pref="231" max="32767" attributes="0"/>
-                                  <Component id="JCBTipoEmbalagemGerenciamentoC" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="JBExcluirGerenciamentoC" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="JBVoltarCategoria" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="JCBTipoTamanhoGerenciamentoC" min="-2" pref="133" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="JCBTipoEmbalagemGerenciamentoC" min="-2" pref="136" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <Component id="jScrollPane1" min="-2" pref="588" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
-                      <Component id="JBNovoGerenciamentoC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="JBAlterarGerenciamentoC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="JBExcluirGerenciamentoC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="JBVoltarCategoria" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="96" max="32767" attributes="0"/>
@@ -73,31 +72,23 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Component id="JLGerenciamentoProdutos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JLNomeGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JTFNomeDeCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JLTamanhoGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JCBTipoTamanhoGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="JLEmbalagemGerenciamentoC" min="-2" max="-2" attributes="0"/>
-                  <Component id="JCBTipoEmbalagemGerenciamentoC" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="218" max="-2" attributes="0"/>
-              <EmptySpace pref="46" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="JBNovoGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBAlterarGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBExcluirGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBVoltarCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="JCBTipoEmbalagemGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JCBTipoTamanhoGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JTFNomeDeCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JLNomeGerenciamentoC" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="218" max="-2" attributes="0"/>
+              <EmptySpace pref="97" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -113,17 +104,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="JLNomeGerenciamentoC">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nome da Categoria"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="JLTamanhoGerenciamentoC">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Tamanho"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="JLEmbalagemGerenciamentoC">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Embalagem"/>
+        <Property name="text" type="java.lang.String" value="Nome da Categoria:"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
