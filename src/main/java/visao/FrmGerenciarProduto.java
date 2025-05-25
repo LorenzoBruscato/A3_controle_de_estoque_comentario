@@ -8,6 +8,7 @@ import modelo.Produto;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
+import modelo.dao.db.DbException;
 
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
@@ -34,33 +35,35 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         carregarProdutosNaTela();
 
     }
-       private void carregarCategoriasNoComboBox() {
+
+    private void carregarCategoriasNoComboBox() {
         ComboBoxCategoria.removeAllItems();
 
         List<Categoria> categorias = categoriaDao.resgatarCategorias();
         for (Categoria cat : categorias) {
-        ComboBoxCategoria.addItem(cat.getNome()); // Adiciona o nome da categoria
+            ComboBoxCategoria.addItem(cat.getNome()); // Adiciona o nome da categoria
+        }
     }
-}
 
     private void carregarProdutosNaTela() {
-    tabela.setRowCount(0); // Limpa a tabela
+        tabela.setRowCount(0); // Limpa a tabela
 
-    List<Produto> produtos = produtoDao.resgatarProdutos();
+        List<Produto> produtos = produtoDao.resgatarProdutos();
 
-    for (Produto p : produtos) {
-        tabela.addRow(new Object[]{
-            p.getId(),
-            p.getNome(),
-            p.getPreco(),
-            p.getUnidade(),
-            p.getQuantidade(),
-            p.getQuantidadeMinima(),
-            p.getQuantidadeMaxima(),
-            p.getCategoria().getNome()
-        });
+        for (Produto p : produtos) {
+            tabela.addRow(new Object[]{
+                p.getId(),
+                p.getNome(),
+                p.getPreco(),
+                p.getUnidade(),
+                p.getQuantidade(),
+                p.getQuantidadeMinima(),
+                p.getQuantidadeMaxima(),
+                p.getCategoria().getNome()
+            });
+        }
     }
-}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,8 +117,15 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        JTableProdutos.setColumnSelectionAllowed(true);
         JTableProdutos.getTableHeader().setReorderingAllowed(false);
+        JTableProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JTableProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(JTableProdutos);
+        JTableProdutos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         JLNome.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         JLNome.setText("Nome");
@@ -166,6 +176,11 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         JBAlterarProduto.setText("Alterar");
 
         JBExcluirProduto.setText("Excluir");
+        JBExcluirProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JBExcluirProdutoMouseClicked(evt);
+            }
+        });
 
         JBVoltarProduto.setText("Voltar");
         JBVoltarProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -301,6 +316,52 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private void JTFUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFUnidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JTFUnidadeActionPerformed
+
+    private void JBExcluirProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JBExcluirProdutoMouseClicked
+        int linhaSelecionada = JTableProdutos.getSelectedRow();
+
+        if (linhaSelecionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
+            return;
+        }
+
+        int idParaDeletarProduto = (int) tabela.getValueAt(linhaSelecionada, 0);
+
+        try {
+            produtoDao.deletarProdutoPorId(idParaDeletarProduto);
+            carregarProdutosNaTela();
+            this.JTFNomeProduto.setText("");
+            this.JTFPrecoUnitario.setText("");
+            this.JTFQtdEstoque.setText("");
+            this.JTFUnidade.setText("");
+            this.JTFQtdMinima.setText("");
+            this.JTFQtdMaxima.setText("");
+            ComboBoxCategoria.setSelectedIndex(-1);
+
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        }
+    }//GEN-LAST:event_JBExcluirProdutoMouseClicked
+
+    private void JTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProdutosMouseClicked
+int linhaSelecionada = JTableProdutos.getSelectedRow();
+        if (linhaSelecionada != -1) {
+            JTFNomeProduto.setText(tabela.getValueAt(linhaSelecionada, 1).toString());
+            JTFPrecoUnitario.setText(tabela.getValueAt(linhaSelecionada, 2).toString());
+            JTFUnidade.setText(tabela.getValueAt(linhaSelecionada, 3).toString());
+            JTFQtdEstoque.setText(tabela.getValueAt(linhaSelecionada, 4).toString());
+            JTFQtdMinima.setText(tabela.getValueAt(linhaSelecionada, 5).toString());
+            JTFQtdMaxima.setText(tabela.getValueAt(linhaSelecionada, 6).toString());
+
+            String categoriaNome = tabela.getValueAt(linhaSelecionada, 7).toString();
+            for (int i = 0; i < ComboBoxCategoria.getItemCount(); i++) {
+                if (ComboBoxCategoria.getItemAt(i).equals(categoriaNome)) {
+                    ComboBoxCategoria.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_JTableProdutosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

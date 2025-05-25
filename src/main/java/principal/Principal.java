@@ -34,7 +34,7 @@ public class Principal {
 //        List<Categoria> categorias = categoriaDao.resgatarCategorias();
 //
 //        for (Categoria c : categorias) {
-//            if (c.getNome().equalsIgnoreCase("Refrigerante")) {
+//            if (c.getNome().equalsIgnoreCase("aaaaa")) {
 //                categoria = c;
 //                break;
 //            }

@@ -14,7 +14,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private CategoriaDao categoriaDao;
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
-    private String[] colunas = {"id", "Nome", "Tamanho", "Embalagem"};
+    private String[] colunas = {"ID", "Nome", "Tamanho", "Embalagem"};
 
     public FrmGerenciarCategoria() {
         initComponents();
