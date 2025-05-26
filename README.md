@@ -1,6 +1,6 @@
 # 🛠️ Sistema de Gerenciamento de Produtos e Categorias
 
-## Integrantes
+
 
 ## 👥 Integrantes
 
@@ -54,7 +54,7 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 - Maven
 - IDE (Eclipse, IntelliJ ou Netbeans)
 
-## Configurando o banco de dados MySql
+## ⚙️ Configurando o banco de dados MySql
 
 - Para rodar o programa é necessario fazer o download do MySql workbench 8.0
 - Acesse o arquivo banco.sql para criar o banco de dados
