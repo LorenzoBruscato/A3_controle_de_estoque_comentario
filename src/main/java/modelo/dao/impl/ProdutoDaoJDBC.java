@@ -133,7 +133,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void aumentarPreco(double percentual) {
+    public void aumentarTodosPrecos(double percentual) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100)";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setDouble(1, percentual);
@@ -144,7 +144,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void diminuirPreco(double percentual) {
+    public void diminuirTodosPrecos(double percentual) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 - ? / 100)";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setDouble(1, percentual);

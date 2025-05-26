@@ -39,18 +39,18 @@ public class ProdutoControle {
         return produtoDao.resgatarProdutos();
     }
 
-    public void aumentarPreco(double percentual) {
+    public void aumentarTodosPrecos(double percentual) {
         if (percentual <= 0) {
             throw new IllegalArgumentException("Percentual deve ser maior que zero para aumentar.");
         }
-        produtoDao.aumentarPreco(percentual);
+        produtoDao.aumentarTodosPrecos(percentual);
     }
 
-    public void diminuirPreco(double percentual) {
+    public void diminuirTodosPrecos(double percentual) {
         if (percentual <= 0) {
             throw new IllegalArgumentException("Percentual deve ser maior que zero para diminuir.");
         }
-        produtoDao.diminuirPreco(percentual);
+        produtoDao.diminuirTodosPrecos(percentual);
     }
 
 }

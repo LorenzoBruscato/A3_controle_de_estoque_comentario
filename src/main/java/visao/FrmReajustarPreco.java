@@ -128,7 +128,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
             ProdutoControle controle = new ProdutoControle(conn);
-            controle.aumentarPreco(percentual);
+            controle.aumentarTodosPrecos(percentual);
             conn.close();
 
         } catch (NumberFormatException e) {
@@ -147,7 +147,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
             ProdutoControle controle = new ProdutoControle(conn);
-            controle.diminuirPreco(percentual);
+            controle.diminuirTodosPrecos(percentual);
             conn.close();
 
         } catch (NumberFormatException e) {
