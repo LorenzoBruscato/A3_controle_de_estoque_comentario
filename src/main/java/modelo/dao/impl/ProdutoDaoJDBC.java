@@ -131,6 +131,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         return lista;
     }
+    
+    
+    
+    
 
     @Override
     public void aumentarTodosPrecos(double percentual) {
@@ -148,6 +152,30 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 - ? / 100)";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setDouble(1, percentual);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void aumentarPrecoPorCategoria(double percentual, String categoria) {
+        String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100) WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setDouble(1, percentual);
+            st.setString(2, categoria);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void diminuirPrecoPorCategoria(double percentual, String categoria) {
+        String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 - ? / 100) WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setDouble(1, percentual);
+            st.setString(2, categoria);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());

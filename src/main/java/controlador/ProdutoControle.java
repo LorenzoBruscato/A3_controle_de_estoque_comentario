@@ -2,16 +2,21 @@ package controlador;
 
 import java.sql.Connection;
 import java.util.List;
+import modelo.Categoria;
 import modelo.Produto;
+import modelo.dao.CategoriaDao;
 import modelo.dao.ProdutoDao;
+import modelo.dao.impl.CategoriaDaoJDBC;
 import modelo.dao.impl.ProdutoDaoJDBC;
 
 public class ProdutoControle {
 
     private ProdutoDao produtoDao;
+    private CategoriaDao categoriaDao;
 
     public ProdutoControle(Connection conn) {
         this.produtoDao = new ProdutoDaoJDBC(conn);
+        this.categoriaDao = new CategoriaDaoJDBC(conn);
     }
 
     public void cadastrarProduto(Produto produto) {
@@ -53,4 +58,19 @@ public class ProdutoControle {
         produtoDao.diminuirTodosPrecos(percentual);
     }
 
+    public void aumentarPrecoPorCategoria(String nomeCategoria, double percentual) {
+        Categoria cat = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+        if (cat == null) {
+            throw new IllegalArgumentException("Categoria não encontrada com nome: " + nomeCategoria);
+        }
+        produtoDao.aumentarPrecoPorCategoria(percentual, cat.getNome());
+    }
+
+    public void diminuirPrecoPorCategoria(String nomeCategoria, double percentual) {
+        Categoria cat = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+        if (cat == null) {
+            throw new IllegalArgumentException("Categoria não encontrada com nome: " + nomeCategoria);
+        }
+        produtoDao.diminuirPrecoPorCategoria(percentual, cat.getNome());
+    }
 }

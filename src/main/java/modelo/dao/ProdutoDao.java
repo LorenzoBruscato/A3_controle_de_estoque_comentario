@@ -16,4 +16,8 @@ public interface ProdutoDao {
     void aumentarTodosPrecos(double percentual);
 
     void diminuirTodosPrecos(double percentual);
+    
+    public void aumentarPrecoPorCategoria(double percentual, String categoria);
+    
+    public void diminuirPrecoPorCategoria(double percentual, String categoria);
 }
