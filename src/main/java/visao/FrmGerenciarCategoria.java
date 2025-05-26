@@ -2,6 +2,7 @@ package visao;
 
 import java.text.Normalizer;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
 import modelo.Categoria.Embalagem;
@@ -210,21 +211,39 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     }//GEN-LAST:event_JCBTipoTamanhoGerenciamentoCActionPerformed
 
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
-        String catNome = JTFNomeDeCategoria.getText().trim();
+    String catNome = JTFNomeDeCategoria.getText().trim();
+    String catNomeNormalizado = removerAcentos(catNome).toUpperCase();
 
-        String catTamanhoString = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
-        Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
+    String catTamanhoString = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
+    Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
 
-        String catEmbalagemString = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
-        Embalagem catEmbalagem = Embalagem.valueOf(catEmbalagemString.toUpperCase());
+    String catEmbalagemString = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
+    Embalagem catEmbalagem = Embalagem.valueOf(catEmbalagemString.toUpperCase());
 
-        Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
+    Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
+
+    // Verificar se já existe uma categoria com o mesmo nome (ignorando acentos e caixa)
+    boolean jaExiste = false;
+    for (Categoria c : categoriaDao.resgatarCategorias()) {
+        String nomeExistenteNormalizado = removerAcentos(c.getNome()).toUpperCase();
+        if (nomeExistenteNormalizado.equals(catNomeNormalizado)) {
+            jaExiste = true;
+            break;
+        }
+    }
+
+    if (jaExiste) {
+        JOptionPane.showMessageDialog(this, 
+            "Já existe uma categoria com este nome!", 
+            "Aviso", 
+            JOptionPane.WARNING_MESSAGE);
+    } else {
         categoriaDao.cadastrarCategoria(cat);
         this.JTFNomeDeCategoria.setText("");
-
         carregarCategoriasNaTela();
+    }
 
-
+    
     }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
