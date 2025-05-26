@@ -1,17 +1,36 @@
 package visao;
 
-import controlador.ProdutoControle;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import modelo.Categoria;
+import modelo.dao.CategoriaDao;
+import modelo.dao.DaoFactory;
+import modelo.dao.ProdutoDao;
 import modelo.dao.db.DbException;
 
 public class FrmReajustarPreco extends javax.swing.JFrame {
 
+    
+    private final CategoriaDao categoriaDao;
+    private ProdutoDao produtoDao;
+
     public FrmReajustarPreco() {
-        initComponents();
+         initComponents();
+        categoriaDao = DaoFactory.instanciarCategoriaDao();
+        produtoDao = DaoFactory.instanciarProdutoDao();
+        carregarCategoriasNoComboBox();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void carregarCategoriasNoComboBox() {
+       ComboBoxReajuste.removeAllItems();
+        ComboBoxReajuste.addItem("Todos Produtos");
+
+        List<Categoria> categorias = categoriaDao.resgatarCategorias();
+        for (Categoria cat : categorias) {
+            ComboBoxReajuste.addItem(cat.getNome());
+        }
     }
 
     /**
@@ -131,38 +150,54 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         try {
             double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
             if (percentual <= 0) {
+                JTFAumentarPorcentagem.setText("");
+                JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
                 return;
             }
 
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
-            ProdutoControle controle = new ProdutoControle(conn);
-            controle.aumentarTodosPrecos(percentual);
-            conn.close();
+             String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
 
-        } catch (NumberFormatException e) {
-            throw new DbException(e.getMessage());
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+        if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
+            produtoDao.aumentarTodosPrecos(percentual);
+        } else {
+            produtoDao.aumentarPrecoPorCategoria(percentual, categoriaSelecionada);
         }
+
+        JOptionPane.showMessageDialog(this, "Preços aumentados  com sucesso!");
+
+    } catch (NumberFormatException e) {
+        JTFAumentarPorcentagem.setText("");
+        JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
+    } catch (DbException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
+    }
      }//GEN-LAST:event_jBAumentarPrecoActionPerformed
 
     private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
-        try {
-            double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
-            if (percentual <= 0) {
-                return;
-            }
-
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/trabalhoa3?useSSL=false&serverTimezone=UTC", "root", "1234567");
-            ProdutoControle controle = new ProdutoControle(conn);
-            controle.diminuirTodosPrecos(percentual);
-            conn.close();
-
-        } catch (NumberFormatException e) {
-            throw new DbException(e.getMessage());
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+    try {
+        double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
+        if (percentual <= 0) {
+            JTFAumentarPorcentagem.setText("");
+            JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
+            return;
         }
+
+        String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
+
+        if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
+            produtoDao.diminuirTodosPrecos(percentual);
+        } else {
+            produtoDao.diminuirPrecoPorCategoria(percentual, categoriaSelecionada);
+        }
+
+        JOptionPane.showMessageDialog(this, "Preços diminuídos com sucesso!");
+
+    } catch (NumberFormatException e) {
+        JTFAumentarPorcentagem.setText("");
+        JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
+    } catch (DbException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
+    }
     }//GEN-LAST:event_jBDiminuirPrecoActionPerformed
 
 
