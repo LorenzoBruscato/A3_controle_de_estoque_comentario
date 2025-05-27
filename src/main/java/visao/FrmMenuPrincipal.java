@@ -186,7 +186,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_JBGerenciarProdutosActionPerformed
 
     private void JBEmitirRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBEmitirRelatoriosActionPerformed
-        // TODO add your handling code here:
+        FrmEmitirRelatorios janela = new FrmEmitirRelatorios();
+        janela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_JBEmitirRelatoriosActionPerformed
 
     private void JBGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarCategoriasActionPerformed
