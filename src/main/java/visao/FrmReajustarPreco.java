@@ -48,7 +48,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         jBAumentarPreco = new javax.swing.JButton();
         jBDiminuirPreco = new javax.swing.JButton();
         ComboBoxReajuste = new javax.swing.JComboBox<>();
-        JTFAumentarPorcentagem = new javax.swing.JTextField();
+        JTFAjustePorcentagem = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,6 +83,12 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
         ComboBoxReajuste.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos Produtos", "Carne", "Frios" }));
 
+        JTFAjustePorcentagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JTFAjustePorcentagemActionPerformed(evt);
+            }
+        });
+
         jLabel5.setText("%");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -102,7 +108,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
                         .addGap(240, 240, 240)
                         .addComponent(ComboBoxReajuste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JTFAumentarPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(JTFAjustePorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)))
                 .addGap(0, 150, Short.MAX_VALUE))
@@ -125,7 +131,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
                 .addComponent(JLAumentarPreço)
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JTFAumentarPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JTFAjustePorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(ComboBoxReajuste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
@@ -148,9 +154,9 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
     private void jBAumentarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAumentarPrecoActionPerformed
         try {
-            double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
+            double percentual = Double.parseDouble(JTFAjustePorcentagem.getText());
             if (percentual <= 0) {
-                JTFAumentarPorcentagem.setText("");
+                JTFAjustePorcentagem.setText("");
                 JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
                 return;
             }
@@ -166,7 +172,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Preços aumentados  com sucesso!");
 
     } catch (NumberFormatException e) {
-        JTFAumentarPorcentagem.setText("");
+        JTFAjustePorcentagem.setText("");
         JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
     } catch (DbException e) {
         JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
@@ -175,9 +181,9 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
     private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
     try {
-        double percentual = Double.parseDouble(JTFAumentarPorcentagem.getText());
+        double percentual = Double.parseDouble(JTFAjustePorcentagem.getText());
         if (percentual <= 0) {
-            JTFAumentarPorcentagem.setText("");
+            JTFAjustePorcentagem.setText("");
             JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
             return;
         }
@@ -193,12 +199,16 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Preços diminuídos com sucesso!");
 
     } catch (NumberFormatException e) {
-        JTFAumentarPorcentagem.setText("");
+        JTFAjustePorcentagem.setText("");
         JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
     } catch (DbException e) {
         JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
     }
     }//GEN-LAST:event_jBDiminuirPrecoActionPerformed
+
+    private void JTFAjustePorcentagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFAjustePorcentagemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JTFAjustePorcentagemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -206,7 +216,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
     private javax.swing.JButton JBVoltar;
     private javax.swing.JLabel JLAumentarPreço;
     private javax.swing.JLabel JLReajuste;
-    private javax.swing.JTextField JTFAumentarPorcentagem;
+    private javax.swing.JTextField JTFAjustePorcentagem;
     private javax.swing.JButton jBAumentarPreco;
     private javax.swing.JButton jBDiminuirPreco;
     private javax.swing.JLabel jLabel5;
