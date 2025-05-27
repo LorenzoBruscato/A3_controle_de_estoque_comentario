@@ -1,5 +1,8 @@
 package modelo.dao.impl;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +13,15 @@ import modelo.dao.db.DbException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import modelo.Categoria;
 import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.Produto;
 import modelo.dao.ProdutoDao;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ProdutoDaoJDBC implements ProdutoDao {
 
@@ -131,10 +138,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         return lista;
     }
-    
-    
-    
-    
 
     @Override
     public void aumentarTodosPrecos(double percentual) {
@@ -180,6 +183,48 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
+    }
+
+    public void gerarRelatorioListaDePreco(String caminhoArquivoSaidaExcel) {
+        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
+
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            Workbook workBook = new XSSFWorkbook();
+            FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSaidaExcel);
+
+            Sheet sheet = workBook.createSheet("Lista de preços");
+
+            String[] colunas = {"Nome", "Preço Unitário", "Unidade", "Categoria"};
+            Row header = sheet.createRow(0);
+            for (int i = 0; i < colunas.length; i++) {
+                header.createCell(i).setCellValue(colunas[i]);
+            }
+
+            int rowNum = 1;
+            while (rs.next()) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(rs.getString("nome"));
+                row.createCell(1).setCellValue(rs.getDouble("preco_unitario"));
+                row.createCell(2).setCellValue(rs.getString("unidade"));
+                row.createCell(3).setCellValue(rs.getString("categoria"));
+            }
+
+            for (int i = 0; i < colunas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workBook.write(fileOut);
+            JOptionPane.showMessageDialog(null, "Arquivo criado na pasta " + caminhoArquivoSaidaExcel);
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException e){
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo");
+        }
+
     }
 
     private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
