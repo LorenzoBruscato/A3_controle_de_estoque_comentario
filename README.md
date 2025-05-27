@@ -8,7 +8,7 @@
 |----------------------------------|-----------------------|---------------|
 | Diego Wobeto Maglia Muller       | diegowmmuller        | 10724265729   |
 | Victor Hugo Andrade              | andradevh            | 10725115564   |
-| Lorenzo Bruscato                 | Lorenzo              | 10724262961   |
+| Lorenzo Bruscato                 | Lorenzo, LorenzoBruscato              | 10724262961   |
 | Murilo Vieira Moura              | Murilo               | 10724269339   |
 | Henrique Bernardes Rosa          | INTEL, HenriqueBrosa        | 10724263295   |
 
