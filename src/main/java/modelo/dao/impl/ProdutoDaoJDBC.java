@@ -253,9 +253,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         // Força extensão e nome do arquivo se for só pasta
         if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
             if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel += String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
             } else {
-                caminhoArquivoSaidaExcel += String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
             }
         }
 
