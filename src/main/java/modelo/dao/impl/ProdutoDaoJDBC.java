@@ -192,11 +192,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         // Força extensão e nome do arquivo se for só pasta
         if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
             if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel += "relatorio.xlsx";
+                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
             } else {
-                caminhoArquivoSaidaExcel += "\\relatorio.xlsx";
+                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
             }
-        }
+        }   
 
         String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
 
