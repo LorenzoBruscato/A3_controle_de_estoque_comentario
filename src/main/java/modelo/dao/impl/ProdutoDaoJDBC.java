@@ -185,7 +185,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    public void gerarRelatorioListaDePreco(String caminhoArquivoSaidaExcel) {
+    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel) {
         String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
