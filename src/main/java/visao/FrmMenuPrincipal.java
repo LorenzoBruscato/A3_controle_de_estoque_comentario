@@ -188,7 +188,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void JBEmitirRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBEmitirRelatoriosActionPerformed
         FrmEmitirRelatorio janela = new FrmEmitirRelatorio();
         janela.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_JBEmitirRelatoriosActionPerformed
 
     private void JBGerenciarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGerenciarCategoriasActionPerformed
@@ -213,7 +213,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     private void JBReajustarPrecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBReajustarPrecosActionPerformed
         FrmReajustarPreco janela = new FrmReajustarPreco();
         janela.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_JBReajustarPrecosActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
