@@ -21,7 +21,7 @@ public interface ProdutoDao {
     
     public void diminuirPrecoPorCategoria(double percentual, String categoria);
     
-    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel);
+    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomeDoArquivo);
     
     
 }

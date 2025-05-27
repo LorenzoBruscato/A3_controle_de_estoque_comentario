@@ -186,7 +186,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel) {
+    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
         // Força extensão e nome do arquivo se for só pasta
@@ -210,7 +210,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
 
             FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet("Lista de preços");
+            Sheet sheet = workBook.createSheet(nomePlanilha);
 
             String[] colunas = {"Nome", "Preço Unitário", "Unidade", "Categoria"};
             Row header = sheet.createRow(0);
