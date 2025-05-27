@@ -314,7 +314,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
         try {
             String proNome = JTFNomeProduto.getText().trim();
-            String proPreco = JTFPrecoUnitario.getText().trim();
+            String proPreco = JTFPrecoUnitario.getText().trim().replace(",", ".");
             String nomeUnidade = ComboBoxUnidade.getSelectedItem().toString();
             String proQtdEstoque = JTFQtdEstoque.getText().trim();
             String proQtdMIN = JTFQtdMinima.getText().trim();
@@ -401,7 +401,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 // Pega os valores da linha selecionada da tabela
                 int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
                 String nome = JTFNomeProduto.getText().trim();
-                double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim());
+                double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
                 String unidade = ComboBoxUnidade.getSelectedItem().toString();
                 int qtdEstoque = Integer.parseInt(JTFQtdEstoque.getText().trim());
                 int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
