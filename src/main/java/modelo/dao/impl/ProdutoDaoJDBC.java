@@ -1,5 +1,6 @@
 package modelo.dao.impl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -186,13 +187,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
+
+        // Força extensão e nome do arquivo se for só pasta
+        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                caminhoArquivoSaidaExcel += "relatorio.xlsx";
+            } else {
+                caminhoArquivoSaidaExcel += "\\relatorio.xlsx";
+            }
+        }
+
         String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
-            Workbook workBook = new XSSFWorkbook();
-            FileOutputStream fileOut = new FileOutputStream(caminhoArquivoSaidaExcel);
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
 
+            // Garante que a pasta existe
+            File arquivo = new File(caminhoArquivoSaidaExcel);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            FileOutputStream fileOut = new FileOutputStream(arquivo);
             Sheet sheet = workBook.createSheet("Lista de preços");
 
             String[] colunas = {"Nome", "Preço Unitário", "Unidade", "Categoria"};
@@ -215,16 +232,18 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
 
             workBook.write(fileOut);
-            JOptionPane.showMessageDialog(null, "Arquivo criado na pasta " + caminhoArquivoSaidaExcel);
+            fileOut.close();
+            workBook.close();
+
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
 
         } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            throw new DbException("Erro SQL: " + e.getMessage());
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } catch (IOException e){
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo");
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
         }
-
     }
 
     private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
