@@ -57,7 +57,7 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 ## ⚙️ Configurando o banco de dados MySql
 
 - Para rodar o programa é necessario fazer o download do MySql workbench 8.0
-- Acesse o arquivo banco.sql para criar o banco de dados
+- Acesse o arquivo [banco.sql](banco.sql) para criar o banco de dados
 - Usuario: root
 - Senha: 1234567
 
