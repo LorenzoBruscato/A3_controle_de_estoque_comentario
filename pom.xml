@@ -15,13 +15,22 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>9.2.0</version>
-        </dependency>        
+        </dependency>  
+        
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.4.1</version>
+        </dependency>
+              
+                          
     </dependencies>
     <build>
         <resources>
             <resource>
                 <directory>src\main\recurso</directory>
             </resource>
+            
         </resources>
     </build>
     <name>A3_controle_de_estoque</name>
