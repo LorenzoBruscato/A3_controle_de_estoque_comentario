@@ -49,10 +49,10 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 ## ⚙️ Tecnologias Utilizadas
 
 - Java 21
-- JDBC (Java Database Connectivity)
+- JDBC 9.2.0 (Java Database Connectivity) 
 - MySQL 8.0.42
 - Maven 3.9.9
-- IDE (Eclipse, IntelliJ ou Netbeans 25)
+- IDE Netbeans 25
 
 ## ⚙️ Configurando o banco de dados MySql
 
