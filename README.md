@@ -14,7 +14,7 @@
 
 Este é um software desenvolvido em conjunto para gerenciar um banco de dados MySQL com duas tabelas principais: **Produto** e **Categoria**. Ele permite cadastrar, listar, atualizar e excluir produtos e categorias de forma simples e eficiente.
 
-## 📦 Funcionalidades
+## 📦 Requisitos Funcionais
 
 - ✅ Cadastro de categorias
 - ✅ Cadastro de produtos com categoria associada
@@ -50,9 +50,9 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 
 - Java 21
 - JDBC (Java Database Connectivity)
-- MySQL
-- Maven
-- IDE (Eclipse, IntelliJ ou Netbeans)
+- MySQL 8.0.42
+- Maven 3.9.9
+- IDE (Eclipse, IntelliJ ou Netbeans 25)
 
 ## ⚙️ Configurando o banco de dados MySql
 
