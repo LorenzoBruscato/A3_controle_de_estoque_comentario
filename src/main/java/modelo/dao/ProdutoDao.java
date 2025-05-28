@@ -25,8 +25,8 @@ public interface ProdutoDao {
 
     public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
-    public void gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
-    public void gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
 }
