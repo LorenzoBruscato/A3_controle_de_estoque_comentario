@@ -181,6 +181,8 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 break;
             case 2:
                 produtoDao.gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMinimaExcel(caminhoArquivo, nomeDoArquivo);
+            case 3:
+                produtoDao.gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMaximaExcel(caminhoArquivo, nomeDoArquivo);
         }
         
         
