@@ -16,15 +16,17 @@ public interface ProdutoDao {
     void aumentarTodosPrecos(double percentual);
 
     void diminuirTodosPrecos(double percentual);
-    
+
     public void aumentarPrecoPorCategoria(double percentual, String categoria);
-    
+
     public void diminuirPrecoPorCategoria(double percentual, String categoria);
-    
+
     public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomeDoArquivo);
-    
+
     public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
-    
+
     public void gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
-    
+
+    public void gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+
 }
