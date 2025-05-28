@@ -186,6 +186,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    @Override
     public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
@@ -311,6 +312,67 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
 
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void gerarRelatorioListaDePrecoAbaixoDaqQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
+
+        // Força extensão e nome do arquivo se for só pasta
+        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+            } else {
+                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+            }
+        }
+
+        String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+            // Garante que a pasta existe
+            File arquivo = new File(caminhoArquivoSaidaExcel);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+            FileOutputStream fileOut = new FileOutputStream(arquivo);
+            Sheet sheet = workBook.createSheet(nomePlanilha);
+
+            String[] colunas = {"Nome", "Quantidade Minima", "Quantidade Estoque"};
+            Row header = sheet.createRow(0);
+            for (int i = 0; i < colunas.length; i++) {
+                header.createCell(i).setCellValue(colunas[i]);
+            }
+            int rowNum = 1;
+
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                int quantidadeMinima = rs.getInt("quantidade_minima");
+                int quantidadeEmEstoque = rs.getInt("quantidade_estoque");
+
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(nome);
+                row.createCell(1).setCellValue(quantidadeMinima);
+                row.createCell(2).setCellValue(quantidadeEmEstoque);
+            }
+
+            for (int i = 0; i < colunas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workBook.write(fileOut);
+            fileOut.close();
+            workBook.close();
+
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
         } catch (SQLException e) {
             throw new DbException("Erro SQL: " + e.getMessage());
         } catch (FileNotFoundException e) {
