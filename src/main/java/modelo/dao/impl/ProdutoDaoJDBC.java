@@ -23,6 +23,12 @@ import modelo.dao.ProdutoDao;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 public class ProdutoDaoJDBC implements ProdutoDao {
 
@@ -455,9 +461,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
             }
         }
-        
+
         String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
-        
+
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
             // Garante que a pasta existe
             File arquivo = new File(caminhoArquivoSaidaExcel);
@@ -494,6 +500,74 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             workBook.close();
 
             JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            } else {
+                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            }
+        }
+
+        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+            // Cria diretório se não existir
+            File arquivo = new File(caminhoArquivoSaidaDoc);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Cria título do documento
+            XWPFParagraph titulo = document.createParagraph();
+            XWPFRun runTitulo = titulo.createRun();
+            runTitulo.setText("Relatório de Lista de Preços");
+            runTitulo.setBold(true);
+            runTitulo.setFontSize(16);
+            titulo.setAlignment(ParagraphAlignment.CENTER);
+
+            // Espaço
+            document.createParagraph();
+
+            // Cria tabela
+            XWPFTable table = document.createTable();
+
+            // Cabeçalho
+            XWPFTableRow header = table.getRow(0);
+            header.getCell(0).setText("Nome");
+            header.addNewTableCell().setText("Preço Unitário");
+            header.addNewTableCell().setText("Unidade");
+            header.addNewTableCell().setText("Categoria");
+
+            // Preenche a tabela com dados
+            while (rs.next()) {
+                XWPFTableRow row = table.createRow();
+                row.getCell(0).setText(rs.getString("nome"));
+                row.getCell(1).setText(String.format("R$ %.2f", rs.getDouble("preco_unitario")));
+                row.getCell(2).setText(rs.getString("unidade"));
+                row.getCell(3).setText(rs.getString("categoria"));
+            }
+
+            // Salva o arquivo
+            try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                document.write(out);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+            }
+
         } catch (SQLException e) {
             throw new DbException("Erro SQL: " + e.getMessage());
         } catch (FileNotFoundException e) {

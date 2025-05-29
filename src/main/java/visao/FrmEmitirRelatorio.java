@@ -171,11 +171,17 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         String caminhoArquivo = JTFCaminhoArquivo.getText();
         String nomeDoArquivo = JTFNomeDoArquivo.getText();
         int indexSelecionado = ComboBoxRelatorio.getSelectedIndex();
+        String tipoFormatacao = (String) ComboBoxArquivo.getSelectedItem();
         
         switch(indexSelecionado){
             case 0:
+                if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
                 produtoDao.gerarRelatorioListaDePrecoExcel(caminhoArquivo, nomeDoArquivo);
                 break;
+            } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                produtoDao.gerarRelatorioListaDePrecoDoc(caminhoArquivo, nomeDoArquivo);
+                break;
+            }
             case 1:
                 produtoDao.gerarRelatorioBalancoFisicoFinanceiroExcel(caminhoArquivo, nomeDoArquivo);
                 break;
