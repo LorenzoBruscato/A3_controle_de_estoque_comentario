@@ -442,10 +442,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
         }
     }
-    
+
     @Override
     public void gerarRelatorioListaProdutoPorCategoria(String caminhoArquivoSaidaExcel, String nomePlanilha) {
-     System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
         // Força extensão e nome do arquivo se for só pasta
         if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
@@ -455,14 +455,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
             }
         }
-
-     String sql = """
-        SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos
-        FROM categoria c
-        LEFT JOIN produto p ON p.categoria = c.nome
-        GROUP BY c.nome
-        ORDER BY c.nome ASC
-    """;
+        
+        String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
+        
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
             // Garante que a pasta existe
             File arquivo = new File(caminhoArquivoSaidaExcel);
@@ -483,12 +478,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             while (rs.next()) {
                 String nomecategoria = rs.getString("nome_categoria");
                 int quantidadeDeProdutos = rs.getInt("quantidade_produtos");
-               
 
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(nomecategoria);
                 row.createCell(1).setCellValue(quantidadeDeProdutos);
-               
+
             }
 
             for (int i = 0; i < colunas.length; i++) {
@@ -506,7 +500,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }    
+        }
     }
 
     private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
