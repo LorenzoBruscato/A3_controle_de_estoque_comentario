@@ -29,6 +29,6 @@ public interface ProdutoDao {
 
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
     
-    public void gerarRelatorioListaProdutoPorCategoria(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
 }
