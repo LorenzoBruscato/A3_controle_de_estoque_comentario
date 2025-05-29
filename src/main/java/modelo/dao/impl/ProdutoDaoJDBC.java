@@ -444,7 +444,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void gerarRelatorioListaProdutoPorCategoria(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+    public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
         // Força extensão e nome do arquivo se for só pasta
