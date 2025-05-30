@@ -16,11 +16,11 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 
 ## 📦 Requisitos Funcionais
 
-- ✅ Cadastro de categorias
-- ✅ Cadastro de produtos com categoria associada
-- ✅ Edição e exclusão de produtos e categorias
-- ✅ Listagem completa de produtos e categorias
-- ✅ Conexão com banco de dados MySQL via JDBC
+- RF001: Cadastro de categorias
+- RF002: Cadastro de produtos com categoria associada
+- RF003: Edição e exclusão de produtos e categorias
+- RF004: Listagem completa de produtos e categorias
+- RF005: Conexão com banco de dados MySQL via JDBC
 
 ## 🧱 Estrutura do Banco de Dados
 
