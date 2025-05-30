@@ -513,11 +513,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".doc")) {
+        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
             if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
             } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
             }
         }
 
