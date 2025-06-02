@@ -193,7 +193,13 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                     break;
                 }
             case 2:
-                produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(caminhoArquivo, nomeDoArquivo);
+                if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }
             case 3:
                 produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(caminhoArquivo, nomeDoArquivo);
                 break;
