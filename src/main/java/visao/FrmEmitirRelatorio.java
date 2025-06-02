@@ -189,6 +189,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioBalancoFisicoFinanceiroDOC(caminhoArquivo, nomeDoArquivo);
                     break;
+                } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioBalancoFisicoFinanceiroPDF(caminhoArquivo, nomeDoArquivo);
+                    break;
                 }
             case 2:
                 if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
@@ -196,6 +199,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                     break;
                 } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(caminhoArquivo, nomeDoArquivo);
                     break;
                 }
             case 3:
@@ -205,6 +211,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc(caminhoArquivo, nomeDoArquivo);
                     break;
+                } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaPDF(caminhoArquivo, nomeDoArquivo);
+                    break;
                 }
             case 4:
                 if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
@@ -213,6 +222,10 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaProdutoPorCategoriaDoc(caminhoArquivo, nomeDoArquivo);
                     break;
+                } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaProdutoPorCategoriaPDF(caminhoArquivo, nomeDoArquivo);
+                    break;
+
                 }
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
