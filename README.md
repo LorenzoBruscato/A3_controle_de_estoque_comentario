@@ -21,6 +21,12 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 - RF004: Listagem completa de produtos e categorias
 - RF005: Conexão com banco de dados MySQL via JDBC
 
+## 📦 Requisitos Não Funcionais
+
+NRF001: Escolha do Caminho do Arquivo
+NRF002: Tipo do Relatorio 
+NRF003: Nome do Arquivo
+
 ## 🧱 Estrutura do Banco de Dados
 
 **Tabela: categoria**
