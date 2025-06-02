@@ -19,9 +19,7 @@ import modelo.Categoria;
 import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.Produto;
-import modelo.Registro;
 import modelo.dao.ProdutoDao;
-import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -30,6 +28,12 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 public class ProdutoDaoJDBC implements ProdutoDao {
 
@@ -40,62 +44,33 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void cadastrarProduto(Produto prod, Registro reg) {
-        String sqlProduto = "INSERT INTO produto "
+    public void cadastrarProduto(Produto obj) {
+        String sql = "INSERT INTO produto "
                 + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, obj.getNome());
+            st.setDouble(2, obj.getPreco());
+            st.setString(3, obj.getUnidade());
+            st.setInt(4, obj.getQuantidade());
+            st.setInt(5, obj.getQuantidadeMinima());
+            st.setInt(6, obj.getQuantidadeMaxima());
+            st.setString(7, obj.getCategoria().getNome());
+            int rowsAffected = st.executeUpdate();
 
-        // AutoCommit desligado para controlar a transação manualmente
-        try {
-            conn.setAutoCommit(false);
-
-            try (
-                    PreparedStatement stProduto = conn.prepareStatement(sqlProduto, Statement.RETURN_GENERATED_KEYS); PreparedStatement stRegistro = conn.prepareStatement(sqlRegistro)) {
-                // Inserir produto
-                stProduto.setString(1, prod.getNome());
-                stProduto.setDouble(2, prod.getPreco());
-                stProduto.setString(3, prod.getUnidade());
-                stProduto.setInt(4, prod.getQuantidade());
-                stProduto.setInt(5, prod.getQuantidadeMinima());
-                stProduto.setInt(6, prod.getQuantidadeMaxima());
-                stProduto.setString(7, prod.getCategoria().getNome());
-
-                int rowsAffected = stProduto.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    try (ResultSet rs = stProduto.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            int id = rs.getInt(1);
-                            prod.setId(id);
-
-                            // Inserir registro
-                            stRegistro.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-                            stRegistro.setString(2, prod.getNome());
-                            stRegistro.setInt(3, prod.getQuantidade());
-                            stRegistro.setString(4, "ENTRADA");
-
-                            stRegistro.executeUpdate();
-                        } else {
-                            throw new DbException("Erro inesperado: não conseguiu obter ID do produto inserido.");
-                        }
-                    }
-                } else {
-                    throw new DbException("Erro inesperado: nenhuma linha inserida no produto.");
+            if (rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
                 }
-
-                conn.commit();  // confirma a transação se tudo ocorreu bem
-
-            } catch (SQLException e) {
-                conn.rollback(); // desfaz todas as alterações se deu erro
-                throw new DbException("Erro ao cadastrar produto: " + e.getMessage());
-            } finally {
-                conn.setAutoCommit(true); // reativa autocommit para o restante da aplicação
+            } else {
+                throw new DbException("Unexpected error! No rows affected");
             }
 
         } catch (SQLException e) {
-            throw new DbException("Erro no controle da transação: " + e.getMessage());
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -608,80 +583,66 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void gerarRelatorioBalancoFisicoFinanceiroDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+    public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".doc")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+        // Ajusta nome do arquivo
+        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
             } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
             }
         }
 
-        String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
+        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
 
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
 
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaDoc);
+            // Cria diretório se não existir
+            File arquivo = new File(caminhoArquivoSaidaPDF);
             File diretorio = arquivo.getParentFile();
             if (diretorio != null && !diretorio.exists()) {
                 diretorio.mkdirs();
             }
 
-            //titulo
-            XWPFParagraph titulo = document.createParagraph();
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-            XWPFRun runtitulo = titulo.createRun();
-            runtitulo.setBold(true);
-            runtitulo.setFontSize(16);
-            runtitulo.setText("Relatorio de Balanço Fisico-Financeiro");
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-            document.createParagraph();
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                contentStream.setLeading(14.5f);
+                contentStream.newLineAtOffset(50, 750);
 
-            //Cria Tabela
-            XWPFTable table = document.createTable();
+                contentStream.showText("Relatório de Lista de Preços");
+                contentStream.newLine();
+                contentStream.newLine();
 
-            //Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Nome");
-            header.addNewTableCell().setText("Preço Unitario");
-            header.addNewTableCell().setText("Quantidade em Estoque");
-            header.addNewTableCell().setText("Valor Total");
+                // Cabeçalho da tabela
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.showText(String.format("%-30s %-15s %-10s %-15s", "Nome", "Preço", "Unidade", "Categoria"));
+                contentStream.newLine();
 
-            double valorTotal = 0.0;
+                // Dados
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                while (rs.next()) {
+                    String linha = String.format(
+                            "%-30s %-15s %-10s %-15s",
+                            rs.getString("nome"),
+                            String.format("R$ %.2f", rs.getDouble("preco_unitario")),
+                            rs.getString("unidade"),
+                            rs.getString("categoria")
+                    );
+                    contentStream.showText(linha);
+                    contentStream.newLine();
+                }
 
-            //Dados
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                int quantidade = rs.getInt("quantidadeEstoque");
-                double precoUnitario = rs.getDouble("precoUnitario");
-                double valorTotalProduto = quantidade * precoUnitario;
-                valorTotal += valorTotalProduto;
-
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(nome);
-                row.getCell(1).setText(String.format("R$ %.2f", precoUnitario));
-                row.getCell(2).setText(String.valueOf(quantidade));
-                row.getCell(3).setText(String.format("R$ %.2f", valorTotalProduto));
+                contentStream.endText();
             }
-
-            XWPFTableRow totalrow = table.createRow();
-            totalrow.getCell(2).setText("Total:");
-            totalrow.getCell(3).setText(String.format("R$ %.2f", valorTotal));
-
-            table.getRows().forEach(row
-                    -> row.getTableCells().forEach(cell
-                            -> cell.getParagraphs().forEach(p -> p.setAlignment(ParagraphAlignment.CENTER)))
-            );
-            
-            //Salvar o documento
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
+            // Salva o arquivo
+            document.save(caminhoArquivoSaidaPDF);
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
 
         } catch (SQLException e) {
             throw new DbException("Erro SQL: " + e.getMessage());

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.List;
 import modelo.Categoria;
 import modelo.Produto;
-import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.ProdutoDao;
 import modelo.dao.impl.CategoriaDaoJDBC;
@@ -24,7 +23,7 @@ public class ProdutoControle {
         if (produto == null || produto.getNome() == null || produto.getNome().isBlank()) {
             throw new IllegalArgumentException("Produto inválido. Nome é obrigatório.");
         }
-        produtoDao.cadastrarProduto(produto, new Registro());
+        produtoDao.cadastrarProduto(produto);
     }
 
     public void atualizarProduto(Produto produto) {

@@ -2,11 +2,10 @@ package modelo.dao;
 
 import java.util.List;
 import modelo.Produto;
-import modelo.Registro;
 
 public interface ProdutoDao {
 
-    public void cadastrarProduto(Produto obj, Registro reg);
+    public void cadastrarProduto(Produto obj);
 
     public void atualizarProduto(Produto obj);
 
@@ -34,5 +33,6 @@ public interface ProdutoDao {
 
     public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
     
-    public void gerarRelatorioBalancoFisicoFinanceiroDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
+
 }

@@ -12,11 +12,10 @@ import modelo.dao.ProdutoDao;
  * @author 10725115564
  */
 public class FrmEmitirRelatorio extends javax.swing.JFrame {
-    
-    
+
     // atributos se necessario
     private ProdutoDao produtoDao;
-    
+
     public FrmEmitirRelatorio() {
         initComponents();
         produtoDao = DaoFactory.instanciarProdutoDao();
@@ -172,16 +171,19 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         String nomeDoArquivo = JTFNomeDoArquivo.getText();
         int indexSelecionado = ComboBoxRelatorio.getSelectedIndex();
         String tipoFormatacao = (String) ComboBoxArquivo.getSelectedItem();
-        
-        switch(indexSelecionado){
+
+        switch (indexSelecionado) {
             case 0:
                 if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
-                produtoDao.gerarRelatorioListaDePrecoExcel(caminhoArquivo, nomeDoArquivo);
-                break;
-            } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
-                produtoDao.gerarRelatorioListaDePrecoDoc(caminhoArquivo, nomeDoArquivo);
-                break;
-            }
+                    produtoDao.gerarRelatorioListaDePrecoExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoPDF(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }
             case 1:
                 produtoDao.gerarRelatorioBalancoFisicoFinanceiroExcel(caminhoArquivo, nomeDoArquivo);
                 break;
@@ -194,11 +196,6 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 produtoDao.gerarRelatorioListaProdutoPorCategoriaExcel(caminhoArquivo, nomeDoArquivo);
                 break;
         }
-        
-        
-        
-        
-        
     }//GEN-LAST:event_JBEmitirActionPerformed
 
     private void JTFNomeDoArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFNomeDoArquivoActionPerformed
