@@ -196,16 +196,26 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(caminhoArquivo, nomeDoArquivo);
                     break;
-                }else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(caminhoArquivo, nomeDoArquivo);
                     break;
                 }
             case 3:
-                produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(caminhoArquivo, nomeDoArquivo);
-                break;
+                if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }
             case 4:
-                produtoDao.gerarRelatorioListaProdutoPorCategoriaExcel(caminhoArquivo, nomeDoArquivo);
-                break;
+                if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaProdutoPorCategoriaExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioListaProdutoPorCategoriaDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
 

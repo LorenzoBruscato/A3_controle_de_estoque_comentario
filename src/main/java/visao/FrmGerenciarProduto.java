@@ -338,7 +338,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             pro.setQuantidadeMaxima(qtdMaxima);
             pro.setCategoria(categoriaExistente);
 
-            produtoDao.cadastrarProduto(pro, new Registro());
+//            produtoDao.cadastrarProduto(pro, new Registro());
 
             carregarProdutosNaTela();
 
