@@ -23,9 +23,11 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 
 ## 📦 Requisitos Não Funcionais
 
-- NRF001: Escolha do Caminho do Arquivo
-- NRF002: Tipo do Relatorio 
-- NRF003: Nome do Arquivo
+- NRF001: Escolha do caminho para salvar relatórios
+- NRF002: Seleção do tipo de relatório (Excel, DOC ou PDF)
+- NRF003: Definir nome do arquivo dos relatórios
+- NRF004: Resposta eficiente aos comandos de CRUD
+- NRF005: Compatível com banco de dados MySQL
 
 ## 🧱 Estrutura do Banco de Dados
 
