@@ -2,27 +2,30 @@ package modelo;
 
 import java.util.Date;
 
-/**
- *
- * @author Diiego
- */
 public class Registro {
 
     private Integer id;
     private Date data;
     private Produto tipoDoProduto;
     private Integer quantidade;
+    private Movimentacao movimentacao;
+
+    public enum Movimentacao {
+        ENTRADA, SAIDA
+    }
 
     public Registro() {
     }
 
-    public Registro(Integer id, Date data, Produto tipoDoProduto, Integer quantidade) {
+    public Registro(Integer id, Date data, Produto tipoDoProduto, Integer quantidade, Movimentacao movimentacao) {
         this.id = id;
         this.data = data;
         this.tipoDoProduto = tipoDoProduto;
         this.quantidade = quantidade;
+        this.movimentacao = movimentacao;
     }
 
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -55,4 +58,22 @@ public class Registro {
         this.quantidade = quantidade;
     }
 
+    public Movimentacao getMovimentacao() {
+        return movimentacao;
+    }
+
+    public void setMovimentacao(Movimentacao movimentacao) {
+        this.movimentacao = movimentacao;
+    }
+
+    @Override
+    public String toString() {
+        return "Registro{" +
+                "id=" + id +
+                ", data=" + data +
+                ", tipoDoProduto=" + (tipoDoProduto != null ? tipoDoProduto.getNome() : null) +
+                ", quantidade=" + quantidade +
+                ", movimentacao=" + movimentacao +
+                '}';
+    }
 }
