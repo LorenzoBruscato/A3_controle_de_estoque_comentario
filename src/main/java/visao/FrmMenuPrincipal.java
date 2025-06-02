@@ -21,6 +21,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         JBSair = new javax.swing.JButton();
         JBGerenciarProdutos = new javax.swing.JButton();
         JBEmitirRelatorios = new javax.swing.JButton();
+        JBMovimentacao = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuArquivo = new javax.swing.JMenu();
         jMenuGerenciarProdutos = new javax.swing.JMenuItem();
@@ -75,6 +76,14 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         JBEmitirRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBEmitirRelatoriosActionPerformed(evt);
+            }
+        });
+
+        JBMovimentacao.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        JBMovimentacao.setText("Movimentação");
+        JBMovimentacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBMovimentacaoActionPerformed(evt);
             }
         });
 
@@ -136,22 +145,20 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(322, 322, 322)
+                        .addComponent(JLMenuPrincipal))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(227, 227, 227)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(JBGerenciarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBMovimentacao, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(JBGerenciarCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(322, 322, 322)
-                        .addComponent(JLMenuPrincipal)))
-                .addContainerGap(227, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(327, 327, 327))
+                            .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +174,9 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(JBReajustarPrecos, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JBEmitirRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JBMovimentacao, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(163, Short.MAX_VALUE))
         );
 
@@ -226,11 +235,16 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenuReajustarPrecosActionPerformed
 
+    private void JBMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBMovimentacaoActionPerformed
+        FrmMovimentacao janela = new FrmMovimentacao();
+        janela.setVisible(true);    }//GEN-LAST:event_JBMovimentacaoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBEmitirRelatorios;
     private javax.swing.JButton JBGerenciarCategorias;
     private javax.swing.JButton JBGerenciarProdutos;
+    private javax.swing.JButton JBMovimentacao;
     private javax.swing.JButton JBReajustarPrecos;
     private javax.swing.JButton JBSair;
     private javax.swing.JLabel JLMenuPrincipal;

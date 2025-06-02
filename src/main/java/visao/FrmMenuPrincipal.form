@@ -102,29 +102,26 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="322" max="-2" attributes="0"/>
+                      <Component id="JLMenuPrincipal" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="227" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="JBGerenciarProdutos" max="32767" attributes="0"/>
                           <Component id="JBReajustarPrecos" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="JBMovimentacao" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="JBGerenciarCategorias" max="32767" attributes="0"/>
                           <Component id="JBEmitirRelatorios" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="JBSair" min="-2" pref="152" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="322" max="-2" attributes="0"/>
-                      <Component id="JLMenuPrincipal" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
-              <EmptySpace pref="227" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="JBSair" min="-2" pref="152" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="327" max="-2" attributes="0"/>
+              <EmptySpace pref="225" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -144,7 +141,10 @@
                   <Component id="JBEmitirRelatorios" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="JBSair" min="-2" pref="57" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="JBMovimentacao" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
+                  <Component id="JBSair" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="163" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -216,6 +216,17 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBEmitirRelatoriosActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="JBMovimentacao">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Movimenta&#xe7;&#xe3;o"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBMovimentacaoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
