@@ -2,10 +2,11 @@ package modelo.dao;
 
 import java.util.List;
 import modelo.Produto;
+import modelo.Registro;
 
 public interface ProdutoDao {
 
-    public void cadastrarProduto(Produto obj);
+    public void cadastrarProduto(Produto obj, Registro reg);
 
     public void atualizarProduto(Produto obj);
 

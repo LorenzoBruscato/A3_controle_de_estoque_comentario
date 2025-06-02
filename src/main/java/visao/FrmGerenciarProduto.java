@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
 import modelo.Produto;
+import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
@@ -337,7 +338,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             pro.setQuantidadeMaxima(qtdMaxima);
             pro.setCategoria(categoriaExistente);
 
-            produtoDao.cadastrarProduto(pro);
+            produtoDao.cadastrarProduto(pro, new Registro());
 
             carregarProdutosNaTela();
 
@@ -368,14 +369,15 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         if (linhaSelecionada != -1) {
             JTFNomeProduto.setText(tabela.getValueAt(linhaSelecionada, 1).toString());
             JTFPrecoUnitario.setText(tabela.getValueAt(linhaSelecionada, 2).toString());
-             
+
             String unidadeUnidade = tabela.getValueAt(linhaSelecionada, 3).toString();
-           for (int i = 0; i < ComboBoxUnidade.getItemCount(); i++) {
-            if (ComboBoxUnidade.getItemAt(i).equals(unidadeUnidade)); {
-                    ComboBoxUnidade.setSelectedIndex(i);   
+            for (int i = 0; i < ComboBoxUnidade.getItemCount(); i++) {
+                if (ComboBoxUnidade.getItemAt(i).equals(unidadeUnidade));
+                {
+                    ComboBoxUnidade.setSelectedIndex(i);
                     break;
-           }
-           }
+                }
+            }
             JTFQtdEstoque.setText(tabela.getValueAt(linhaSelecionada, 4).toString());
             JTFQtdMinima.setText(tabela.getValueAt(linhaSelecionada, 5).toString());
             JTFQtdMaxima.setText(tabela.getValueAt(linhaSelecionada, 6).toString());
@@ -386,7 +388,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     ComboBoxCategoria.setSelectedIndex(i);
                     break;
                 }
-                
+
             }
         }
     }//GEN-LAST:event_JTableProdutosMouseClicked
@@ -435,7 +437,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
                 // Limpar os campos
                 JTFNomeProduto.setText("");
-                JTFPrecoUnitario.setText("");              
+                JTFPrecoUnitario.setText("");
                 JTFQtdEstoque.setText("");
                 JTFQtdMinima.setText("");
                 JTFQtdMaxima.setText("");

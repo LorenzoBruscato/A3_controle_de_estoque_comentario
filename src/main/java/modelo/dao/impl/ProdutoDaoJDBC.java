@@ -19,6 +19,7 @@ import modelo.Categoria;
 import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.Produto;
+import modelo.Registro;
 import modelo.dao.ProdutoDao;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -38,36 +39,68 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         this.conn = conn;
     }
 
-    @Override
-    public void cadastrarProduto(Produto obj) {
-        String sql = "INSERT INTO produto "
-                + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+   @Override
+public void cadastrarProduto(Produto prod, Registro reg) {
+    String sqlProduto = "INSERT INTO produto "
+            + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            st.setString(1, obj.getNome());
-            st.setDouble(2, obj.getPreco());
-            st.setString(3, obj.getUnidade());
-            st.setInt(4, obj.getQuantidade());
-            st.setInt(5, obj.getQuantidadeMinima());
-            st.setInt(6, obj.getQuantidadeMaxima());
-            st.setString(7, obj.getCategoria().getNome());
-            int rowsAffected = st.executeUpdate();
+    String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
+
+    // AutoCommit desligado para controlar a transação manualmente
+    try {
+        conn.setAutoCommit(false);
+
+        try (
+            PreparedStatement stProduto = conn.prepareStatement(sqlProduto, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stRegistro = conn.prepareStatement(sqlRegistro)
+        ) {
+            // Inserir produto
+            stProduto.setString(1, prod.getNome());
+            stProduto.setDouble(2, prod.getPreco());
+            stProduto.setString(3, prod.getUnidade());
+            stProduto.setInt(4, prod.getQuantidade());
+            stProduto.setInt(5, prod.getQuantidadeMinima());
+            stProduto.setInt(6, prod.getQuantidadeMaxima());
+            stProduto.setString(7, prod.getCategoria().getNome());
+
+            int rowsAffected = stProduto.executeUpdate();
 
             if (rowsAffected > 0) {
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    obj.setId(id);
+                try (ResultSet rs = stProduto.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int id = rs.getInt(1);
+                        prod.setId(id);
+
+                        // Inserir registro
+                        stRegistro.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+                        stRegistro.setString(2, prod.getNome());
+                        stRegistro.setInt(3, prod.getQuantidade());
+                        stRegistro.setString(4, "ENTRADA");
+
+                        stRegistro.executeUpdate();
+                    } else {
+                        throw new DbException("Erro inesperado: não conseguiu obter ID do produto inserido.");
+                    }
                 }
             } else {
-                throw new DbException("Unexpected error! No rows affected");
+                throw new DbException("Erro inesperado: nenhuma linha inserida no produto.");
             }
 
+            conn.commit();  // confirma a transação se tudo ocorreu bem
+
         } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            conn.rollback(); // desfaz todas as alterações se deu erro
+            throw new DbException("Erro ao cadastrar produto: " + e.getMessage());
+        } finally {
+            conn.setAutoCommit(true); // reativa autocommit para o restante da aplicação
         }
+
+    } catch (SQLException e) {
+        throw new DbException("Erro no controle da transação: " + e.getMessage());
     }
+}
+
 
     @Override
     public void atualizarProduto(Produto obj) {
