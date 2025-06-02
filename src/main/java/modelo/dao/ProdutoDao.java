@@ -2,6 +2,7 @@ package modelo.dao;
 
 import java.util.List;
 import modelo.Produto;
+import modelo.Registro;
 
 public interface ProdutoDao {
 
@@ -12,6 +13,8 @@ public interface ProdutoDao {
     public void deletarProdutoPorId(int objId);
 
     public List<Produto> resgatarProdutos();
+    
+    public List<Registro> resgatarRegistros();
 
     void aumentarTodosPrecos(double percentual);
 

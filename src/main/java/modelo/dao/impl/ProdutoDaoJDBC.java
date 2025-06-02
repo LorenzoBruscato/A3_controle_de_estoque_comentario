@@ -77,7 +77,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             } else {
                 throw new DbException("Unexpected error! No rows affected");
             }
-            
+
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -151,6 +151,36 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
                 Produto prod = instanciarProduto(rs, cat);
                 lista.add(prod);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        return lista;
+    }
+
+    @Override
+    public List<Registro> resgatarRegistros() {
+        List<Registro> lista = new ArrayList<>();
+        Map<String, Produto> map = new HashMap<>();
+
+        String sql = "SELECT * FROM registro ORDER BY data DESC";
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                String nomeProduto = rs.getString("tipo");
+
+                Produto prod = map.get(nomeProduto);
+                if (prod == null) {
+                    prod = new Produto();
+                    prod.setNome(nomeProduto);
+                    map.put(nomeProduto, prod);
+                }
+
+                Registro reg = instanciarRegistro(rs, prod);
+                lista.add(reg);
             }
 
         } catch (SQLException e) {
@@ -970,9 +1000,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         Registro reg = new Registro();
         reg.setId(rs.getInt("id"));
         reg.setData(rs.getDate("data"));
-        reg.setTipoDoProduto(produto); // Produto passado como parâmetro
+        reg.setTipoDoProduto(produto);
         reg.setQuantidade(rs.getInt("quantidade"));
-        reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("tipo").toUpperCase()));
+        reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao").toUpperCase()));
         return reg;
     }
 }
