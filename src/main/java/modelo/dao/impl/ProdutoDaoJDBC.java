@@ -612,11 +612,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
         // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".doc")) {
             if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                caminhoArquivoSaidaDoc = String.format("%s%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
             } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                caminhoArquivoSaidaDoc = String.format("%s\\%s.doc", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
             }
         }
 
