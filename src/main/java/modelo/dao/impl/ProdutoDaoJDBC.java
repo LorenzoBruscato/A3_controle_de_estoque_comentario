@@ -583,6 +583,93 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            } else {
+                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            }
+        }
+
+        String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+            // Cria diretório se não existir
+            File arquivo = new File(caminhoArquivoSaidaDoc);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Título
+            XWPFParagraph titulo = document.createParagraph();
+            titulo.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun runTitulo = titulo.createRun();
+            runTitulo.setBold(true);
+            runTitulo.setFontSize(16);
+            runTitulo.setText("Relatório de Balanço Físico-Financeiro");
+
+            document.createParagraph(); // Espaço
+
+            // Cria tabela
+            XWPFTable table = document.createTable();
+
+            // Cabeçalho
+            XWPFTableRow header = table.getRow(0);
+            header.getCell(0).setText("Nome");
+            header.addNewTableCell().setText("Preço Unitário");
+            header.addNewTableCell().setText("Quantidade em Estoque");
+            header.addNewTableCell().setText("Valor Total");
+
+            double valorTotalEstoque = 0.0;
+
+            // Dados
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                int quantidade = rs.getInt("quantidade_estoque");
+                double precoUnitario = rs.getDouble("preco_unitario");
+                double valorTotalProduto = quantidade * precoUnitario;
+                valorTotalEstoque += valorTotalProduto;
+
+                XWPFTableRow row = table.createRow();
+                row.getCell(0).setText(nome);
+                row.getCell(1).setText(String.format("R$ %.2f", precoUnitario));
+                row.getCell(2).setText(String.valueOf(quantidade));
+                row.getCell(3).setText(String.format("R$ %.2f", valorTotalProduto));
+            }
+
+            // Linha total
+            XWPFTableRow totalRow = table.createRow();
+            totalRow.getCell(2).setText("TOTAL:");
+            totalRow.getCell(3).setText(String.format("R$ %.2f", valorTotalEstoque));
+
+            // Centraliza texto em todas as células
+            table.getRows().forEach(row
+                    -> row.getTableCells().forEach(cell
+                            -> cell.getParagraphs().forEach(p -> p.setAlignment(ParagraphAlignment.CENTER)))
+            );
+
+            // Salva o documento
+            try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                document.write(out);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+        }
+    }
+
+    
+    @Override
     public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 

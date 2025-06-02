@@ -185,8 +185,13 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                     break;
                 }
             case 1:
-                produtoDao.gerarRelatorioBalancoFisicoFinanceiroExcel(caminhoArquivo, nomeDoArquivo);
-                break;
+                if ("Excel".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioBalancoFisicoFinanceiroExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
+                } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioBalancoFisicoFinanceiroDOC(caminhoArquivo, nomeDoArquivo);
+                    break;
+                }
             case 2:
                 produtoDao.gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(caminhoArquivo, nomeDoArquivo);
             case 3:
