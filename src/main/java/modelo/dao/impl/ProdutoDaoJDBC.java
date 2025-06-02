@@ -676,7 +676,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     -> row.getTableCells().forEach(cell
                             -> cell.getParagraphs().forEach(p -> p.setAlignment(ParagraphAlignment.CENTER)))
             );
-
+            
+            //Salvar o documento
             try (FileOutputStream out = new FileOutputStream(arquivo)) {
                 document.write(out);
                 JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
