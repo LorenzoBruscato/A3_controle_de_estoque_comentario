@@ -1,5 +1,4 @@
-# 🛠️ Sistema de Gerenciamento de Produtos e Categorias
-
+# 🛠️ Sistema de Controle de Estoque
 
 
 ## 👥 Integrantes
