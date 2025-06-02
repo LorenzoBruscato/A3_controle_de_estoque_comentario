@@ -2,6 +2,7 @@ package visao;
 
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
 import modelo.Produto;
@@ -325,6 +326,11 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             int qtdEstoque = Integer.parseInt(proQtdEstoque);
             int qtdMinima = Integer.parseInt(proQtdMIN);
             int qtdMaxima = Integer.parseInt(proQtdMAX);
+
+            if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de Cadastro", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
             String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
             Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
