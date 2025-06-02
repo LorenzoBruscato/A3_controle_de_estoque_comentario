@@ -1,20 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visao;
 
-/**
- *
- * @author 10725115564
- */
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import modelo.Categoria;
+import modelo.Registro;
+import modelo.dao.DaoFactory;
+import modelo.dao.ProdutoDao;
+
 public class FrmMovimentacao extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmMovimentacao
-     */
+    private ProdutoDao produtoDao;
+    private DefaultTableModel tabela;
+    private Object[][] dados = new Object[0][0];
+    private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação"};
+
     public FrmMovimentacao() {
         initComponents();
+        produtoDao = DaoFactory.instanciarProdutoDao();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        tabela = new DefaultTableModel(dados, colunas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0; // ID não pode ser editado
+            }
+        };
+        jTableRegistro.setModel(tabela);
+        carregarRegistroNaTela();
+    }
+
+    private void carregarRegistroNaTela() {
+        tabela.setRowCount(0);
+
+        List<Registro> registros = produtoDao.resgatarRegistros();
+
+        for (Registro reg : registros) {
+            tabela.addRow(new Object[]{
+                reg.getId(),
+                reg.getData(),
+                reg.getTipoDoProduto().getNome(), // Nome do produto
+                reg.getQuantidade(),
+                reg.getMovimentacao() // ENTRADA ou SAIDA
+            });
+        }
     }
 
     /**
@@ -28,18 +57,17 @@ public class FrmMovimentacao extends javax.swing.JFrame {
 
         JLGerenciamentoProdutos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableRegistro = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Movimentação de Estoque");
         setAlwaysOnTop(true);
-        setPreferredSize(new java.awt.Dimension(777, 418));
 
         JLGerenciamentoProdutos.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         JLGerenciamentoProdutos.setText("Movimentação de Estoque");
 
-        jTable1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableRegistro.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jTableRegistro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -50,8 +78,8 @@ public class FrmMovimentacao extends javax.swing.JFrame {
                 "ID", "Nome", "Tipo", "Qtd", "Data"
             }
         ));
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        jTableRegistro.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableRegistro);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,6 +105,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -117,6 +146,6 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLGerenciamentoProdutos;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableRegistro;
     // End of variables declaration//GEN-END:variables
 }
