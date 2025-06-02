@@ -3,7 +3,6 @@ package visao;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import modelo.Categoria;
 import modelo.Registro;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
@@ -58,6 +57,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         JLGerenciamentoProdutos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRegistro = new javax.swing.JTable();
+        JBVoltarMovimentacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Movimentação de Estoque");
@@ -81,32 +81,51 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         jTableRegistro.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableRegistro);
 
+        JBVoltarMovimentacao.setText("Voltar");
+        JBVoltarMovimentacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBVoltarMovimentacaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(240, 240, 240)
-                .addComponent(JLGerenciamentoProdutos)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(240, 240, 240)
+                        .addComponent(JLGerenciamentoProdutos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(323, 323, 323)
+                        .addComponent(JBVoltarMovimentacao)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(JLGerenciamentoProdutos)
-                .addGap(50, 50, 50)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(JBVoltarMovimentacao)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void JBVoltarMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarMovimentacaoActionPerformed
+        FrmMenuPrincipal janela = new FrmMenuPrincipal();
+        janela.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_JBVoltarMovimentacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,6 +163,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JBVoltarMovimentacao;
     private javax.swing.JLabel JLGerenciamentoProdutos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRegistro;

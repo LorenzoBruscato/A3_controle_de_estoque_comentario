@@ -157,8 +157,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
     private void JBVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_JBVoltarActionPerformed
+        FrmMenuPrincipal janela = new FrmMenuPrincipal();
+        janela.setVisible(true);
+        this.dispose();    }//GEN-LAST:event_JBVoltarActionPerformed
 
     private void ComboBoxRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxRelatorioActionPerformed
         // TODO add your handling code here:
