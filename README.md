@@ -8,7 +8,7 @@
 | Diego Wobeto Maglia Muller       | diegowmmuller        | 10724265729   |
 | Victor Hugo Andrade              | andradevh            | 10725115564   |
 | Lorenzo Bruscato                 | Lorenzo, LorenzoBruscato              | 10724262961   |
-| Murilo Vieira Moura              | Murilo               | 10724269339   |
+| Murilo Vieira Moura              | Murilo, ivaxs              | 10724269339   |
 | Henrique Bernardes Rosa          | INTEL, HenriqueBrosa        | 10724263295   |
 
 Este é um software desenvolvido em conjunto para gerenciar um banco de dados MySQL com duas tabelas principais: **Produto** e **Categoria**. Ele permite cadastrar, listar, atualizar e excluir produtos e categorias de forma simples e eficiente.
