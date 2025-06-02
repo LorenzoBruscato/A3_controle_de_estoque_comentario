@@ -33,5 +33,6 @@ public interface ProdutoDao {
     public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
-
+    
+    public void gerarRelatorioBalancoFisicoFinanceiroDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 }
