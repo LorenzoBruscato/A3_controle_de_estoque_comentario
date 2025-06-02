@@ -120,11 +120,11 @@
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="5">
-            <StringItem index="0" value="Lista de pre&#xe7;o"/>
-            <StringItem index="1" value="Balan&#xe7;o fisico/financeiro"/>
-            <StringItem index="2" value="Relatorio de produtos abaixo da quantidade minima"/>
-            <StringItem index="3" value="Relatorio de produtos que est&#xe3;o abaixo da quantidade maxima"/>
-            <StringItem index="4" value="Relatorio da quantidade de produtos por categoria"/>
+            <StringItem index="0" value="Lista de Pre&#xe7;o"/>
+            <StringItem index="1" value="Balan&#xe7;o F&#xed;sico/Financeiro"/>
+            <StringItem index="2" value="Relat&#xf3;rio de Produtos Abaixo da Quantidade M&#xed;nima"/>
+            <StringItem index="3" value="Relat&#xf3;rio de Produtos Abaixo da Quantidade M&#xe1;xima"/>
+            <StringItem index="4" value="Relat&#xf3;rio da Quantidade de Produtos por Categoria"/>
           </StringArray>
         </Property>
       </Properties>

@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visao;
 
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 
-/**
- *
- * @author 10725115564
- */
 public class FrmEmitirRelatorio extends javax.swing.JFrame {
 
     // atributos se necessario
@@ -43,13 +35,15 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel1.setText("Emitir Relatórios");
 
-        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de preço", "Balanço fisico/financeiro", "Relatorio de produtos abaixo da quantidade minima", "Relatorio de produtos que estão abaixo da quantidade maxima", "Relatorio da quantidade de produtos por categoria" }));
+        ComboBoxRelatorio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de Preço", "Balanço Físico/Financeiro", "Relatório de Produtos Abaixo da Quantidade Mínima", "Relatório de Produtos Abaixo da Quantidade Máxima", "Relatório da Quantidade de Produtos por Categoria" }));
         ComboBoxRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBoxRelatorioActionPerformed(evt);
             }
         });
 
+        ComboBoxArquivo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         ComboBoxArquivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Excel", "Doc", "PDF" }));
 
         JBVoltar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -74,10 +68,13 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText("Tipo de arquivo");
 
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel4.setText("Caminho do Arquivo");
 
+        JTFCaminhoArquivo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         JTFCaminhoArquivo.setText("C:\\");
 
+            jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
             jLabel5.setText("Nome do arquivo");
 
             JTFNomeDoArquivo.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +134,7 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(ComboBoxRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(ComboBoxArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                     .addComponent(jLabel5)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(JTFNomeDoArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
