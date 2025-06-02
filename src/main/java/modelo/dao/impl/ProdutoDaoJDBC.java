@@ -19,6 +19,7 @@ import modelo.Categoria;
 import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.Produto;
+import modelo.Registro;
 import modelo.dao.ProdutoDao;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -64,11 +65,19 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 if (rs.next()) {
                     int id = rs.getInt(1);
                     obj.setId(id);
+                    String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES(?,?,?,?)";
+                    try (PreparedStatement str = conn.prepareStatement(sqlRegistro)) {
+                        str.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+                        str.setString(2, obj.getNome());
+                        str.setInt(3, obj.getQuantidade());
+                        str.setString(4, "ENTRADA");
+                        str.executeUpdate();
+                    }
                 }
             } else {
                 throw new DbException("Unexpected error! No rows affected");
             }
-
+            
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -733,8 +742,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
         }
     }
-    
-     @Override
+
+    @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
@@ -799,8 +808,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
         }
     }
-    
-     @Override
+
+    @Override
     public void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
@@ -864,7 +873,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    
     @Override
     public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
@@ -956,5 +964,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         cat.setTamanho(Tamanho.valueOf(rs.getString("tamanho").toUpperCase()));
         cat.setEmbalagem(Embalagem.valueOf(rs.getString("embalagem").toUpperCase()));
         return cat;
+    }
+
+    private Registro instanciarRegistro(ResultSet rs, Produto produto) throws SQLException {
+        Registro reg = new Registro();
+        reg.setId(rs.getInt("id"));
+        reg.setData(rs.getDate("data"));
+        reg.setTipoDoProduto(produto); // Produto passado como parâmetro
+        reg.setQuantidade(rs.getInt("quantidade"));
+        reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("tipo").toUpperCase()));
+        return reg;
     }
 }
