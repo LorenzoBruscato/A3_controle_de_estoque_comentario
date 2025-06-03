@@ -330,7 +330,13 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             int qtdMaxima = Integer.parseInt(proQtdMAX);
 
             if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-                JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de Cadastro", "Erro", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            } else if (qtdEstoque < qtdMinima) {
+                JOptionPane.showMessageDialog(this, "A quantidade em estoque é menor do que a quantidade mínima.", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            } else if (qtdEstoque > qtdMaxima) {
+                JOptionPane.showMessageDialog(this, "A quantidade em estoque é maior do que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -410,6 +416,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             try {
                 // Pega os valores da linha selecionada da tabela
                 int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
+                Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
+                int qtdEstoqueAntiga = produtoAtual.getQuantidade();
                 String nome = JTFNomeProduto.getText().trim();
                 double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
                 String unidade = ComboBoxUnidade.getSelectedItem().toString();
@@ -422,6 +430,17 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
                 if (categoria == null) {
                     throw new DbException("Categoria não encontrada: " + nomeCategoria);
+                }
+
+                if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                    JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else if (qtdEstoque < qtdMinima) {
+                    JOptionPane.showMessageDialog(this, "A quantidade em estoque é menor do que a quantidade mínima.", "Erro", JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else if (qtdEstoque > qtdMaxima) {
+                    JOptionPane.showMessageDialog(this, "A quantidade em estoque é maior do que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
 
                 // Criar e preencher o objeto Produto
@@ -439,8 +458,12 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 reg.setId(id);
                 reg.setData(new Date());
                 reg.setTipoDoProduto(produto);
-                reg.setQuantidade(qtdEstoque);
-                reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
+                reg.setQuantidade(Math.abs(qtdEstoque - qtdEstoqueAntiga));
+                if (qtdEstoque > qtdEstoqueAntiga) {
+                    reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
+                } else if (qtdEstoque < qtdEstoqueAntiga) {
+                    reg.setMovimentacao(Registro.Movimentacao.SAIDA);
+                }
 
                 // Atualizar produto no banco de dados
                 produtoDao.atualizarProduto(produto, reg);
