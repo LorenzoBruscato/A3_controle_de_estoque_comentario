@@ -6,6 +6,8 @@ import modelo.Registro;
 
 public interface ProdutoDao {
 
+    public Produto procurarProdutoPorId(Integer id);
+
     public void cadastrarProduto(Produto obj);
 
     public void atualizarProduto(Produto obj, Registro reg);

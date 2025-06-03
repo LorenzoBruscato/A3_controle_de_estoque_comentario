@@ -46,6 +46,26 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public Produto procurarProdutoPorId(Integer id) {
+        String sql = "SELECT * FROM produto WHERE id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+
+            st.setInt(1, id);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return instanciarProduto(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
     public void cadastrarProduto(Produto obj) {
         String sql = "INSERT INTO produto "
                 + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
@@ -113,1253 +133,1306 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             throw new DbException(e.getMessage());
         }
 
-        String sqlr = "UPDATE registro SET "
-                + "data = ?, "
-                + "tipo = ?, "
-                + "quantidade = ?, "
-                + "movimentacao = ? "
-                + "WHERE id = ?";
-
+        String sqlr = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
         try (PreparedStatement st = conn.prepareStatement(sqlr)) {
-
             java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
             st.setDate(1, sqlDate);
             st.setString(2, reg.getTipoDoProduto().getNome());
             st.setInt(3, reg.getQuantidade());
             st.setString(4, reg.getMovimentacao().name());
-            st.setInt(5, reg.getId());
-
             st.executeUpdate();
-
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
     }
 
-    @Override
-    public void deletarProdutoPorId(int objId) {
+        @Override
+        public void deletarProdutoPorId
+        (int objId
+        
+            ) {
         String sql
-                = "DELETE FROM produto "
-                + "WHERE id = ?";
+                    = "DELETE FROM produto "
+                    + "WHERE id = ?";
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, objId);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setInt(1, objId);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public List<Produto> resgatarProdutos() {
+        @Override
+        public List<Produto> resgatarProdutos
+        
+            () {
         List<Produto> lista = new ArrayList<>();
-        Map<Integer, Categoria> map = new HashMap<>();
+            Map<Integer, Categoria> map = new HashMap<>();
 
-        String sql = "SELECT produto.*, categoria.id AS categoria_id, categoria.nome AS categoria_nome, "
-                + "categoria.tamanho, categoria.embalagem "
-                + "FROM produto "
-                + "INNER JOIN categoria ON produto.categoria = categoria.nome "
-                + "ORDER BY produto.nome";
+            String sql = "SELECT produto.*, categoria.id AS categoria_id, categoria.nome AS categoria_nome, "
+                    + "categoria.tamanho, categoria.embalagem "
+                    + "FROM produto "
+                    + "INNER JOIN categoria ON produto.categoria = categoria.nome "
+                    + "ORDER BY produto.nome";
 
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
-            while (rs.next()) {
-                int categoriaId = rs.getInt("categoria_id");
+                while (rs.next()) {
+                    int categoriaId = rs.getInt("categoria_id");
 
-                Categoria cat = map.get(categoriaId);
-                if (cat == null) {
-                    cat = instanciarCategoria(rs, categoriaId);
-                    map.put(categoriaId, cat);
+                    Categoria cat = map.get(categoriaId);
+                    if (cat == null) {
+                        cat = instanciarCategoria(rs, categoriaId);
+                        map.put(categoriaId, cat);
+                    }
+
+                    Produto prod = instanciarProduto(rs);
+                    lista.add(prod);
                 }
 
-                Produto prod = instanciarProduto(rs, cat);
-                lista.add(prod);
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
             }
 
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            return lista;
         }
 
-        return lista;
-    }
-
-    @Override
-    public List<Registro> resgatarRegistros() {
+        @Override
+        public List<Registro> resgatarRegistros
+        
+            () {
         List<Registro> lista = new ArrayList<>();
-        Map<String, Produto> map = new HashMap<>();
+            Map<String, Produto> map = new HashMap<>();
 
-        String sql = "SELECT * FROM registro ORDER BY data DESC";
+            String sql = "SELECT * FROM registro ORDER BY data DESC";
 
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
-            while (rs.next()) {
-                String nomeProduto = rs.getString("tipo");
+                while (rs.next()) {
+                    String nomeProduto = rs.getString("tipo");
 
-                Produto prod = map.get(nomeProduto);
-                if (prod == null) {
-                    prod = new Produto();
-                    prod.setNome(nomeProduto);
-                    map.put(nomeProduto, prod);
+                    Produto prod = map.get(nomeProduto);
+                    if (prod == null) {
+                        prod = new Produto();
+                        prod.setNome(nomeProduto);
+                        map.put(nomeProduto, prod);
+                    }
+
+                    Registro reg = instanciarRegistro(rs, prod);
+                    lista.add(reg);
                 }
 
-                Registro reg = instanciarRegistro(rs, prod);
-                lista.add(reg);
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
             }
 
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            return lista;
         }
 
-        return lista;
-    }
-
-    @Override
-    public void aumentarTodosPrecos(double percentual) {
+        @Override
+        public void aumentarTodosPrecos
+        (double percentual
+        
+            ) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100)";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setDouble(1, percentual);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setDouble(1, percentual);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void diminuirTodosPrecos(double percentual) {
+        @Override
+        public void diminuirTodosPrecos
+        (double percentual
+        
+            ) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 - ? / 100)";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setDouble(1, percentual);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setDouble(1, percentual);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void aumentarPrecoPorCategoria(double percentual, String categoria) {
+        @Override
+        public void aumentarPrecoPorCategoria
+        (double percentual, String categoria
+        
+            ) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100) WHERE categoria = ?";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setDouble(1, percentual);
-            st.setString(2, categoria);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setDouble(1, percentual);
+                st.setString(2, categoria);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void diminuirPrecoPorCategoria(double percentual, String categoria) {
+        @Override
+        public void diminuirPrecoPorCategoria
+        (double percentual, String categoria
+        
+            ) {
         String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 - ? / 100) WHERE categoria = ?";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setDouble(1, percentual);
-            st.setString(2, categoria);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setDouble(1, percentual);
+                st.setString(2, categoria);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        @Override
+        public void gerarRelatorioListaDePrecoExcel
+        (String caminhoArquivoSaidaExcel, String nomePlanilha
+        
+            ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
-            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
-            } else {
-                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
+            // Força extensão e nome do arquivo se for só pasta
+            if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+                if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                    caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
+                } else {
+                    caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha);
+                }
+            }
+
+            String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+
+                // Garante que a pasta existe
+                File arquivo = new File(caminhoArquivoSaidaExcel);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                FileOutputStream fileOut = new FileOutputStream(arquivo);
+                Sheet sheet = workBook.createSheet(nomePlanilha);
+
+                String[] colunas = {"Nome", "Preço Unitário", "Unidade", "Categoria"};
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < colunas.length; i++) {
+                    header.createCell(i).setCellValue(colunas[i]);
+                }
+
+                int rowNum = 1;
+                while (rs.next()) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(rs.getString("nome"));
+                    row.createCell(1).setCellValue(rs.getDouble("preco_unitario"));
+                    row.createCell(2).setCellValue(rs.getString("unidade"));
+                    row.createCell(3).setCellValue(rs.getString("categoria"));
+                }
+
+                for (int i = 0; i < colunas.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                workBook.write(fileOut);
+                fileOut.close();
+                workBook.close();
+
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
             }
         }
 
-        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaExcel);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet(nomePlanilha);
-
-            String[] colunas = {"Nome", "Preço Unitário", "Unidade", "Categoria"};
-            Row header = sheet.createRow(0);
-            for (int i = 0; i < colunas.length; i++) {
-                header.createCell(i).setCellValue(colunas[i]);
-            }
-
-            int rowNum = 1;
-            while (rs.next()) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(rs.getString("nome"));
-                row.createCell(1).setCellValue(rs.getDouble("preco_unitario"));
-                row.createCell(2).setCellValue(rs.getString("unidade"));
-                row.createCell(3).setCellValue(rs.getString("categoria"));
-            }
-
-            for (int i = 0; i < colunas.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workBook.write(fileOut);
-            fileOut.close();
-            workBook.close();
-
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        @Override
+        public void gerarRelatorioBalancoFisicoFinanceiroExcel
+        (String caminhoArquivoSaidaExcel, String nomePlanilha
+        
+            ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
-            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
-            } else {
-                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+            // Força extensão e nome do arquivo se for só pasta
+            if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+                if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                    caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                } else {
+                    caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                }
+            }
+
+            String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+
+                // Garante que a pasta existe
+                File arquivo = new File(caminhoArquivoSaidaExcel);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                FileOutputStream fileOut = new FileOutputStream(arquivo);
+                Sheet sheet = workBook.createSheet(nomePlanilha);
+
+                String[] colunas = {"Nome", "Quantidade em Estoque", "Preço Unitário", "Valor Total"};
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < colunas.length; i++) {
+                    header.createCell(i).setCellValue(colunas[i]);
+                }
+
+                int rowNum = 1;
+                double valorTotalEstoque = 0.0;
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    int quantidade = rs.getInt("quantidade_estoque");
+                    double precoUnitario = rs.getDouble("preco_unitario");
+                    double valorTotalProduto = quantidade * precoUnitario;
+                    valorTotalEstoque += valorTotalProduto;
+
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(nome);
+                    row.createCell(1).setCellValue(quantidade);
+                    row.createCell(2).setCellValue(precoUnitario);
+                    row.createCell(3).setCellValue(valorTotalProduto);
+                }
+
+                // Linha final: total do estoque
+                Row totalRow = sheet.createRow(rowNum);
+                totalRow.createCell(2).setCellValue("TOTAL:");
+                totalRow.createCell(3).setCellValue(valorTotalEstoque);
+
+                for (int i = 0; i < colunas.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                workBook.write(fileOut);
+                fileOut.close();
+                workBook.close();
+
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
             }
         }
 
-        String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaExcel);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet(nomePlanilha);
-
-            String[] colunas = {"Nome", "Quantidade em Estoque", "Preço Unitário", "Valor Total"};
-            Row header = sheet.createRow(0);
-            for (int i = 0; i < colunas.length; i++) {
-                header.createCell(i).setCellValue(colunas[i]);
-            }
-
-            int rowNum = 1;
-            double valorTotalEstoque = 0.0;
-
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                int quantidade = rs.getInt("quantidade_estoque");
-                double precoUnitario = rs.getDouble("preco_unitario");
-                double valorTotalProduto = quantidade * precoUnitario;
-                valorTotalEstoque += valorTotalProduto;
-
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(nome);
-                row.createCell(1).setCellValue(quantidade);
-                row.createCell(2).setCellValue(precoUnitario);
-                row.createCell(3).setCellValue(valorTotalProduto);
-            }
-
-            // Linha final: total do estoque
-            Row totalRow = sheet.createRow(rowNum);
-            totalRow.createCell(2).setCellValue("TOTAL:");
-            totalRow.createCell(3).setCellValue(valorTotalEstoque);
-
-            for (int i = 0; i < colunas.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workBook.write(fileOut);
-            fileOut.close();
-            workBook.close();
-
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel
+        (String caminhoArquivoSaidaExcel, String nomePlanilha
+        
+            ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
-            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
-            } else {
-                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+            // Força extensão e nome do arquivo se for só pasta
+            if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+                if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                    caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                } else {
+                    caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+                // Garante que a pasta existe
+                File arquivo = new File(caminhoArquivoSaidaExcel);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+                FileOutputStream fileOut = new FileOutputStream(arquivo);
+                Sheet sheet = workBook.createSheet(nomePlanilha);
+
+                String[] colunas = {"Nome", "Quantidade Mínima", "Quantidade Estoque"};
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < colunas.length; i++) {
+                    header.createCell(i).setCellValue(colunas[i]);
+                }
+                int rowNum = 1;
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    int quantidadeMinima = rs.getInt("quantidade_minima");
+                    int quantidadeEmEstoque = rs.getInt("quantidade_estoque");
+
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(nome);
+                    row.createCell(1).setCellValue(quantidadeMinima);
+                    row.createCell(2).setCellValue(quantidadeEmEstoque);
+                }
+
+                for (int i = 0; i < colunas.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                workBook.write(fileOut);
+                fileOut.close();
+                workBook.close();
+
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
             }
         }
 
-        String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaExcel);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-            FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet(nomePlanilha);
-
-            String[] colunas = {"Nome", "Quantidade Mínima", "Quantidade Estoque"};
-            Row header = sheet.createRow(0);
-            for (int i = 0; i < colunas.length; i++) {
-                header.createCell(i).setCellValue(colunas[i]);
-            }
-            int rowNum = 1;
-
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                int quantidadeMinima = rs.getInt("quantidade_minima");
-                int quantidadeEmEstoque = rs.getInt("quantidade_estoque");
-
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(nome);
-                row.createCell(1).setCellValue(quantidadeMinima);
-                row.createCell(2).setCellValue(quantidadeEmEstoque);
-            }
-
-            for (int i = 0; i < colunas.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workBook.write(fileOut);
-            fileOut.close();
-            workBook.close();
-
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel
+        (String caminhoArquivoSaidaExcel, String nomePlanilha
+        
+            ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
-            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
-            } else {
-                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+            // Força extensão e nome do arquivo se for só pasta
+            if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+                if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                    caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                } else {
+                    caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+                // Garante que a pasta existe
+                File arquivo = new File(caminhoArquivoSaidaExcel);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+                FileOutputStream fileOut = new FileOutputStream(arquivo);
+                Sheet sheet = workBook.createSheet(nomePlanilha);
+
+                String[] colunas = {"Nome", "Quantidade Máxima", "Quantidade Estoque"};
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < colunas.length; i++) {
+                    header.createCell(i).setCellValue(colunas[i]);
+                }
+                int rowNum = 1;
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    int quantidadeMinima = rs.getInt("quantidade_maxima");
+                    int quantidadeEmEstoque = rs.getInt("quantidade_estoque");
+
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(nome);
+                    row.createCell(1).setCellValue(quantidadeMinima);
+                    row.createCell(2).setCellValue(quantidadeEmEstoque);
+                }
+
+                for (int i = 0; i < colunas.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                workBook.write(fileOut);
+                fileOut.close();
+                workBook.close();
+
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
             }
         }
 
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaExcel);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-            FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet(nomePlanilha);
-
-            String[] colunas = {"Nome", "Quantidade Máxima", "Quantidade Estoque"};
-            Row header = sheet.createRow(0);
-            for (int i = 0; i < colunas.length; i++) {
-                header.createCell(i).setCellValue(colunas[i]);
-            }
-            int rowNum = 1;
-
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                int quantidadeMinima = rs.getInt("quantidade_maxima");
-                int quantidadeEmEstoque = rs.getInt("quantidade_estoque");
-
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(nome);
-                row.createCell(1).setCellValue(quantidadeMinima);
-                row.createCell(2).setCellValue(quantidadeEmEstoque);
-            }
-
-            for (int i = 0; i < colunas.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workBook.write(fileOut);
-            fileOut.close();
-            workBook.close();
-
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
+        @Override
+        public void gerarRelatorioListaProdutoPorCategoriaExcel
+        (String caminhoArquivoSaidaExcel, String nomePlanilha
+        
+            ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
-        if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
-            if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
-                caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
-            } else {
-                caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
-            }
-        }
-
-        String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-            // Garante que a pasta existe
-            File arquivo = new File(caminhoArquivoSaidaExcel);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-            FileOutputStream fileOut = new FileOutputStream(arquivo);
-            Sheet sheet = workBook.createSheet(nomePlanilha);
-
-            String[] colunas = {"Categoria", "Quantidade Produtos"};
-            Row header = sheet.createRow(0);
-            for (int i = 0; i < colunas.length; i++) {
-                header.createCell(i).setCellValue(colunas[i]);
-            }
-            int rowNum = 1;
-
-            while (rs.next()) {
-                String nomecategoria = rs.getString("nome_categoria");
-                int quantidadeDeProdutos = rs.getInt("quantidade_produtos");
-
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(nomecategoria);
-                row.createCell(1).setCellValue(quantidadeDeProdutos);
-
+            // Força extensão e nome do arquivo se for só pasta
+            if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
+                if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
+                    caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                } else {
+                    caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
+                }
             }
 
-            for (int i = 0; i < colunas.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
+            String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+                // Garante que a pasta existe
+                File arquivo = new File(caminhoArquivoSaidaExcel);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+                FileOutputStream fileOut = new FileOutputStream(arquivo);
+                Sheet sheet = workBook.createSheet(nomePlanilha);
+
+                String[] colunas = {"Categoria", "Quantidade Produtos"};
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < colunas.length; i++) {
+                    header.createCell(i).setCellValue(colunas[i]);
+                }
+                int rowNum = 1;
+
+                while (rs.next()) {
+                    String nomecategoria = rs.getString("nome_categoria");
+                    int quantidadeDeProdutos = rs.getInt("quantidade_produtos");
+
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(nomecategoria);
+                    row.createCell(1).setCellValue(quantidadeDeProdutos);
 
-            workBook.write(fileOut);
-            fileOut.close();
-            workBook.close();
-
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
-
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            }
-        }
-
-        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-
-            // Cria diretório se não existir
-            File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            // Cria título do documento
-            XWPFParagraph titulo = document.createParagraph();
-            XWPFRun runTitulo = titulo.createRun();
-            runTitulo.setText("Relatório de Lista de Preços");
-            runTitulo.setBold(true);
-            runTitulo.setFontSize(16);
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-
-            // Espaço
-            document.createParagraph();
-
-            // Cria tabela
-            XWPFTable table = document.createTable();
-
-            // Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Nome");
-            header.addNewTableCell().setText("Preço Unitário");
-            header.addNewTableCell().setText("Unidade");
-            header.addNewTableCell().setText("Categoria");
-
-            // Preenche a tabela com dados
-            while (rs.next()) {
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(rs.getString("nome"));
-                row.getCell(1).setText(String.format("R$ %.2f", rs.getDouble("preco_unitario")));
-                row.getCell(2).setText(rs.getString("unidade"));
-                row.getCell(3).setText(rs.getString("categoria"));
-            }
-
-            // Salva o arquivo
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
-
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            }
-        }
-
-        String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-
-            // Cria diretório se não existir
-            File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            // Título
-            XWPFParagraph titulo = document.createParagraph();
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-            XWPFRun runTitulo = titulo.createRun();
-            runTitulo.setBold(true);
-            runTitulo.setFontSize(16);
-            runTitulo.setText("Relatório de Balanço Físico-Financeiro");
-
-            document.createParagraph(); // Espaço
-
-            // Cria tabela
-            XWPFTable table = document.createTable();
-
-            // Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Nome");
-            header.addNewTableCell().setText("Preço Unitário");
-            header.addNewTableCell().setText("Quantidade em Estoque");
-            header.addNewTableCell().setText("Valor Total");
-
-            double valorTotalEstoque = 0.0;
-
-            // Dados
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                int quantidade = rs.getInt("quantidade_estoque");
-                double precoUnitario = rs.getDouble("preco_unitario");
-                double valorTotalProduto = quantidade * precoUnitario;
-                valorTotalEstoque += valorTotalProduto;
-
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(nome);
-                row.getCell(1).setText(String.format("R$ %.2f", precoUnitario));
-                row.getCell(2).setText(String.valueOf(quantidade));
-                row.getCell(3).setText(String.format("R$ %.2f", valorTotalProduto));
-            }
-
-            // Linha total
-            XWPFTableRow totalRow = table.createRow();
-            totalRow.getCell(2).setText("TOTAL:");
-            totalRow.getCell(3).setText(String.format("R$ %.2f", valorTotalEstoque));
-
-            // Centraliza texto em todas as células
-            table.getRows().forEach(row
-                    -> row.getTableCells().forEach(cell
-                            -> cell.getParagraphs().forEach(p -> p.setAlignment(ParagraphAlignment.CENTER)))
-            );
-
-            // Salva o documento
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
-
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            }
-        }
-
-        String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-
-            // Cria diretório se não existir
-            File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            // Cria título do documento
-            XWPFParagraph titulo = document.createParagraph();
-            XWPFRun runTitulo = titulo.createRun();
-            runTitulo.setText("Relatório de Lista de Preços Abaixo da Quantidade Mínima");
-            runTitulo.setBold(true);
-            runTitulo.setFontSize(16);
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-
-            // Espaço
-            document.createParagraph();
-
-            // Cria tabela
-            XWPFTable table = document.createTable();
-
-            // Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Nome");
-            header.addNewTableCell().setText("Quantidade Mínima");
-            header.addNewTableCell().setText("Quantidade em Estoque");
-
-            // Preenche a tabela com dados
-            while (rs.next()) {
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(rs.getString("nome"));
-                row.getCell(1).setText(rs.getString("quantidade_minima"));
-                row.getCell(2).setText(rs.getString("quantidade_estoque"));
-            }
-
-            // Salva o arquivo
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
-
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            }
-        }
-
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-
-            // Cria diretório se não existir
-            File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            // Cria título do documento
-            XWPFParagraph titulo = document.createParagraph();
-            XWPFRun runTitulo = titulo.createRun();
-            runTitulo.setText("Relatório de Lista de Preços Abaixo da Quantidade Máxima");
-            runTitulo.setBold(true);
-            runTitulo.setFontSize(16);
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-
-            // Espaço
-            document.createParagraph();
-
-            // Cria tabela
-            XWPFTable table = document.createTable();
-
-            // Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Nome");
-            header.addNewTableCell().setText("Quantidade Máxima");
-            header.addNewTableCell().setText("Quantidade em Estoque");
-
-            // Preenche a tabela com dados
-            while (rs.next()) {
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(rs.getString("nome"));
-                row.getCell(1).setText(rs.getString("quantidade_maxima"));
-                row.getCell(2).setText(rs.getString("quantidade_estoque"));
-            }
-
-            // Salva o arquivo
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
-
-        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
-            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
-                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            } else {
-                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
-            }
-        }
-
-        String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-
-            // Cria diretório se não existir
-            File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            // Cria título do documento
-            XWPFParagraph titulo = document.createParagraph();
-            XWPFRun runTitulo = titulo.createRun();
-            runTitulo.setText("Relatório de Lista de Produtos por Categoria");
-            runTitulo.setBold(true);
-            runTitulo.setFontSize(16);
-            titulo.setAlignment(ParagraphAlignment.CENTER);
-
-            // Espaço
-            document.createParagraph();
-
-            // Cria tabela
-            XWPFTable table = document.createTable();
-
-            // Cabeçalho
-            XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Categoria");
-            header.addNewTableCell().setText("Quantidade Produtos");
-
-            // Preenche a tabela com dados
-            while (rs.next()) {
-                XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(rs.getString("nome_categoria"));
-                row.getCell(1).setText(rs.getString("quantidade_produtos"));
-            }
-
-            // Salva o arquivo
-            try (FileOutputStream out = new FileOutputStream(arquivo)) {
-                document.write(out);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
-
-        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
-            } else {
-                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
-            }
-        }
-
-        String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
-
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
-            File arquivo = new File(caminhoArquivoSaidaPDF);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            PDFont fonte = PDType1Font.HELVETICA;
-            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
-
-            PDPage page = new PDPage();
-            document.addPage(page);
-            content = new PDPageContentStream(document, page);
-
-            // Título
-            content.beginText();
-            content.setFont(fonteNegrito, 14);
-            content.newLineAtOffset(margin, y);
-            content.showText("Relatório de Lista de Preços");
-            content.endText();
-            y -= leading * 2;
-
-            // Cabeçalhos
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{"Nome", "Preço", "Unidade", "Categoria"});
-            y -= leading;
-
-            content.setFont(fonte, fontSize);
-
-            while (rs.next()) {
-                if (y <= 50) {
-                    content.close();
-                    page = new PDPage();
-                    document.addPage(page);
-                    content = new PDPageContentStream(document, page);
-                    y = yStart;
-
-                    // Cabeçalho novamente na nova página
-                    content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{"Nome", "Preço", "Unidade", "Categoria"});
-                    y -= leading;
-                    content.setFont(fonte, fontSize);
                 }
 
-                String nome = rs.getString("nome");
-                String preco = String.format("R$ %.2f", rs.getDouble("preco_unitario"));
-                String unidade = rs.getString("unidade");
-                String categoria = rs.getString("categoria");
-
-                escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{nome, preco, unidade, categoria});
-                y -= leading;
-            }
-
-            content.close();
-            document.save(caminhoArquivoSaidaPDF);
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
-
-        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            } else {
-                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            }
-        }
-
-        String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
-
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
-            File arquivo = new File(caminhoArquivoSaidaPDF);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            PDFont fonte = PDType1Font.HELVETICA;
-            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
-
-            PDPage page = new PDPage();
-            document.addPage(page);
-            content = new PDPageContentStream(document, page);
-
-            // Título
-            content.beginText();
-            content.setFont(fonteNegrito, 14);
-            content.newLineAtOffset(margin, y);
-            content.showText("Relatório Balanço Físico-Financeiro");
-            content.endText();
-            y -= leading * 2;
-
-            // Cabeçalhos
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 200, 300, 400}, new String[]{"Nome", "Qtd Estoque", "Preço Unit.", "Valor Total"});
-            y -= leading;
-            content.setFont(fonte, fontSize);
-
-            double valorTotalEstoque = 0.0;
-
-            while (rs.next()) {
-                if (y <= 50) {
-                    content.close();
-                    page = new PDPage();
-                    document.addPage(page);
-                    content = new PDPageContentStream(document, page);
-                    y = yStart;
-
-                    // Cabeçalho novamente
-                    content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 200, 300, 400}, new String[]{"Nome", "Qtd Estoque", "Preço Unit.", "Valor Total"});
-                    y -= leading;
-                    content.setFont(fonte, fontSize);
+                for (int i = 0; i < colunas.length; i++) {
+                    sheet.autoSizeColumn(i);
                 }
 
-                String nome = rs.getString("nome");
-                int qtd = rs.getInt("quantidade_estoque");
-                double preco = rs.getDouble("preco_unitario");
-                double total = qtd * preco;
-                valorTotalEstoque += total;
+                workBook.write(fileOut);
+                fileOut.close();
+                workBook.close();
 
-                escreverLinha(content, y, margin, new float[]{0, 200, 300, 400},
-                        new String[]{nome, String.valueOf(qtd), String.format("R$ %.2f", preco), String.format("R$ %.2f", total)});
-                y -= leading;
-            }
-
-            // Total geral
-            y -= leading;
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 300}, new String[]{"TOTAL ESTOQUE:", String.format("R$ %.2f", valorTotalEstoque)});
-
-            content.close();
-            document.save(caminhoArquivoSaidaPDF);
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
-
-        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            } else {
-                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
             }
         }
 
-        String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
+        @Override
+        public void gerarRelatorioListaDePrecoDoc
+        (String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
-            File arquivo = new File(caminhoArquivoSaidaPDF);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
+            if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+                if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                    caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                } else {
+                    caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                }
             }
 
-            PDFont fonte = PDType1Font.HELVETICA;
-            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
+            String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
 
-            PDPage page = new PDPage();
-            document.addPage(page);
-            content = new PDPageContentStream(document, page);
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
 
-            // Título
-            content.beginText();
-            content.setFont(fonteNegrito, 14);
-            content.newLineAtOffset(margin, y);
-            content.showText("Relatório de Produtos Abaixo da Quantidade Mínima");
-            content.endText();
-            y -= leading * 2;
-
-            // Cabeçalhos
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
-            y -= leading;
-            content.setFont(fonte, fontSize);
-
-            while (rs.next()) {
-                if (y <= 50) {
-                    content.close();
-                    page = new PDPage();
-                    document.addPage(page);
-                    content = new PDPageContentStream(document, page);
-                    y = yStart;
-
-                    content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
-                    y -= leading;
-                    content.setFont(fonte, fontSize);
+                // Cria diretório se não existir
+                File arquivo = new File(caminhoArquivoSaidaDoc);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
                 }
 
-                String nome = rs.getString("nome");
-                int qtdMin = rs.getInt("quantidade_minima");
-                int qtdEstoque = rs.getInt("quantidade_estoque");
+                // Cria título do documento
+                XWPFParagraph titulo = document.createParagraph();
+                XWPFRun runTitulo = titulo.createRun();
+                runTitulo.setText("Relatório de Lista de Preços");
+                runTitulo.setBold(true);
+                runTitulo.setFontSize(16);
+                titulo.setAlignment(ParagraphAlignment.CENTER);
 
-                escreverLinha(content, y, margin, new float[]{0, 250, 400},
-                        new String[]{nome, String.valueOf(qtdMin), String.valueOf(qtdEstoque)});
-                y -= leading;
-            }
+                // Espaço
+                document.createParagraph();
 
-            content.close();
-            document.save(caminhoArquivoSaidaPDF);
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+                // Cria tabela
+                XWPFTable table = document.createTable();
 
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
-        }
-    }
+                // Cabeçalho
+                XWPFTableRow header = table.getRow(0);
+                header.getCell(0).setText("Nome");
+                header.addNewTableCell().setText("Preço Unitário");
+                header.addNewTableCell().setText("Unidade");
+                header.addNewTableCell().setText("Categoria");
 
-    @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
-
-        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            } else {
-                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            }
-        }
-
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
-
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
-            File arquivo = new File(caminhoArquivoSaidaPDF);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            PDFont fonte = PDType1Font.HELVETICA;
-            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
-
-            PDPage page = new PDPage();
-            document.addPage(page);
-            content = new PDPageContentStream(document, page);
-
-            // Título
-            content.beginText();
-            content.setFont(fonteNegrito, 14);
-            content.newLineAtOffset(margin, y);
-            content.showText("Relatório de Produtos Abaixo da Quantidade Máxima");
-            content.endText();
-            y -= leading * 2;
-
-            // Cabeçalho
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
-            y -= leading;
-            content.setFont(fonte, fontSize);
-
-            while (rs.next()) {
-                if (y <= 50) {
-                    content.close();
-                    page = new PDPage();
-                    document.addPage(page);
-                    content = new PDPageContentStream(document, page);
-                    y = yStart;
-
-                    content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
-                    y -= leading;
-                    content.setFont(fonte, fontSize);
+                // Preenche a tabela com dados
+                while (rs.next()) {
+                    XWPFTableRow row = table.createRow();
+                    row.getCell(0).setText(rs.getString("nome"));
+                    row.getCell(1).setText(String.format("R$ %.2f", rs.getDouble("preco_unitario")));
+                    row.getCell(2).setText(rs.getString("unidade"));
+                    row.getCell(3).setText(rs.getString("categoria"));
                 }
 
-                String nome = rs.getString("nome");
-                int qtdMax = rs.getInt("quantidade_maxima");
-                int qtdEstoque = rs.getInt("quantidade_estoque");
-
-                escreverLinha(content, y, margin, new float[]{0, 250, 400},
-                        new String[]{nome, String.valueOf(qtdMax), String.valueOf(qtdEstoque)});
-                y -= leading;
-            }
-
-            content.close();
-            document.save(caminhoArquivoSaidaPDF);
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
-        }
-    }
-
-    @Override
-    public void gerarRelatorioListaProdutoPorCategoriaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
-
-        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            } else {
-                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-            }
-        }
-
-        String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos "
-                + "FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome "
-                + "GROUP BY c.nome ORDER BY c.nome ASC";
-
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
-            File arquivo = new File(caminhoArquivoSaidaPDF);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
-
-            PDFont fonte = PDType1Font.HELVETICA;
-            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
-
-            PDPage page = new PDPage();
-            document.addPage(page);
-            content = new PDPageContentStream(document, page);
-
-            // Título
-            content.beginText();
-            content.setFont(fonteNegrito, 14);
-            content.newLineAtOffset(margin, y);
-            content.showText("Relatório de Produtos por Categoria");
-            content.endText();
-            y -= leading * 2;
-
-            // Cabeçalho
-            content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
-            y -= leading;
-            content.setFont(fonte, fontSize);
-
-            while (rs.next()) {
-                if (y <= 50) {
-                    content.close();
-                    page = new PDPage();
-                    document.addPage(page);
-                    content = new PDPageContentStream(document, page);
-                    y = yStart;
-
-                    content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
-                    y -= leading;
-                    content.setFont(fonte, fontSize);
+                // Salva o arquivo
+                try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                    document.write(out);
+                    JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
                 }
 
-                String categoria = rs.getString("nome_categoria");
-                int qtdProdutos = rs.getInt("quantidade_produtos");
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+            }
+        }
 
-                escreverLinha(content, y, margin, new float[]{0, 400},
-                        new String[]{categoria, String.valueOf(qtdProdutos)});
-                y -= leading;
+        @Override
+        public void gerarRelatorioBalancoFisicoFinanceiroDOC
+        (String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+            if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+                if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                    caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                } else {
+                    caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                }
             }
 
-            content.close();
-            document.save(caminhoArquivoSaidaPDF);
-            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+            String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
 
-        } catch (SQLException e) {
-            throw new DbException("Erro SQL: " + e.getMessage());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+                // Cria diretório se não existir
+                File arquivo = new File(caminhoArquivoSaidaDoc);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                // Título
+                XWPFParagraph titulo = document.createParagraph();
+                titulo.setAlignment(ParagraphAlignment.CENTER);
+                XWPFRun runTitulo = titulo.createRun();
+                runTitulo.setBold(true);
+                runTitulo.setFontSize(16);
+                runTitulo.setText("Relatório de Balanço Físico-Financeiro");
+
+                document.createParagraph(); // Espaço
+
+                // Cria tabela
+                XWPFTable table = document.createTable();
+
+                // Cabeçalho
+                XWPFTableRow header = table.getRow(0);
+                header.getCell(0).setText("Nome");
+                header.addNewTableCell().setText("Preço Unitário");
+                header.addNewTableCell().setText("Quantidade em Estoque");
+                header.addNewTableCell().setText("Valor Total");
+
+                double valorTotalEstoque = 0.0;
+
+                // Dados
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    int quantidade = rs.getInt("quantidade_estoque");
+                    double precoUnitario = rs.getDouble("preco_unitario");
+                    double valorTotalProduto = quantidade * precoUnitario;
+                    valorTotalEstoque += valorTotalProduto;
+
+                    XWPFTableRow row = table.createRow();
+                    row.getCell(0).setText(nome);
+                    row.getCell(1).setText(String.format("R$ %.2f", precoUnitario));
+                    row.getCell(2).setText(String.valueOf(quantidade));
+                    row.getCell(3).setText(String.format("R$ %.2f", valorTotalProduto));
+                }
+
+                // Linha total
+                XWPFTableRow totalRow = table.createRow();
+                totalRow.getCell(2).setText("TOTAL:");
+                totalRow.getCell(3).setText(String.format("R$ %.2f", valorTotalEstoque));
+
+                // Centraliza texto em todas as células
+                table.getRows().forEach(row
+                        -> row.getTableCells().forEach(cell
+                                -> cell.getParagraphs().forEach(p -> p.setAlignment(ParagraphAlignment.CENTER)))
+                );
+
+                // Salva o documento
+                try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                    document.write(out);
+                    JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+                }
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+            }
         }
-    }
 
-    // Método auxiliar reutilizável
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc
+        (String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+            if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+                if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                    caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                } else {
+                    caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+                // Cria diretório se não existir
+                File arquivo = new File(caminhoArquivoSaidaDoc);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                // Cria título do documento
+                XWPFParagraph titulo = document.createParagraph();
+                XWPFRun runTitulo = titulo.createRun();
+                runTitulo.setText("Relatório de Lista de Preços Abaixo da Quantidade Mínima");
+                runTitulo.setBold(true);
+                runTitulo.setFontSize(16);
+                titulo.setAlignment(ParagraphAlignment.CENTER);
+
+                // Espaço
+                document.createParagraph();
+
+                // Cria tabela
+                XWPFTable table = document.createTable();
+
+                // Cabeçalho
+                XWPFTableRow header = table.getRow(0);
+                header.getCell(0).setText("Nome");
+                header.addNewTableCell().setText("Quantidade Mínima");
+                header.addNewTableCell().setText("Quantidade em Estoque");
+
+                // Preenche a tabela com dados
+                while (rs.next()) {
+                    XWPFTableRow row = table.createRow();
+                    row.getCell(0).setText(rs.getString("nome"));
+                    row.getCell(1).setText(rs.getString("quantidade_minima"));
+                    row.getCell(2).setText(rs.getString("quantidade_estoque"));
+                }
+
+                // Salva o arquivo
+                try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                    document.write(out);
+                    JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+                }
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc
+        (String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+            if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+                if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                    caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                } else {
+                    caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+                // Cria diretório se não existir
+                File arquivo = new File(caminhoArquivoSaidaDoc);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                // Cria título do documento
+                XWPFParagraph titulo = document.createParagraph();
+                XWPFRun runTitulo = titulo.createRun();
+                runTitulo.setText("Relatório de Lista de Preços Abaixo da Quantidade Máxima");
+                runTitulo.setBold(true);
+                runTitulo.setFontSize(16);
+                titulo.setAlignment(ParagraphAlignment.CENTER);
+
+                // Espaço
+                document.createParagraph();
+
+                // Cria tabela
+                XWPFTable table = document.createTable();
+
+                // Cabeçalho
+                XWPFTableRow header = table.getRow(0);
+                header.getCell(0).setText("Nome");
+                header.addNewTableCell().setText("Quantidade Máxima");
+                header.addNewTableCell().setText("Quantidade em Estoque");
+
+                // Preenche a tabela com dados
+                while (rs.next()) {
+                    XWPFTableRow row = table.createRow();
+                    row.getCell(0).setText(rs.getString("nome"));
+                    row.getCell(1).setText(rs.getString("quantidade_maxima"));
+                    row.getCell(2).setText(rs.getString("quantidade_estoque"));
+                }
+
+                // Salva o arquivo
+                try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                    document.write(out);
+                    JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+                }
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaProdutoPorCategoriaDoc
+        (String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+            if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+                if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                    caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                } else {
+                    caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+                }
+            }
+
+            String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome GROUP BY c.nome ORDER BY c.nome ASC";
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+
+                // Cria diretório se não existir
+                File arquivo = new File(caminhoArquivoSaidaDoc);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                // Cria título do documento
+                XWPFParagraph titulo = document.createParagraph();
+                XWPFRun runTitulo = titulo.createRun();
+                runTitulo.setText("Relatório de Lista de Produtos por Categoria");
+                runTitulo.setBold(true);
+                runTitulo.setFontSize(16);
+                titulo.setAlignment(ParagraphAlignment.CENTER);
+
+                // Espaço
+                document.createParagraph();
+
+                // Cria tabela
+                XWPFTable table = document.createTable();
+
+                // Cabeçalho
+                XWPFTableRow header = table.getRow(0);
+                header.getCell(0).setText("Categoria");
+                header.addNewTableCell().setText("Quantidade Produtos");
+
+                // Preenche a tabela com dados
+                while (rs.next()) {
+                    XWPFTableRow row = table.createRow();
+                    row.getCell(0).setText(rs.getString("nome_categoria"));
+                    row.getCell(1).setText(rs.getString("quantidade_produtos"));
+                }
+
+                // Salva o arquivo
+                try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                    document.write(out);
+                    JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+                }
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaDePrecoPDF
+        (String caminhoArquivoSaidaPDF, String nomeArquivoPDF
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+            if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+                if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                    caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
+                } else {
+                    caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
+                }
+            }
+
+            String sql = "SELECT nome, preco_unitario, unidade, categoria FROM produto ORDER BY nome ASC";
+
+            PDPageContentStream content = null;
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+                File arquivo = new File(caminhoArquivoSaidaPDF);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                PDFont fonte = PDType1Font.HELVETICA;
+                PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+                float fontSize = 11;
+                float leading = 15;
+                float margin = 50;
+                float yStart = 750;
+                float y = yStart;
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                content = new PDPageContentStream(document, page);
+
+                // Título
+                content.beginText();
+                content.setFont(fonteNegrito, 14);
+                content.newLineAtOffset(margin, y);
+                content.showText("Relatório de Lista de Preços");
+                content.endText();
+                y -= leading * 2;
+
+                // Cabeçalhos
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{"Nome", "Preço", "Unidade", "Categoria"});
+                y -= leading;
+
+                content.setFont(fonte, fontSize);
+
+                while (rs.next()) {
+                    if (y <= 50) {
+                        content.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        content = new PDPageContentStream(document, page);
+                        y = yStart;
+
+                        // Cabeçalho novamente na nova página
+                        content.setFont(fonteNegrito, fontSize);
+                        escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{"Nome", "Preço", "Unidade", "Categoria"});
+                        y -= leading;
+                        content.setFont(fonte, fontSize);
+                    }
+
+                    String nome = rs.getString("nome");
+                    String preco = String.format("R$ %.2f", rs.getDouble("preco_unitario"));
+                    String unidade = rs.getString("unidade");
+                    String categoria = rs.getString("categoria");
+
+                    escreverLinha(content, y, margin, new float[]{0, 200, 300, 380}, new String[]{nome, preco, unidade, categoria});
+                    y -= leading;
+                }
+
+                content.close();
+                document.save(caminhoArquivoSaidaPDF);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioBalancoFisicoFinanceiroPDF
+        (String caminhoArquivoSaidaPDF, String nomeArquivo
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+            if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+                if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                    caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                } else {
+                    caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                }
+            }
+
+            String sql = "SELECT nome, preco_unitario, quantidade_estoque FROM produto ORDER BY nome ASC";
+
+            PDPageContentStream content = null;
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+                File arquivo = new File(caminhoArquivoSaidaPDF);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                PDFont fonte = PDType1Font.HELVETICA;
+                PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+                float fontSize = 11;
+                float leading = 15;
+                float margin = 50;
+                float yStart = 750;
+                float y = yStart;
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                content = new PDPageContentStream(document, page);
+
+                // Título
+                content.beginText();
+                content.setFont(fonteNegrito, 14);
+                content.newLineAtOffset(margin, y);
+                content.showText("Relatório Balanço Físico-Financeiro");
+                content.endText();
+                y -= leading * 2;
+
+                // Cabeçalhos
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 200, 300, 400}, new String[]{"Nome", "Qtd Estoque", "Preço Unit.", "Valor Total"});
+                y -= leading;
+                content.setFont(fonte, fontSize);
+
+                double valorTotalEstoque = 0.0;
+
+                while (rs.next()) {
+                    if (y <= 50) {
+                        content.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        content = new PDPageContentStream(document, page);
+                        y = yStart;
+
+                        // Cabeçalho novamente
+                        content.setFont(fonteNegrito, fontSize);
+                        escreverLinha(content, y, margin, new float[]{0, 200, 300, 400}, new String[]{"Nome", "Qtd Estoque", "Preço Unit.", "Valor Total"});
+                        y -= leading;
+                        content.setFont(fonte, fontSize);
+                    }
+
+                    String nome = rs.getString("nome");
+                    int qtd = rs.getInt("quantidade_estoque");
+                    double preco = rs.getDouble("preco_unitario");
+                    double total = qtd * preco;
+                    valorTotalEstoque += total;
+
+                    escreverLinha(content, y, margin, new float[]{0, 200, 300, 400},
+                            new String[]{nome, String.valueOf(qtd), String.format("R$ %.2f", preco), String.format("R$ %.2f", total)});
+                    y -= leading;
+                }
+
+                // Total geral
+                y -= leading;
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 300}, new String[]{"TOTAL ESTOQUE:", String.format("R$ %.2f", valorTotalEstoque)});
+
+                content.close();
+                document.save(caminhoArquivoSaidaPDF);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF
+        (String caminhoArquivoSaidaPDF, String nomeArquivo
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+            if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+                if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                    caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                } else {
+                    caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
+
+            PDPageContentStream content = null;
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+                File arquivo = new File(caminhoArquivoSaidaPDF);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                PDFont fonte = PDType1Font.HELVETICA;
+                PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+                float fontSize = 11;
+                float leading = 15;
+                float margin = 50;
+                float yStart = 750;
+                float y = yStart;
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                content = new PDPageContentStream(document, page);
+
+                // Título
+                content.beginText();
+                content.setFont(fonteNegrito, 14);
+                content.newLineAtOffset(margin, y);
+                content.showText("Relatório de Produtos Abaixo da Quantidade Mínima");
+                content.endText();
+                y -= leading * 2;
+
+                // Cabeçalhos
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
+                y -= leading;
+                content.setFont(fonte, fontSize);
+
+                while (rs.next()) {
+                    if (y <= 50) {
+                        content.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        content = new PDPageContentStream(document, page);
+                        y = yStart;
+
+                        content.setFont(fonteNegrito, fontSize);
+                        escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
+                        y -= leading;
+                        content.setFont(fonte, fontSize);
+                    }
+
+                    String nome = rs.getString("nome");
+                    int qtdMin = rs.getInt("quantidade_minima");
+                    int qtdEstoque = rs.getInt("quantidade_estoque");
+
+                    escreverLinha(content, y, margin, new float[]{0, 250, 400},
+                            new String[]{nome, String.valueOf(qtdMin), String.valueOf(qtdEstoque)});
+                    y -= leading;
+                }
+
+                content.close();
+                document.save(caminhoArquivoSaidaPDF);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaPDF
+        (String caminhoArquivoSaidaPDF, String nomeArquivo
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+            if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+                if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                    caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                } else {
+                    caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                }
+            }
+
+            String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+
+            PDPageContentStream content = null;
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+                File arquivo = new File(caminhoArquivoSaidaPDF);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                PDFont fonte = PDType1Font.HELVETICA;
+                PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+                float fontSize = 11;
+                float leading = 15;
+                float margin = 50;
+                float yStart = 750;
+                float y = yStart;
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                content = new PDPageContentStream(document, page);
+
+                // Título
+                content.beginText();
+                content.setFont(fonteNegrito, 14);
+                content.newLineAtOffset(margin, y);
+                content.showText("Relatório de Produtos Abaixo da Quantidade Máxima");
+                content.endText();
+                y -= leading * 2;
+
+                // Cabeçalho
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
+                y -= leading;
+                content.setFont(fonte, fontSize);
+
+                while (rs.next()) {
+                    if (y <= 50) {
+                        content.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        content = new PDPageContentStream(document, page);
+                        y = yStart;
+
+                        content.setFont(fonteNegrito, fontSize);
+                        escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
+                        y -= leading;
+                        content.setFont(fonte, fontSize);
+                    }
+
+                    String nome = rs.getString("nome");
+                    int qtdMax = rs.getInt("quantidade_maxima");
+                    int qtdEstoque = rs.getInt("quantidade_estoque");
+
+                    escreverLinha(content, y, margin, new float[]{0, 250, 400},
+                            new String[]{nome, String.valueOf(qtdMax), String.valueOf(qtdEstoque)});
+                    y -= leading;
+                }
+
+                content.close();
+                document.save(caminhoArquivoSaidaPDF);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            }
+        }
+
+        @Override
+        public void gerarRelatorioListaProdutoPorCategoriaPDF
+        (String caminhoArquivoSaidaPDF, String nomeArquivo
+        
+            ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+            if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+                if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                    caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                } else {
+                    caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+                }
+            }
+
+            String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos "
+                    + "FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome "
+                    + "GROUP BY c.nome ORDER BY c.nome ASC";
+
+            PDPageContentStream content = null;
+
+            try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+                File arquivo = new File(caminhoArquivoSaidaPDF);
+                File diretorio = arquivo.getParentFile();
+                if (diretorio != null && !diretorio.exists()) {
+                    diretorio.mkdirs();
+                }
+
+                PDFont fonte = PDType1Font.HELVETICA;
+                PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+                float fontSize = 11;
+                float leading = 15;
+                float margin = 50;
+                float yStart = 750;
+                float y = yStart;
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+                content = new PDPageContentStream(document, page);
+
+                // Título
+                content.beginText();
+                content.setFont(fonteNegrito, 14);
+                content.newLineAtOffset(margin, y);
+                content.showText("Relatório de Produtos por Categoria");
+                content.endText();
+                y -= leading * 2;
+
+                // Cabeçalho
+                content.setFont(fonteNegrito, fontSize);
+                escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
+                y -= leading;
+                content.setFont(fonte, fontSize);
+
+                while (rs.next()) {
+                    if (y <= 50) {
+                        content.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        content = new PDPageContentStream(document, page);
+                        y = yStart;
+
+                        content.setFont(fonteNegrito, fontSize);
+                        escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
+                        y -= leading;
+                        content.setFont(fonte, fontSize);
+                    }
+
+                    String categoria = rs.getString("nome_categoria");
+                    int qtdProdutos = rs.getInt("quantidade_produtos");
+
+                    escreverLinha(content, y, margin, new float[]{0, 400},
+                            new String[]{categoria, String.valueOf(qtdProdutos)});
+                    y -= leading;
+                }
+
+                content.close();
+                document.save(caminhoArquivoSaidaPDF);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+            } catch (SQLException e) {
+                throw new DbException("Erro SQL: " + e.getMessage());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+            }
+        }
+        // Método auxiliar reutilizável
     private void escreverLinha(PDPageContentStream content, float y, float margin, float[] xOffsets, String[] textos) throws IOException {
         for (int i = 0; i < textos.length; i++) {
             content.beginText();
@@ -1369,7 +1442,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    private Produto instanciarProduto(ResultSet rs, Categoria cat) throws SQLException {
+    private Produto instanciarProduto(ResultSet rs) throws SQLException {
         Produto prod = new Produto();
         prod.setId(rs.getInt("id"));
         prod.setNome(rs.getString("nome"));
@@ -1378,7 +1451,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         prod.setQuantidade(rs.getInt("quantidade_estoque"));
         prod.setQuantidadeMinima(rs.getInt("quantidade_minima"));
         prod.setQuantidadeMaxima(rs.getInt("quantidade_maxima"));
+
+        Categoria cat = new Categoria();
+        cat.setNome(rs.getString("categoria"));
         prod.setCategoria(cat);
+
         return prod;
     }
 
