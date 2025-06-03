@@ -1,5 +1,6 @@
 package visao;
 
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import modelo.dao.db.DbException;
 
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
+    private Registro registro;
     private CategoriaDao categoriaDao;
     private ProdutoDao produtoDao;
     private DefaultTableModel tabela;
@@ -424,6 +426,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
                 // Criar e preencher o objeto Produto
                 Produto produto = new Produto();
+                Registro reg = new Registro();
+
                 produto.setId(id);
                 produto.setNome(nome);
                 produto.setPreco(preco);
@@ -432,9 +436,14 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 produto.setQuantidadeMinima(qtdMinima);
                 produto.setQuantidadeMaxima(qtdMaxima);
                 produto.setCategoria(categoria);
+                reg.setId(id); // CUIDADO: id do registro geralmente é diferente do id do produto
+                reg.setData(new Date());
+                reg.setTipoDoProduto(produto); // <-- aqui estava o erro
+                reg.setQuantidade(qtdEstoque); // quantidade da movimentação (pode ser diferente do estoque total)
+                reg.setMovimentacao(Registro.Movimentacao.ENTRADA); // ou SAIDA
 
                 // Atualizar produto no banco de dados
-                produtoDao.atualizarProduto(produto);
+                produtoDao.atualizarProduto(produto, reg);
 
                 System.out.println("Produto atualizado com sucesso!");
 
