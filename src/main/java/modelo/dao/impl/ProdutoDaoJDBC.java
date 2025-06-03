@@ -475,7 +475,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
+    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
@@ -488,7 +488,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque > quantidade_maxima ORDER BY nome ASC";
 
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
             // Garante que a pasta existe
@@ -888,7 +888,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
+    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
 
@@ -900,7 +900,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque > quantidade_maxima ORDER BY nome ASC";
 
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
 
@@ -1356,8 +1356,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
+    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 
         if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
@@ -1368,7 +1370,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
+        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque > quantidade_maxima ORDER BY nome ASC";
 
         PDPageContentStream content = null;
 
