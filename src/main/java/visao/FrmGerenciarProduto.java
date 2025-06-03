@@ -436,11 +436,11 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 produto.setQuantidadeMinima(qtdMinima);
                 produto.setQuantidadeMaxima(qtdMaxima);
                 produto.setCategoria(categoria);
-                reg.setId(id); // CUIDADO: id do registro geralmente é diferente do id do produto
+                reg.setId(id);
                 reg.setData(new Date());
-                reg.setTipoDoProduto(produto); // <-- aqui estava o erro
-                reg.setQuantidade(qtdEstoque); // quantidade da movimentação (pode ser diferente do estoque total)
-                reg.setMovimentacao(Registro.Movimentacao.ENTRADA); // ou SAIDA
+                reg.setTipoDoProduto(produto);
+                reg.setQuantidade(qtdEstoque);
+                reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
 
                 // Atualizar produto no banco de dados
                 produtoDao.atualizarProduto(produto, reg);
