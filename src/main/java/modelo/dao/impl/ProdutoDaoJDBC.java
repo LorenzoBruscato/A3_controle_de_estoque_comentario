@@ -85,7 +85,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void atualizarProduto(Produto obj) {
+    public void atualizarProduto(Produto obj, Registro reg) {
         String sql
                 = "UPDATE produto SET "
                 + "nome = ?, "
@@ -106,6 +106,28 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(6, obj.getQuantidadeMaxima());
             st.setString(7, obj.getCategoria().getNome());
             st.setInt(8, obj.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        String sqlr = "UPDATE registro SET "
+                + "data = ?, "
+                + "tipo = ?, "
+                + "quantidade = ?, "
+                + "movimentacao = ? "
+                + "WHERE id = ?";
+
+        try (PreparedStatement st = conn.prepareStatement(sqlr)) {
+
+            java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
+            st.setDate(1, sqlDate);
+            st.setString(2, reg.getTipoDoProduto().getNome());
+            st.setInt(3, reg.getQuantidade());
+            st.setString(4, reg.getMovimentacao().name());
+            st.setInt(5, reg.getId());
 
             st.executeUpdate();
 
@@ -1083,265 +1105,259 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
         }
     }
-    
+
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-    System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 
-    if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-        if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-            caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        } else {
-            caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        }
-    }
-
-    String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
-
-    PDPageContentStream content = null;
-
-    try (PreparedStatement st = conn.prepareStatement(sql);
-         ResultSet rs = st.executeQuery();
-         PDDocument document = new PDDocument()) {
-
-        File arquivo = new File(caminhoArquivoSaidaPDF);
-        File diretorio = arquivo.getParentFile();
-        if (diretorio != null && !diretorio.exists()) {
-            diretorio.mkdirs();
+        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            } else {
+                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            }
         }
 
-        PDFont fonte = PDType1Font.HELVETICA;
-        PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-        float fontSize = 11;
-        float leading = 15;
-        float margin = 50;
-        float yStart = 750;
-        float y = yStart;
+        String sql = "SELECT nome, quantidade_minima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_minima ORDER BY nome ASC";
 
-        PDPage page = new PDPage();
-        document.addPage(page);
-        content = new PDPageContentStream(document, page);
+        PDPageContentStream content = null;
 
-        // Título
-        content.beginText();
-        content.setFont(fonteNegrito, 14);
-        content.newLineAtOffset(margin, y);
-        content.showText("Relatório de Produtos Abaixo da Quantidade Mínima");
-        content.endText();
-        y -= leading * 2;
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
 
-        // Cabeçalhos
-        content.setFont(fonteNegrito, fontSize);
-        escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
-        y -= leading;
-        content.setFont(fonte, fontSize);
-
-        while (rs.next()) {
-            if (y <= 50) {
-                content.close();
-                page = new PDPage();
-                document.addPage(page);
-                content = new PDPageContentStream(document, page);
-                y = yStart;
-
-                content.setFont(fonteNegrito, fontSize);
-                escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
-                y -= leading;
-                content.setFont(fonte, fontSize);
+            File arquivo = new File(caminhoArquivoSaidaPDF);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
             }
 
-            String nome = rs.getString("nome");
-            int qtdMin = rs.getInt("quantidade_minima");
-            int qtdEstoque = rs.getInt("quantidade_estoque");
+            PDFont fonte = PDType1Font.HELVETICA;
+            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+            float fontSize = 11;
+            float leading = 15;
+            float margin = 50;
+            float yStart = 750;
+            float y = yStart;
 
-            escreverLinha(content, y, margin, new float[]{0, 250, 400},
-                    new String[]{nome, String.valueOf(qtdMin), String.valueOf(qtdEstoque)});
+            PDPage page = new PDPage();
+            document.addPage(page);
+            content = new PDPageContentStream(document, page);
+
+            // Título
+            content.beginText();
+            content.setFont(fonteNegrito, 14);
+            content.newLineAtOffset(margin, y);
+            content.showText("Relatório de Produtos Abaixo da Quantidade Mínima");
+            content.endText();
+            y -= leading * 2;
+
+            // Cabeçalhos
+            content.setFont(fonteNegrito, fontSize);
+            escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
             y -= leading;
+            content.setFont(fonte, fontSize);
+
+            while (rs.next()) {
+                if (y <= 50) {
+                    content.close();
+                    page = new PDPage();
+                    document.addPage(page);
+                    content = new PDPageContentStream(document, page);
+                    y = yStart;
+
+                    content.setFont(fonteNegrito, fontSize);
+                    escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Mínima", "Qtd Estoque"});
+                    y -= leading;
+                    content.setFont(fonte, fontSize);
+                }
+
+                String nome = rs.getString("nome");
+                int qtdMin = rs.getInt("quantidade_minima");
+                int qtdEstoque = rs.getInt("quantidade_estoque");
+
+                escreverLinha(content, y, margin, new float[]{0, 250, 400},
+                        new String[]{nome, String.valueOf(qtdMin), String.valueOf(qtdEstoque)});
+                y -= leading;
+            }
+
+            content.close();
+            document.save(caminhoArquivoSaidaPDF);
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
         }
-
-        content.close();
-        document.save(caminhoArquivoSaidaPDF);
-        JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-    } catch (SQLException e) {
-        throw new DbException("Erro SQL: " + e.getMessage());
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
     }
-}
-    
+
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-    System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 
-    if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-        if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-            caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        } else {
-            caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        }
-    }
-
-    String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
-
-    PDPageContentStream content = null;
-
-    try (PreparedStatement st = conn.prepareStatement(sql);
-         ResultSet rs = st.executeQuery();
-         PDDocument document = new PDDocument()) {
-
-        File arquivo = new File(caminhoArquivoSaidaPDF);
-        File diretorio = arquivo.getParentFile();
-        if (diretorio != null && !diretorio.exists()) {
-            diretorio.mkdirs();
+        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            } else {
+                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            }
         }
 
-        PDFont fonte = PDType1Font.HELVETICA;
-        PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-        float fontSize = 11;
-        float leading = 15;
-        float margin = 50;
-        float yStart = 750;
-        float y = yStart;
+        String sql = "SELECT nome, quantidade_maxima, quantidade_estoque FROM produto WHERE quantidade_estoque < quantidade_maxima ORDER BY nome ASC";
 
-        PDPage page = new PDPage();
-        document.addPage(page);
-        content = new PDPageContentStream(document, page);
+        PDPageContentStream content = null;
 
-        // Título
-        content.beginText();
-        content.setFont(fonteNegrito, 14);
-        content.newLineAtOffset(margin, y);
-        content.showText("Relatório de Produtos Abaixo da Quantidade Máxima");
-        content.endText();
-        y -= leading * 2;
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
 
-        // Cabeçalho
-        content.setFont(fonteNegrito, fontSize);
-        escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
-        y -= leading;
-        content.setFont(fonte, fontSize);
-
-        while (rs.next()) {
-            if (y <= 50) {
-                content.close();
-                page = new PDPage();
-                document.addPage(page);
-                content = new PDPageContentStream(document, page);
-                y = yStart;
-
-                content.setFont(fonteNegrito, fontSize);
-                escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
-                y -= leading;
-                content.setFont(fonte, fontSize);
+            File arquivo = new File(caminhoArquivoSaidaPDF);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
             }
 
-            String nome = rs.getString("nome");
-            int qtdMax = rs.getInt("quantidade_maxima");
-            int qtdEstoque = rs.getInt("quantidade_estoque");
+            PDFont fonte = PDType1Font.HELVETICA;
+            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+            float fontSize = 11;
+            float leading = 15;
+            float margin = 50;
+            float yStart = 750;
+            float y = yStart;
 
-            escreverLinha(content, y, margin, new float[]{0, 250, 400},
-                    new String[]{nome, String.valueOf(qtdMax), String.valueOf(qtdEstoque)});
+            PDPage page = new PDPage();
+            document.addPage(page);
+            content = new PDPageContentStream(document, page);
+
+            // Título
+            content.beginText();
+            content.setFont(fonteNegrito, 14);
+            content.newLineAtOffset(margin, y);
+            content.showText("Relatório de Produtos Abaixo da Quantidade Máxima");
+            content.endText();
+            y -= leading * 2;
+
+            // Cabeçalho
+            content.setFont(fonteNegrito, fontSize);
+            escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
             y -= leading;
+            content.setFont(fonte, fontSize);
+
+            while (rs.next()) {
+                if (y <= 50) {
+                    content.close();
+                    page = new PDPage();
+                    document.addPage(page);
+                    content = new PDPageContentStream(document, page);
+                    y = yStart;
+
+                    content.setFont(fonteNegrito, fontSize);
+                    escreverLinha(content, y, margin, new float[]{0, 250, 400}, new String[]{"Nome", "Qtd Máxima", "Qtd Estoque"});
+                    y -= leading;
+                    content.setFont(fonte, fontSize);
+                }
+
+                String nome = rs.getString("nome");
+                int qtdMax = rs.getInt("quantidade_maxima");
+                int qtdEstoque = rs.getInt("quantidade_estoque");
+
+                escreverLinha(content, y, margin, new float[]{0, 250, 400},
+                        new String[]{nome, String.valueOf(qtdMax), String.valueOf(qtdEstoque)});
+                y -= leading;
+            }
+
+            content.close();
+            document.save(caminhoArquivoSaidaPDF);
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
         }
-
-        content.close();
-        document.save(caminhoArquivoSaidaPDF);
-        JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-    } catch (SQLException e) {
-        throw new DbException("Erro SQL: " + e.getMessage());
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
     }
-}
 
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo) {
-    System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
 
-    if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
-        if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
-            caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        } else {
-            caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
-        }
-    }
-
-    String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos " +
-                 "FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome " +
-                 "GROUP BY c.nome ORDER BY c.nome ASC";
-
-    PDPageContentStream content = null;
-
-    try (PreparedStatement st = conn.prepareStatement(sql);
-         ResultSet rs = st.executeQuery();
-         PDDocument document = new PDDocument()) {
-
-        File arquivo = new File(caminhoArquivoSaidaPDF);
-        File diretorio = arquivo.getParentFile();
-        if (diretorio != null && !diretorio.exists()) {
-            diretorio.mkdirs();
+        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            } else {
+                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivo).trim();
+            }
         }
 
-        PDFont fonte = PDType1Font.HELVETICA;
-        PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-        float fontSize = 11;
-        float leading = 15;
-        float margin = 50;
-        float yStart = 750;
-        float y = yStart;
+        String sql = "SELECT c.nome AS nome_categoria, COUNT(p.id) AS quantidade_produtos "
+                + "FROM categoria c LEFT JOIN produto p ON p.categoria = c.nome "
+                + "GROUP BY c.nome ORDER BY c.nome ASC";
 
-        PDPage page = new PDPage();
-        document.addPage(page);
-        content = new PDPageContentStream(document, page);
+        PDPageContentStream content = null;
 
-        // Título
-        content.beginText();
-        content.setFont(fonteNegrito, 14);
-        content.newLineAtOffset(margin, y);
-        content.showText("Relatório de Produtos por Categoria");
-        content.endText();
-        y -= leading * 2;
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
 
-        // Cabeçalho
-        content.setFont(fonteNegrito, fontSize);
-        escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
-        y -= leading;
-        content.setFont(fonte, fontSize);
-
-        while (rs.next()) {
-            if (y <= 50) {
-                content.close();
-                page = new PDPage();
-                document.addPage(page);
-                content = new PDPageContentStream(document, page);
-                y = yStart;
-
-                content.setFont(fonteNegrito, fontSize);
-                escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
-                y -= leading;
-                content.setFont(fonte, fontSize);
+            File arquivo = new File(caminhoArquivoSaidaPDF);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
             }
 
-            String categoria = rs.getString("nome_categoria");
-            int qtdProdutos = rs.getInt("quantidade_produtos");
+            PDFont fonte = PDType1Font.HELVETICA;
+            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+            float fontSize = 11;
+            float leading = 15;
+            float margin = 50;
+            float yStart = 750;
+            float y = yStart;
 
-            escreverLinha(content, y, margin, new float[]{0, 400},
-                    new String[]{categoria, String.valueOf(qtdProdutos)});
+            PDPage page = new PDPage();
+            document.addPage(page);
+            content = new PDPageContentStream(document, page);
+
+            // Título
+            content.beginText();
+            content.setFont(fonteNegrito, 14);
+            content.newLineAtOffset(margin, y);
+            content.showText("Relatório de Produtos por Categoria");
+            content.endText();
+            y -= leading * 2;
+
+            // Cabeçalho
+            content.setFont(fonteNegrito, fontSize);
+            escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
             y -= leading;
+            content.setFont(fonte, fontSize);
+
+            while (rs.next()) {
+                if (y <= 50) {
+                    content.close();
+                    page = new PDPage();
+                    document.addPage(page);
+                    content = new PDPageContentStream(document, page);
+                    y = yStart;
+
+                    content.setFont(fonteNegrito, fontSize);
+                    escreverLinha(content, y, margin, new float[]{0, 400}, new String[]{"Categoria", "Qtd Produtos"});
+                    y -= leading;
+                    content.setFont(fonte, fontSize);
+                }
+
+                String categoria = rs.getString("nome_categoria");
+                int qtdProdutos = rs.getInt("quantidade_produtos");
+
+                escreverLinha(content, y, margin, new float[]{0, 400},
+                        new String[]{categoria, String.valueOf(qtdProdutos)});
+                y -= leading;
+            }
+
+            content.close();
+            document.save(caminhoArquivoSaidaPDF);
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
         }
-
-        content.close();
-        document.save(caminhoArquivoSaidaPDF);
-        JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
-
-    } catch (SQLException e) {
-        throw new DbException("Erro SQL: " + e.getMessage());
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
     }
-}
 
     // Método auxiliar reutilizável
     private void escreverLinha(PDPageContentStream content, float y, float margin, float[] xOffsets, String[] textos) throws IOException {

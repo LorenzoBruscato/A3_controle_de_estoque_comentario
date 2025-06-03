@@ -8,7 +8,7 @@ public interface ProdutoDao {
 
     public void cadastrarProduto(Produto obj);
 
-    public void atualizarProduto(Produto obj);
+    public void atualizarProduto(Produto obj, Registro reg);
 
     public void deletarProdutoPorId(int objId);
 

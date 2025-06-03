@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 import modelo.Categoria;
 import modelo.Produto;
+import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.ProdutoDao;
 import modelo.dao.impl.CategoriaDaoJDBC;
@@ -26,11 +27,11 @@ public class ProdutoControle {
         produtoDao.cadastrarProduto(produto);
     }
 
-    public void atualizarProduto(Produto produto) {
+    public void atualizarProduto(Produto produto, Registro reg) {
         if (produto == null || produto.getId() <= 0) {
             throw new IllegalArgumentException("Produto inválido ou sem ID.");
         }
-        produtoDao.atualizarProduto(produto);
+        produtoDao.atualizarProduto(produto, reg);
     }
 
     public void deletarProduto(int id) {
