@@ -228,6 +228,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 if("Excel".equalsIgnoreCase(tipoFormatacao)){
                     produtoDao.gerarRelatorioMovimentacaoExcel(caminhoArquivo, nomeDoArquivo);
                     break;
+                }else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
+                    produtoDao.gerarRelatorioMovimentacaoDoc(caminhoArquivo, nomeDoArquivo);
+                    break;
                 }
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
