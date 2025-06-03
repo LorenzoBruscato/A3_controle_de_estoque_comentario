@@ -1527,7 +1527,100 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
         }
     }
-    // Método auxiliar reutilizável
+
+    @Override
+    public void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
+
+        if (!caminhoArquivoSaidaPDF.toLowerCase().endsWith(".pdf")) {
+            if (caminhoArquivoSaidaPDF.endsWith("\\") || caminhoArquivoSaidaPDF.endsWith("/")) {
+                caminhoArquivoSaidaPDF = String.format("%s%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
+            } else {
+                caminhoArquivoSaidaPDF = String.format("%s\\%s.pdf", caminhoArquivoSaidaPDF, nomeArquivoPDF).trim();
+            }
+        }
+
+        String sql = "SELECT id, data, tipo, quantidade, movimentacao FROM registro ORDER BY data ASC";
+
+        PDPageContentStream content = null;
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
+
+            File arquivo = new File(caminhoArquivoSaidaPDF);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            PDFont fonte = PDType1Font.HELVETICA;
+            PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
+            float fontSize = 11;
+            float leading = 15;
+            float margin = 50;
+            float yStart = 750;
+            float y = yStart;
+
+            PDPage page = new PDPage();
+            document.addPage(page);
+            content = new PDPageContentStream(document, page);
+
+            // Título
+            content.beginText();
+            content.setFont(fonteNegrito, 14);
+            content.newLineAtOffset(margin, y);
+            content.showText("Relatório de Movimentação");
+            content.endText();
+            y -= leading * 2;
+
+            // Cabeçalho
+            content.setFont(fonteNegrito, fontSize);
+            escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
+                    new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação"});
+            y -= leading;
+            content.setFont(fonte, fontSize);
+
+            while (rs.next()) {
+                if (y <= 50) {
+                    content.close();
+                    page = new PDPage();
+                    document.addPage(page);
+                    content = new PDPageContentStream(document, page);
+                    y = yStart;
+
+                    content.setFont(fonteNegrito, fontSize);
+                    escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
+                            new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação"});
+                    y -= leading;
+                    content.setFont(fonte, fontSize);
+                }
+
+                int id = rs.getInt("id");
+                Date data = rs.getDate("data");
+                String tipo = rs.getString("tipo");
+                int quantidade = rs.getInt("quantidade");
+                String movimentacao = rs.getString("movimentacao");
+
+                escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
+                        new String[]{
+                            String.valueOf(id),
+                            data.toString(),
+                            tipo,
+                            String.valueOf(quantidade),
+                            movimentacao
+                        });
+                y -= leading;
+            }
+
+            content.close();
+            document.save(caminhoArquivoSaidaPDF);
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaPDF);
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar PDF:\n" + e.getMessage());
+        }
+    }
 
     private void escreverLinha(PDPageContentStream content, float y, float margin, float[] xOffsets, String[] textos) throws IOException {
         for (int i = 0; i < textos.length; i++) {
@@ -1574,8 +1667,4 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return reg;
     }
 
-    @Override
-    public void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

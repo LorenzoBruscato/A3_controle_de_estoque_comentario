@@ -225,6 +225,8 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioMovimentacaoDoc(caminhoArquivoSelecionado, nomeDoArquivo);
                     break;
+                } else if("Pdf".equalsIgnoreCase(tipoFormatacao)){
+                    produtoDao.gerarRelatorioMovimentacaoPDF(caminhoArquivoSelecionado, nomeDoArquivo);
                 }
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
