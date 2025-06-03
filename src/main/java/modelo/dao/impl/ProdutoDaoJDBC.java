@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.dao.db.DbException;
 import java.sql.Statement;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -598,8 +599,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     @Override
     public void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
-       System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
-       
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
+
         // Força extensão e nome do arquivo se for só pasta
         if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
             if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
@@ -608,9 +609,59 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                 caminhoArquivoSaidaExcel = String.format("%s\\%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
             }
         }
-        
+
         String sql = "SELECT * FROM registro";
-       
+
+        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
+
+            File arquivo = new File(caminhoArquivoSaidaExcel);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+            FileOutputStream fileOut = new FileOutputStream(arquivo);
+            Sheet sheet = workBook.createSheet(nomePlanilha);
+
+            String[] colunas = {"id", "data", "tipo", "quantidade", "movimentação"};
+            Row header = sheet.createRow(0);
+            for (int i = 0; i < colunas.length; i++) {
+                header.createCell(i).setCellValue(colunas[i]);
+            }
+            int rowNum = 1;
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                Date data = rs.getDate("data"); // java.sql.Date
+                String tipo = rs.getString("tipo");
+                int quantidade = rs.getInt("quantidade");
+                String movimentacao = rs.getString("movimentacao");
+
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(id);
+                row.createCell(1).setCellValue(data.toString()); // ou usar SimpleDateFormat se quiser formatar
+                row.createCell(2).setCellValue(tipo);
+                row.createCell(3).setCellValue(quantidade);
+                row.createCell(4).setCellValue(movimentacao);
+            }
+
+            for (int i = 0; i < colunas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workBook.write(fileOut);
+            fileOut.close();
+            workBook.close();
+
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaExcel);
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+        }
+
     }
 
     @Override

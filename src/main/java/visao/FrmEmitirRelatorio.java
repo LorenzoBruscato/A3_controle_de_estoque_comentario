@@ -36,7 +36,7 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         jLabel1.setText("Emitir Relatórios");
 
         ComboBoxRelatorio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de Preço", "Balanço Físico/Financeiro", "Relatório de Produtos Abaixo da Quantidade Mínima", "Relatório de Produtos Abaixo da Quantidade Máxima", "Relatório da Quantidade de Produtos por Categoria" }));
+        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de preço", "Balanço físico/financeiro", "Relatório de produtos abaixo da quantidade mínima", "Relatório de produtos abaixo da quantidade máxima", "Relatório da quantidade de produtos por categoria", "Relatório de movimentação" }));
         ComboBoxRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBoxRelatorioActionPerformed(evt);
@@ -223,7 +223,11 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 } else if ("Pdf".equalsIgnoreCase(tipoFormatacao)) {
                     produtoDao.gerarRelatorioListaProdutoPorCategoriaPDF(caminhoArquivo, nomeDoArquivo);
                     break;
-
+                }
+            case 5:
+                if("Excel".equalsIgnoreCase(tipoFormatacao)){
+                    produtoDao.gerarRelatorioMovimentacaoExcel(caminhoArquivo, nomeDoArquivo);
+                    break;
                 }
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
