@@ -1020,6 +1020,75 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
+        System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
+
+        // Ajusta o nome do arquivo se necessário
+        if (!caminhoArquivoSaidaDoc.toLowerCase().endsWith(".docx")) {
+            if (caminhoArquivoSaidaDoc.endsWith("\\") || caminhoArquivoSaidaDoc.endsWith("/")) {
+                caminhoArquivoSaidaDoc = String.format("%s%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            } else {
+                caminhoArquivoSaidaDoc = String.format("%s\\%s.docx", caminhoArquivoSaidaDoc, nomeArquivoDoc).trim();
+            }
+        }
+
+        String sql = "SELECT data, tipo, quantidade, movimentacao FROM registro ORDER BY data ASC";
+
+        try (
+                PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
+            // Cria diretório se não existir
+            File arquivo = new File(caminhoArquivoSaidaDoc);
+            File diretorio = arquivo.getParentFile();
+            if (diretorio != null && !diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Cria título do documento
+            XWPFParagraph titulo = document.createParagraph();
+            titulo.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun runTitulo = titulo.createRun();
+            runTitulo.setText("Relatório de Movimentações de Produtos");
+            runTitulo.setBold(true);
+            runTitulo.setFontSize(16);
+
+            // Espaço
+            document.createParagraph();
+
+            // Cria tabela
+            XWPFTable table = document.createTable();
+
+            // Cabeçalho da tabela
+            XWPFTableRow header = table.getRow(0);
+            header.getCell(0).setText("Data");
+            header.addNewTableCell().setText("Produto");
+            header.addNewTableCell().setText("Quantidade");
+            header.addNewTableCell().setText("Movimentação");
+
+            // Preenche a tabela com os dados do banco
+            while (rs.next()) {
+                XWPFTableRow row = table.createRow();
+                row.getCell(0).setText(rs.getDate("data").toString());
+                row.getCell(1).setText(rs.getString("tipo"));
+                row.getCell(2).setText(String.valueOf(rs.getInt("quantidade")));
+                row.getCell(3).setText(rs.getString("movimentacao"));
+            }
+
+            // Salva o arquivo
+            try (FileOutputStream out = new FileOutputStream(arquivo)) {
+                document.write(out);
+                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Erro SQL: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não pode ser criado:\n" + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
+        }
+    }
+
+    @Override
     public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF
     ) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
@@ -1501,11 +1570,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         reg.setQuantidade(rs.getInt("quantidade"));
         reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao").toUpperCase()));
         return reg;
-    }
-
-    @Override
-    public void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
