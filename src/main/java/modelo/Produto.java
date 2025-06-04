@@ -12,17 +12,11 @@ public class Produto {
     private Integer quantidadeMaxima;
 
     public Produto() {
-        this.id = null;
-        this.nome = null;
-        this.preco = null;
-        this.unidade = null;
-        this.categoria = null;
-        this.quantidade = null;
-        this.quantidadeMinima = null;
-        this.quantidadeMaxima = null;
+        this(null, null, null, null, null, null, null, null);
     }
 
-    public Produto(Integer id, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {
+    public Produto(Integer id, String nome, Double preco, String unidade, Categoria categoria,
+            Integer quantidade, Integer quantidadeMinima, Integer quantidadeMaxima) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;

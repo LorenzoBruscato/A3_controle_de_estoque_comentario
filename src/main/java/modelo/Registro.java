@@ -14,12 +14,8 @@ public class Registro {
         ENTRADA, SAIDA
     }
 
-    public Registro() {
-        this.id = null;
-        this.data = null;
-        this.tipoDoProduto = null;
-        this.quantidade = null;
-        this.movimentacao = null;
+   public Registro() {
+        this(null, null, null, null, null);
     }
 
     public Registro(Integer id, Date data, Produto tipoDoProduto, Integer quantidade, Movimentacao movimentacao) {

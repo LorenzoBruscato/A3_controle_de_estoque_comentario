@@ -16,11 +16,8 @@ public class Categoria {
     }
 
     public Categoria() {
-        this.id = null;
-        this.nome = null;
-        this.tamanho = null;
-        this.embalagem = null;
-    }
+    this(null, null, null, null);
+}
 
     public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {
         this.id = id;
