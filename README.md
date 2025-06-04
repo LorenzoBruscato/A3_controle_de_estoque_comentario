@@ -19,7 +19,6 @@ Este é um software desenvolvido em conjunto para gerenciar um banco de dados My
 - RF002: Cadastro de produtos com categoria associada
 - RF003: Edição e exclusão de produtos e categorias
 - RF004: Listagem completa de produtos e categorias
-- RF005: Conexão com banco de dados MySQL via JDBC
 
 ## 📦 Requisitos Não Funcionais
 
