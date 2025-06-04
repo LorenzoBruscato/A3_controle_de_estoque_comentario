@@ -16,12 +16,6 @@ public interface ProdutoDao {
 
     public List<Produto> resgatarProdutos();
 
-    public void AdicionarProdutoRegistro(Registro reg);
-    
-    public void RemoverProdutoRegistro(Registro reg);
-    
-    public List<Registro> resgatarRegistros();
-
     void aumentarTodosPrecos(double percentual);
 
     void diminuirTodosPrecos(double percentual);
