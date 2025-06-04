@@ -4,14 +4,22 @@ public class Produto {
 
     private Integer id;
     private String nome;
-    private double preco;
+    private Double preco;
     private String unidade;
     private Categoria categoria;
-    private int quantidade;
-    private int quantidadeMinima;
-    private int quantidadeMaxima;
+    private Integer quantidade;
+    private Integer quantidadeMinima;
+    private Integer quantidadeMaxima;
 
     public Produto() {
+        this.id = null;
+        this.nome = null;
+        this.preco = null;
+        this.unidade = null;
+        this.categoria = null;
+        this.quantidade = null;
+        this.quantidadeMinima = null;
+        this.quantidadeMaxima = null;
     }
 
     public Produto(Integer id, String nome, double preco, String unidade, Categoria categoria, int quantidade, int quantidadeMinima, int quantidadeMaxima) {

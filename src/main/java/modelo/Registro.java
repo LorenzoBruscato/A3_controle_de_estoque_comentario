@@ -15,6 +15,11 @@ public class Registro {
     }
 
     public Registro() {
+        this.id = null;
+        this.data = null;
+        this.tipoDoProduto = null;
+        this.quantidade = null;
+        this.movimentacao = null;
     }
 
     public Registro(Integer id, Date data, Produto tipoDoProduto, Integer quantidade, Movimentacao movimentacao) {
@@ -68,12 +73,12 @@ public class Registro {
 
     @Override
     public String toString() {
-        return "Registro{" +
-                "id=" + id +
-                ", data=" + data +
-                ", tipoDoProduto=" + (tipoDoProduto != null ? tipoDoProduto.getNome() : null) +
-                ", quantidade=" + quantidade +
-                ", movimentacao=" + movimentacao +
-                '}';
+        return "Registro{"
+                + "id=" + id
+                + ", data=" + data
+                + ", tipoDoProduto=" + (tipoDoProduto != null ? tipoDoProduto.getNome() : null)
+                + ", quantidade=" + quantidade
+                + ", movimentacao=" + movimentacao
+                + '}';
     }
 }
