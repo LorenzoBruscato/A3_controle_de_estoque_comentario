@@ -6,12 +6,14 @@ import modelo.dao.impl.ProdutoDaoJDBC;
 
 public class DaoFactory {
     
-    public static ProdutoDao instanciarProdutoDao(){
-        return new ProdutoDaoJDBC(Database.getConnection());
+    Database database = new Database();
+    
+    public  ProdutoDao instanciarProdutoDao(){
+        return new ProdutoDaoJDBC(database.getConnection());
     }
     
-    public static CategoriaDao instanciarCategoriaDao(){
-        return new CategoriaDaoJDBC(Database.getConnection());
+    public  CategoriaDao instanciarCategoriaDao(){
+        return new CategoriaDaoJDBC(database.getConnection());
     }
     
 }

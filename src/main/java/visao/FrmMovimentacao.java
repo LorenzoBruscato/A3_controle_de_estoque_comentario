@@ -13,10 +13,11 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
     private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação"};
+    private DaoFactory daoFactory = new DaoFactory();
 
     public FrmMovimentacao() {
         initComponents();
-        produtoDao = DaoFactory.instanciarProdutoDao();
+        produtoDao = daoFactory.instanciarProdutoDao();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         tabela = new DefaultTableModel(dados, colunas) {

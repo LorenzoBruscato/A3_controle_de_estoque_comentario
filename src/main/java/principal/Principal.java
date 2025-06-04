@@ -14,9 +14,6 @@ public class Principal {
 
     public static void main(String[] args) {
 
-        CategoriaDao categoriaDao = DaoFactory.instanciarCategoriaDao();
-        ProdutoDao produtoDao = DaoFactory.instanciarProdutoDao();
-
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
 

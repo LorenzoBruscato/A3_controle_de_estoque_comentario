@@ -21,11 +21,12 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
     private String[] colunas = {"ID", "Nome", "Preço", "Unidade", "Qtd Estoque", "Qtd Mínima", "Qtd Máxima", "Categoria"};
+    private DaoFactory daoFactory = new DaoFactory();
 
     public FrmGerenciarProduto() {
         initComponents();
-        categoriaDao = DaoFactory.instanciarCategoriaDao();
-        produtoDao = DaoFactory.instanciarProdutoDao();
+        categoriaDao = daoFactory.instanciarCategoriaDao();
+        produtoDao = daoFactory.instanciarProdutoDao();
         carregarCategoriasNoComboBox();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

@@ -12,10 +12,11 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
     // atributos se necessario
     private ProdutoDao produtoDao;
     private String caminhoArquivoSelecionado = null;
+    private DaoFactory daoFactory = new DaoFactory();
 
     public FrmEmitirRelatorio() {
         initComponents();
-        produtoDao = DaoFactory.instanciarProdutoDao();
+        produtoDao = daoFactory.instanciarProdutoDao();
     }
 
     @SuppressWarnings("unchecked")

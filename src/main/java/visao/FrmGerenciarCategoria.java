@@ -12,7 +12,8 @@ import modelo.dao.DaoFactory;
 import modelo.dao.db.DbException;
 
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
-
+    
+    private DaoFactory daoFactory = new DaoFactory();
     private CategoriaDao categoriaDao;
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
@@ -20,7 +21,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     public FrmGerenciarCategoria() {
         initComponents();
-        categoriaDao = DaoFactory.instanciarCategoriaDao();
+        categoriaDao = daoFactory.instanciarCategoriaDao();
         tabela = new DefaultTableModel(dados, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {

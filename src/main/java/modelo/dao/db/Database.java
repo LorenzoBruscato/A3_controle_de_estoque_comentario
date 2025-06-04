@@ -15,7 +15,7 @@ public class Database {
     /**
      * Atributo do tipo Connection para realizar a conexão com o banco de dados
      */
-    private static Connection conn = null;
+    private  Connection conn = null;
 
     /**
      * Retorna uma conexão com o banco de dados, carregando as propriedades do
@@ -24,7 +24,7 @@ public class Database {
      * @return Connection ativa com o banco de dados
      * @throws SQLException se ocorrer erro na conexão
      */
-    public static Connection getConnection() {
+    public  Connection getConnection() {
         if (conn == null) {
             try {
                 Properties props = loadProperties();
@@ -40,7 +40,7 @@ public class Database {
     /**
      * Fecha a conexão com o banco de dados se ela estiver aberta.
      */
-    public static void closeConnection() {
+    public  void closeConnection() {
         if (conn != null) {
             try {
                 conn.close();

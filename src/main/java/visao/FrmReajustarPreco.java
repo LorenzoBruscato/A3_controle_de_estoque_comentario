@@ -14,11 +14,12 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
     
     private final CategoriaDao categoriaDao;
     private ProdutoDao produtoDao;
+    private DaoFactory daoFactory = new DaoFactory();
 
     public FrmReajustarPreco() {
          initComponents();
-        categoriaDao = DaoFactory.instanciarCategoriaDao();
-        produtoDao = DaoFactory.instanciarProdutoDao();
+        categoriaDao = daoFactory.instanciarCategoriaDao();
+        produtoDao = daoFactory.instanciarProdutoDao();
         carregarCategoriasNoComboBox();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
