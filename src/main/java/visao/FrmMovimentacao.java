@@ -6,10 +6,12 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Registro;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
+import modelo.dao.RegistroDao;
 
 public class FrmMovimentacao extends javax.swing.JFrame {
 
     private ProdutoDao produtoDao;
+    private RegistroDao registroDao;
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
     private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação"};
@@ -17,6 +19,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
 
     public FrmMovimentacao() {
         initComponents();
+        registroDao = daoFactory.insinstanciarRegistro();
         produtoDao = daoFactory.instanciarProdutoDao();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -33,7 +36,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     private void carregarRegistroNaTela() {
         tabela.setRowCount(0);
 
-        List<Registro> registros = produtoDao.resgatarRegistros();
+        List<Registro> registros = registroDao.resgatarRegistros();
 
         for (Registro reg : registros) {
             tabela.addRow(new Object[]{
