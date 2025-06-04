@@ -196,6 +196,40 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public void AdicionarProdutoRegistro(Registro reg) {
+     String sql = "INSERT INTO registro "
+                + "(data, tipo, quantidade, movimentacao) "
+                + "VALUES (?, ?, ?, ?)";  
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
+            st.setDate(1, sqlDate);
+            st.setString(2, reg.getTipoDoProduto().getNome());
+            st.setInt(3, reg.getQuantidade());
+            st.setString(4, reg.getMovimentacao().name());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+   
+    @Override
+     public void RemoverProdutoRegistro(Registro reg) {
+     String sql = "INSERT INTO registro "
+                + "(data, tipo, quantidade, movimentacao) "
+                + "VALUES (?, ?, ?, ?)";  
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
+            st.setDate(1, sqlDate);
+            st.setString(2, reg.getTipoDoProduto().getNome());
+            st.setInt(3, reg.getQuantidade());
+            st.setString(4, reg.getMovimentacao().name());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+    
+    @Override
     public List<Registro> resgatarRegistros() {
         List<Registro> lista = new ArrayList<>();
         Map<String, Produto> map = new HashMap<>();
