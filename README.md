@@ -13,20 +13,54 @@
 
 Este é um software desenvolvido em conjunto para gerenciar um banco de dados MySQL com duas tabelas principais: **Produto** e **Categoria**. Ele permite cadastrar, listar, atualizar e excluir produtos e categorias de forma simples e eficiente.
 
-## 📦 Requisitos Funcionais
+📦 Requisitos Funcionais,,
+RF01 - Cadastrar produtos:
+Nome,
+Preço unitário,
+Unidade,
+Quantidade em estoque,
+Quantidade mínima em estoque,
+Quantidade máxima em estoque,
+Categoria,
 
-- RF001: Cadastro de categorias
-- RF002: Cadastro de produtos com categoria associada
-- RF003: Edição e exclusão de produtos e categorias
-- RF004: Listagem completa de produtos e categorias
+RF02 - Cadastrar categorias:
+Nome,
+Tamanho (Pequeno, Médio, Grande),
+Embalagem (Lata, Vidro, Plástico),
 
-## 📦 Requisitos Não Funcionais
+RF03 - Permitir operações:
+Inclusão,
+Alteração,
+Exclusão,
+Listagem de produtos e categorias,
 
-- NRF001: Escolha do caminho para salvar relatórios
-- NRF002: Seleção do tipo de relatório (Excel, DOC ou PDF)
-- NRF003: Definir nome do arquivo dos relatórios
-- NRF004: Resposta eficiente aos comandos de CRUD
-- NRF005: Compatível com banco de dados MySQL
+RF03 - Reajuste de preço
+Permite reajustar o percentual de preço em todos os produtos.
+
+RF02: Cadastro de Produto com Categoria
+O sistema deve permitir o cadastro de produtos já vinculando cada um a uma categoria existente
+
+RF04: Listar Produtos e Categorias
+O sistema deve exibir todos os produtos e categorias cadastrados.
+
+RF05: Emissão de Relatórios
+O sistema deve gerar relatórios nos formatos Excel, DOC ou PDF.
+
+RF06 - Movimentação de Produtos
+O sistema deve registrar entradas e saídas de produtos no estoque.
+
+📦 Requisitos Não Funcionais,,
+RNF01 – Desempenho de Relatórios
+O sistema deve emitir relatórios em até 3 segundos.
+
+RNF02 – Usabilidade da Interface
+O sistema deve possuir uma interface gráfica de fácil entendimento.
+
+RNF03 – Privacidade do Usuário
+O sistema deve garantir a privacidade dos dados dos usuários.
+
+RNF04 – Compatibilidade com Windows
+O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
 
 ## 🧱 Estrutura do Banco de Dados
 
