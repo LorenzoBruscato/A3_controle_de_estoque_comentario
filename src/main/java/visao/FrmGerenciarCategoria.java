@@ -9,12 +9,14 @@ import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
+import modelo.dao.ProdutoDao;
 import modelo.dao.db.DbException;
 
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private DaoFactory daoFactory = new DaoFactory();
     private CategoriaDao categoriaDao;
+    private ProdutoDao produtoDao;
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
     private String[] colunas = {"ID", "Nome", "Tamanho", "Embalagem"};
@@ -22,6 +24,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     public FrmGerenciarCategoria() {
         initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();
+        produtoDao = daoFactory.instanciarProdutoDao();
         tabela = new DefaultTableModel(dados, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -29,7 +32,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             }
         };
         JTableCategoria.setModel(tabela);
-
+        carregarCategoriasNaTela();
     }
 
     public static String removerAcentos(String texto) {
@@ -270,34 +273,26 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 System.out.println("Nenhuma linha selecionada para alterar.");
                 return;
             }
-
             // Pega o id da linha selecionada
             int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
-
-            // Pega o nome do campo de texto
-            String nome = JTFNomeDeCategoria.getText().trim();
-
-            // Pega o enum Tamanho a partir da String selecionada no combo
+            // Pegamos o nome antigo da categoria diretamente da tabela
+            String nomeAntigo = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
+            // Pega o novo nome da categoria a partir do campo de texto
+            String nomeNovo = JTFNomeDeCategoria.getText().trim();
+            // Pega os enums a partir dos combos
             String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
             Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
-
-            // Pega o enum Embalagem a partir da String selecionada no combo
             String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
             Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
-
             // Cria o objeto Categoria com os dados atualizados
-            Categoria cat = new Categoria(id, nome, tamanho, embalagem);
-
-            // Atualiza no banco
+            Categoria cat = new Categoria(id, nomeNovo, tamanho, embalagem);
+            // Atualiza os produtos que tinham a categoria com o nome antigo
+            produtoDao.atualizarProdutoCategoria(nomeNovo, nomeAntigo);
+            // Atualiza a própria categoria na tabela de categorias
             categoriaDao.atualizarCategoria(cat);
-
-            System.out.println("Categoria atualizada com sucesso!");
-
-            // Atualiza a tabela da tela para refletir a mudança
             carregarCategoriasNaTela();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed

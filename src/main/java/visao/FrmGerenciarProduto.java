@@ -51,10 +51,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }
 
     private void carregarProdutosNaTela() {
-        tabela.setRowCount(0); // Limpa a tabela
-
+        tabela.setRowCount(0);
         List<Produto> produtos = produtoDao.resgatarProdutos();
-
         for (Produto p : produtos) {
             tabela.addRow(new Object[]{
                 p.getId(),
