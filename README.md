@@ -64,6 +64,31 @@ O sistema deve garantir a privacidade dos dados dos usuários.
 - RNF04 – Compatibilidade com Windows:
 O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
 
+## Regra de Negócios
+
+📁 Categorias
+- RN01 – O nome da categoria deve ser único (não pode haver duas categorias com o mesmo nome).
+- RN02 – O tamanho da categoria deve ser selecionado entre os valores permitidos pelo ENUM.
+- RN03 – A embalagem da categoria deve ser selecionada entre os valores definidos pelo ENUM.
+- RN04 – Não é permitido excluir uma categoria que esteja associada a um ou mais produtos.
+
+📦 Produtos
+- RN05 – Cada produto deve obrigatoriamente estar vinculado a uma categoria existente.
+- RN06 – O nome do produto deve conter entre 1 e 100 caracteres.
+- RN07 – O preço do produto deve ser maior que zero.
+- RN08 – A unidade do produto deve ser informada em valores fixos (ex: 1 = kg, 2 = litro, 3 = ml).
+- RN09 – A quantidade mínima deve ser menor ou igual à quantidade máxima.
+- RN10 – A quantidade em estoque deve estar entre a quantidade mínima e máxima permitida.
+- RN11 – Não é permitido cadastrar dois produtos com o mesmo nome e categoria.
+- RN12 – Não é permitido excluir um produto se ele estiver sendo utilizado em algum relatório ativo (se aplicável).
+- RN13 – Produtos com estoque abaixo da quantidade mínima devem ser destacados (visualmente ou em relatório).
+
+📊 Relatórios
+- RN14 – O usuário deve escolher o formato do relatório (Excel, DOC ou PDF) antes da geração.
+- RN15 – O nome do arquivo do relatório deve ser definido pelo usuário.
+- RN16 – O relatório deve conter a data de geração e a lista completa de produtos ou categorias conforme a opção escolhida.
+- RN17 – O caminho de salvamento do relatório deve ser um diretório válido no sistema de arquivos.
+
 ## 🧱 Estrutura do Banco de Dados
 
 **Tabela: categoria**
@@ -87,31 +112,6 @@ O sistema deve ser compatível com qualquer versão do sistema operacional Windo
 | quantidade_minima  | INT           | quantidade minima permitida      |
 | quantidade_maxima  | INT           | quantidade maxima permitida      |
 | categoria          | categoria     | categoria do produto             |
-
-## Regra de Negócios
-
-📁 Categorias
-- RN001 – O nome da categoria deve ser único (não pode haver duas categorias com o mesmo nome).
-- RN002 – O tamanho da categoria deve ser selecionado entre os valores permitidos pelo ENUM.
-- RN003 – A embalagem da categoria deve ser selecionada entre os valores definidos pelo ENUM.
-- RN004 – Não é permitido excluir uma categoria que esteja associada a um ou mais produtos.
-
-📦 Produtos
-- RN005 – Cada produto deve obrigatoriamente estar vinculado a uma categoria existente.
-- RN006 – O nome do produto deve conter entre 1 e 100 caracteres.
-- RN007 – O preço do produto deve ser maior que zero.
-- RN008 – A unidade do produto deve ser informada em valores fixos (ex: 1 = kg, 2 = litro, 3 = ml).
-- RN009 – A quantidade mínima deve ser menor ou igual à quantidade máxima.
-- RN010 – A quantidade em estoque deve estar entre a quantidade mínima e máxima permitida.
-- RN011 – Não é permitido cadastrar dois produtos com o mesmo nome e categoria.
-- RN012 – Não é permitido excluir um produto se ele estiver sendo utilizado em algum relatório ativo (se aplicável).
-- RN013 – Produtos com estoque abaixo da quantidade mínima devem ser destacados (visualmente ou em relatório).
-
-📊 Relatórios
-- RN014 – O usuário deve escolher o formato do relatório (Excel, DOC ou PDF) antes da geração.
-- RN015 – O nome do arquivo do relatório deve ser definido pelo usuário.
-- RN016 – O relatório deve conter a data de geração e a lista completa de produtos ou categorias conforme a opção escolhida.
-- RN017 – O caminho de salvamento do relatório deve ser um diretório válido no sistema de arquivos.
 
 ## ⚙️ Tecnologias Utilizadas
 
