@@ -29,6 +29,9 @@ Nome,
 Tamanho (Pequeno, Médio, Grande),
 Embalagem (Lata, Vidro, Plástico),
 
+- RF02: Cadastro de Produto com Categoria
+O sistema deve permitir o cadastro de produtos já vinculando cada um a uma categoria existente
+
 - RF03 - Permitir operações:
 Inclusão,
 Alteração,
@@ -38,10 +41,7 @@ Listagem de produtos e categorias,
 - RF03 - Reajuste de preço
 Permite reajustar o percentual de preço em todos os produtos.
 
-- RF02: Cadastro de Produto com Categoria
-O sistema deve permitir o cadastro de produtos já vinculando cada um a uma categoria existente
-
--RF04: Listar Produtos e Categorias
+- RF04: Listar Produtos e Categorias
 O sistema deve exibir todos os produtos e categorias cadastrados.
 
 - RF05: Emissão de Relatórios
@@ -52,16 +52,16 @@ O sistema deve registrar entradas e saídas de produtos no estoque.
 
 📦 Requisitos Não Funcionais
 
-- RNF01 – Desempenho de Relatórios
+- RNF01 – Desempenho de Relatórios:
 O sistema deve emitir relatórios em até 3 segundos.
 
-- RNF02 – Usabilidade da Interface
+- RNF02 – Usabilidade da Interface:
 O sistema deve possuir uma interface gráfica de fácil entendimento.
 
-- RNF03 – Privacidade do Usuário
+- RNF03 – Privacidade do Usuário:
 O sistema deve garantir a privacidade dos dados dos usuários.
 
-- RNF04 – Compatibilidade com Windows
+- RNF04 – Compatibilidade com Windows:
 O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
 
 ## 🧱 Estrutura do Banco de Dados
