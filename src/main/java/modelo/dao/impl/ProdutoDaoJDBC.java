@@ -148,6 +148,18 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public void atualizarProdutoCategoria(String nomeNovo, String nomeAntigo) {
+        String sql = "UPDATE produto SET categoria = ? WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, nomeNovo);
+            st.setString(2, nomeAntigo);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    @Override
     public void deletarProdutoPorId(int objId
     ) {
         String sql
@@ -1627,5 +1639,4 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return cat;
     }
 
-    
 }
