@@ -12,7 +12,7 @@ import modelo.dao.DaoFactory;
 import modelo.dao.db.DbException;
 
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
-    
+
     private DaoFactory daoFactory = new DaoFactory();
     private CategoriaDao categoriaDao;
     private DefaultTableModel tabela;
@@ -38,19 +38,27 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     }
 
     private void carregarCategoriasNaTela() {
-        tabela.setRowCount(0);
+        try {
+            // Busca todas as categorias atualizadas do banco
+            List<Categoria> categorias = categoriaDao.resgatarCategorias();
 
-        List<Categoria> categorias = categoriaDao.resgatarCategorias();
+            DefaultTableModel modelo = (DefaultTableModel) JTableCategoria.getModel();
 
-        for (Categoria cat : categorias) {
-            tabela.addRow(new Object[]{
-                cat.getId(),
-                cat.getNome(),
-                cat.getTamanho().name(),
-                cat.getEmbalagem().name()
-            });
+            modelo.setRowCount(0); // limpa todas as linhas da tabela
+
+            // Adiciona as linhas atualizadas
+            for (Categoria c : categorias) {
+                modelo.addRow(new Object[]{
+                    c.getId(),
+                    c.getNome(),
+                    c.getTamanho().toString(),
+                    c.getEmbalagem().toString()
+                });
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar tabela de categorias:");
+            e.printStackTrace();
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -213,7 +221,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
         String catNome = JTFNomeDeCategoria.getText().trim();
-        String catNomeNormalizado = removerAcentos(catNome).toUpperCase();
+        String catNomeNormalizado = removerAcentos(catNome).trim().toUpperCase();
 
         String catTamanhoString = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
         Tamanho catTamanho = Tamanho.valueOf(catTamanhoString.toUpperCase());
@@ -223,10 +231,10 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
         Categoria cat = new Categoria(null, catNome, catTamanho, catEmbalagem);
 
-        // Verificar se já existe uma categoria com o mesmo nome (ignorando acentos e caixa)
         boolean jaExiste = false;
         for (Categoria c : categoriaDao.resgatarCategorias()) {
-            String nomeExistenteNormalizado = removerAcentos(c.getNome()).toUpperCase();
+            String nomeExistenteNormalizado = removerAcentos(c.getNome()).trim().toUpperCase();
+            System.out.println("Comparando: [" + nomeExistenteNormalizado + "] com [" + catNomeNormalizado + "]");
             if (nomeExistenteNormalizado.equals(catNomeNormalizado)) {
                 jaExiste = true;
                 break;
@@ -243,8 +251,6 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             this.JTFNomeDeCategoria.setText("");
             carregarCategoriasNaTela();
         }
-
-
     }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -258,56 +264,70 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     }//GEN-LAST:event_JBVoltarCategoriaActionPerformed
 
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
-        // Alterar categoria de acordo com a linha selecionada da JTInformacoesProduto
-        // linha selecionada
-        int linhaSelecionada = JTableCategoria.getSelectedRow();
+        try {
+            int linhaSelecionada = JTableCategoria.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                System.out.println("Nenhuma linha selecionada para alterar.");
+                return;
+            }
 
-        // Pega os valores da linha selecionada
-        int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
-        //System.out.println("Id: " + id);
-        String nome = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
-        //System.out.println("nome: " + nome);
-        String tamanhoStr = (String) JTableCategoria.getValueAt(linhaSelecionada, 2);
-        //System.out.println("Tamanho: " + tamanhoStr);
-        Tamanho tamanho = Tamanho.valueOf(tamanhoStr);
-        String embalagemStr = (String) JTableCategoria.getValueAt(linhaSelecionada, 3);
-        //System.out.println("Embalagem" + embalagemStr);
-        Embalagem embalagem = Embalagem.valueOf(embalagemStr);
+            // Pega o id da linha selecionada
+            int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
 
-        // Instanciar categoria
-        Categoria cat = new Categoria(id, nome, tamanho, embalagem);
+            // Pega o nome do campo de texto
+            String nome = JTFNomeDeCategoria.getText().trim();
 
-        // Atualizar categoria no banco de dados
-        categoriaDao.atualizarCategoria(cat);
+            // Pega o enum Tamanho a partir da String selecionada no combo
+            String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
+            Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
 
-        System.out.println("Botão Atualizar clicado");
+            // Pega o enum Embalagem a partir da String selecionada no combo
+            String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
+            Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
 
+            // Cria o objeto Categoria com os dados atualizados
+            Categoria cat = new Categoria(id, nome, tamanho, embalagem);
 
+            // Atualiza no banco
+            categoriaDao.atualizarCategoria(cat);
+
+            System.out.println("Categoria atualizada com sucesso!");
+
+            // Atualiza a tabela da tela para refletir a mudança
+            carregarCategoriasNaTela();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
     private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
-        if (this.JTableCategoria.getSelectedRow() != -1) {
-            String nome = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 1).toString();
-            String tamanho = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 2).toString();
-            String embalagem = this.JTableCategoria.getValueAt(this.JTableCategoria.getSelectedRow(), 3).toString();
+        int linhaSelecionada = JTableCategoria.getSelectedRow();
 
+        if (linhaSelecionada != -1) {
+            DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
+
+            String nome = tabela.getValueAt(linhaSelecionada, 1).toString();
+            String tamanhoSelecionado = removerAcentos(tabela.getValueAt(linhaSelecionada, 2).toString().trim());
+            String embalagemSelecionada = removerAcentos(tabela.getValueAt(linhaSelecionada, 3).toString().trim());
+
+            // Seta o nome no campo de texto
             JTFNomeDeCategoria.setText(nome);
 
-            // ComboBox de Tamanho
-            String tamanhoTabela = removerAcentos(tamanho).toLowerCase();
+            // Seta o tamanho no combo box
             for (int i = 0; i < JCBTipoTamanhoGerenciamentoC.getItemCount(); i++) {
-                String itemCombo = removerAcentos(JCBTipoTamanhoGerenciamentoC.getItemAt(i).toString()).toLowerCase();
-                if (itemCombo.equals(tamanhoTabela)) {
+                String item = removerAcentos(JCBTipoTamanhoGerenciamentoC.getItemAt(i).toString().trim());
+                if (item.equalsIgnoreCase(tamanhoSelecionado)) {
                     JCBTipoTamanhoGerenciamentoC.setSelectedIndex(i);
                     break;
                 }
             }
 
-            // ComboBox de Embalagem
-            String embalagemTabela = removerAcentos(embalagem).toLowerCase();
+            // Seta a embalagem no combo box
             for (int i = 0; i < JCBTipoEmbalagemGerenciamentoC.getItemCount(); i++) {
-                String itemCombo = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getItemAt(i).toString()).toLowerCase();
-                if (itemCombo.equals(embalagemTabela)) {
+                String item = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getItemAt(i).toString().trim());
+                if (item.equalsIgnoreCase(embalagemSelecionada)) {
                     JCBTipoEmbalagemGerenciamentoC.setSelectedIndex(i);
                     break;
                 }

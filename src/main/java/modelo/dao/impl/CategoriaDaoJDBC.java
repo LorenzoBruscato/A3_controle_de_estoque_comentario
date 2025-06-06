@@ -52,26 +52,16 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 
     @Override
     public void atualizarCategoria(Categoria obj) {
-
         String sql = "UPDATE categoria "
-                + "SET nome = ?, "
-                + "tamanho = ?, "
-                + "embalagem = ? "
+                + "SET nome = ?, tamanho = ?, embalagem = ? "
                 + "WHERE id = ?";
-
         try (PreparedStatement st = conn.prepareStatement(sql)) {
-            //System.out.println("Autocommit ativo? " + conn.getAutoCommit());
             st.setString(1, obj.getNome());
             st.setString(2, obj.getTamanho().name());
             st.setString(3, obj.getEmbalagem().name());
             st.setInt(4, obj.getId());
 
-            int rowsAffected = st.executeUpdate();
-            //System.out.println("Linhas afetadas: " + rowsAffected);
-
-            if (rowsAffected == 0) {
-                throw new DbException("Nenhum produto encontrado com esse ID.");
-            }
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
