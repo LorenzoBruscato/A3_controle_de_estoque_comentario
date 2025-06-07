@@ -21,3 +21,13 @@ CREATE TABLE IF NOT EXISTS produto (
     quantidade_maxima INT NOT NULL,
     categoria VARCHAR(100) NOT NULL
 );
+
+-- Criação da tabela registro
+CREATE TABLE IF NOT EXISTS registro (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data DATE NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    quantidade INT NOT NULL,
+    movimentacao VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL
+);
