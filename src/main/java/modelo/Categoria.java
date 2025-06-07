@@ -25,7 +25,7 @@ public class Categoria {
     }
 
     /**
-     * Construtor padrão. Inicializa os atributos com valores nulos.
+     * Construtor padrão que inicializa os atributos com valores nulos.
      */
     public Categoria() {
         this(null, null, null, null);
@@ -49,37 +49,10 @@ public class Categoria {
     /**
      * Retorna o ID da categoria.
      *
-     * @return o identificador
+     * @return o identificador da categoria
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     * Retorna o nome da categoria.
-     *
-     * @return o nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     * Retorna o tamanho da categoria.
-     *
-     * @return o tamanho
-     */
-    public Tamanho getTamanho() {
-        return tamanho;
-    }
-
-    /**
-     * Retorna o tipo de embalagem da categoria.
-     *
-     * @return a embalagem
-     */
-    public Embalagem getEmbalagem() {
-        return embalagem;
     }
 
     /**
@@ -92,12 +65,30 @@ public class Categoria {
     }
 
     /**
+     * Retorna o nome da categoria.
+     *
+     * @return o nome da categoria
+     */
+    public String getNome() {
+        return nome;
+    }
+
+    /**
      * Define o nome da categoria.
      *
      * @param nome o nome a ser definido
      */
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    /**
+     * Retorna o tamanho da categoria.
+     *
+     * @return o tamanho da categoria
+     */
+    public Tamanho getTamanho() {
+        return tamanho;
     }
 
     /**
@@ -110,9 +101,18 @@ public class Categoria {
     }
 
     /**
+     * Retorna o tipo de embalagem da categoria.
+     *
+     * @return o tipo de embalagem da categoria
+     */
+    public Embalagem getEmbalagem() {
+        return embalagem;
+    }
+
+    /**
      * Define o tipo de embalagem da categoria.
      *
-     * @param embalagem a embalagem a ser definida
+     * @param embalagem o tipo de embalagem a ser definido
      */
     public void setEmbalagem(Embalagem embalagem) {
         this.embalagem = embalagem;
