@@ -13,23 +13,19 @@ import modelo.Registro;
 import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
-
 public class RegistroDaoJDBC implements RegistroDao {
-    
-    
+
     private Connection conn;
 
     public RegistroDaoJDBC(Connection conn) {
         this.conn = conn;
     }
-    
-    
-    
+
     @Override
     public void AdicionarProdutoRegistro(Registro reg) {
-     String sql = "INSERT INTO registro "
+        String sql = "INSERT INTO registro "
                 + "(data, tipo, quantidade, movimentacao) "
-                + "VALUES (?, ?, ?, ?)";  
+                + "VALUES (?, ?, ?, ?)";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
             st.setDate(1, sqlDate);
@@ -41,12 +37,12 @@ public class RegistroDaoJDBC implements RegistroDao {
             throw new DbException(e.getMessage());
         }
     }
-   
+
     @Override
-     public void RemoverProdutoRegistro(Registro reg) {
-     String sql = "INSERT INTO registro "
+    public void RemoverProdutoRegistro(Registro reg) {
+        String sql = "INSERT INTO registro "
                 + "(data, tipo, quantidade, movimentacao) "
-                + "VALUES (?, ?, ?, ?)";  
+                + "VALUES (?, ?, ?, ?)";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
             st.setDate(1, sqlDate);
@@ -58,38 +54,41 @@ public class RegistroDaoJDBC implements RegistroDao {
             throw new DbException(e.getMessage());
         }
     }
-    
+
     @Override
     public List<Registro> resgatarRegistros() {
         List<Registro> lista = new ArrayList<>();
-        Map<String, Produto> map = new HashMap<>();
-
-        String sql = "SELECT * FROM registro ORDER BY data DESC";
-
+        String sql = "SELECT id, data, tipo, quantidade, movimentacao, status FROM registro";
         try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
-
             while (rs.next()) {
-                String nomeProduto = rs.getString("tipo");
+                Registro reg = new Registro();
+                reg.setId(rs.getInt("id"));
+                reg.setData(rs.getDate("data"));
 
-                Produto prod = map.get(nomeProduto);
-                if (prod == null) {
-                    prod = new Produto();
-                    prod.setNome(nomeProduto);
-                    map.put(nomeProduto, prod);
+                Produto produto = new Produto();
+                produto.setNome(rs.getString("tipo"));
+                reg.setTipoDoProduto(produto);
+
+                reg.setQuantidade(rs.getInt("quantidade"));
+                reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao")));
+
+                // Aqui está o ponto crítico:
+                String statusStr = rs.getString("status");
+                if (statusStr != null) {
+                    reg.setStatus(Registro.Status.valueOf(statusStr));
+                } else {
+                    // Opcional: setar um valor padrão para evitar nulo
+                    reg.setStatus(Registro.Status.DENTRO);
                 }
 
-                Registro reg = instanciarRegistro(rs, prod);
                 lista.add(reg);
             }
-
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
-
         return lista;
     }
 
-    
     private Registro instanciarRegistro(ResultSet rs, Produto produto) throws SQLException {
         Registro reg = new Registro();
         reg.setId(rs.getInt("id"));
@@ -99,5 +98,5 @@ public class RegistroDaoJDBC implements RegistroDao {
         reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao").toUpperCase()));
         return reg;
     }
-    
+
 }

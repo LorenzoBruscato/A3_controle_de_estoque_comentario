@@ -71,7 +71,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         String sql = "INSERT INTO produto "
                 + "(nome, preco_unitario, unidade, quantidade_estoque, quantidade_minima, quantidade_maxima, categoria) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, obj.getNome());
             st.setDouble(2, obj.getPreco());
@@ -80,26 +79,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st.setInt(5, obj.getQuantidadeMinima());
             st.setInt(6, obj.getQuantidadeMaxima());
             st.setString(7, obj.getCategoria().getNome());
-            int rowsAffected = st.executeUpdate();
 
+            int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    obj.setId(id);
-                    String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES(?,?,?,?)";
-                    try (PreparedStatement str = conn.prepareStatement(sqlRegistro)) {
-                        str.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-                        str.setString(2, obj.getNome());
-                        str.setInt(3, obj.getQuantidade());
-                        str.setString(4, "ENTRADA");
-                        str.executeUpdate();
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int id = rs.getInt(1);
+                        obj.setId(id);
+
+                        String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
+
+                        try (PreparedStatement str = conn.prepareStatement(sqlRegistro)) {
+                            str.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+                            str.setInt(2, obj.getId());  // Passa o id do produto
+                            str.setInt(3, obj.getQuantidade());
+                            str.setString(4, Registro.Movimentacao.ENTRADA.name());
+                            str.setString(5, Registro.Status.ADICIONADO.name());
+                            str.executeUpdate();
+                        }
                     }
                 }
             } else {
-                throw new DbException("Unexpected error! No rows affected");
+                throw new DbException("Erro inesperado! Nenhuma linha afetada.");
             }
-
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -134,13 +136,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             throw new DbException(e.getMessage());
         }
 
-        String sqlr = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
+        // Inserir registro da movimentação com status
+        String sqlr = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement st = conn.prepareStatement(sqlr)) {
             java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
             st.setDate(1, sqlDate);
             st.setString(2, reg.getTipoDoProduto().getNome());
             st.setInt(3, reg.getQuantidade());
             st.setString(4, reg.getMovimentacao().name());
+            st.setString(5, reg.getStatus().name());  // Adicionado status aqui
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -160,17 +164,34 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
-    public void deletarProdutoPorId(int objId
-    ) {
-        String sql
-                = "DELETE FROM produto "
-                + "WHERE id = ?";
+    public void deletarProdutoPorId(int objId) {
+        // 1. Buscar o produto antes de excluir
+        Produto produto = procurarProdutoPorId(objId);
+        if (produto == null) {
+            throw new DbException("Produto não encontrado para exclusão.");
+        }
 
+        // 2. Excluir o produto
+        String sql = "DELETE FROM produto WHERE id = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, objId);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            throw new DbException("Erro ao deletar produto: " + e.getMessage());
+        }
+
+        // 3. Criar o registro da exclusão, incluindo o status
+        String sqlr = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement st = conn.prepareStatement(sqlr)) {
+            java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+            st.setDate(1, sqlDate);
+            st.setString(2, produto.getNome());
+            st.setInt(3, produto.getQuantidade());
+            st.setString(4, Registro.Movimentacao.NENHUM.name()); // EXCLUIDO no enum
+            st.setString(5, Registro.Status.DELETADO.name()); // Pode ajustar o status padrão aqui
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException("Erro ao registrar exclusão: " + e.getMessage());
         }
     }
 
@@ -604,7 +625,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             FileOutputStream fileOut = new FileOutputStream(arquivo);
             Sheet sheet = workBook.createSheet(nomePlanilha);
 
-            String[] colunas = {"id", "data", "tipo", "quantidade", "movimentação"};
+            String[] colunas = {"id", "data", "tipo", "quantidade", "movimentação, status"};
             Row header = sheet.createRow(0);
             for (int i = 0; i < colunas.length; i++) {
                 header.createCell(i).setCellValue(colunas[i]);
