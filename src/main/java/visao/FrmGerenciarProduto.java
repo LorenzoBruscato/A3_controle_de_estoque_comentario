@@ -11,6 +11,7 @@ import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
+import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
 public class FrmGerenciarProduto extends javax.swing.JFrame {
@@ -97,6 +98,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         JBExcluirProduto = new javax.swing.JButton();
         ComboBoxUnidade = new javax.swing.JComboBox<>();
+        jBEntrada = new javax.swing.JButton();
+        jBSaida = new javax.swing.JButton();
+        jTEntradaSaida = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Produtos");
@@ -202,6 +206,20 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             }
         });
 
+        jBEntrada.setText("Entrada");
+        jBEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEntradaActionPerformed(evt);
+            }
+        });
+
+        jBSaida.setText("Saida");
+        jBSaida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSaidaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,7 +232,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,17 +255,24 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                             .addComponent(JTFQtdEstoque, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JTFQtdMinima, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JTFQtdMaxima)
-                            .addComponent(JTFNomeProduto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addComponent(ComboBoxUnidade, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                            .addComponent(ComboBoxUnidade, javax.swing.GroupLayout.Alignment.LEADING, 0, 110, Short.MAX_VALUE)
+                            .addComponent(JTFNomeProduto, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(JBAlterarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JBVoltarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JBNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(JBExcluirProduto)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jBEntrada)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jBSaida))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jTEntradaSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(JBAlterarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JBVoltarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JBNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(JBExcluirProduto, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(92, 92, 92))))
         );
 
@@ -281,11 +306,14 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(JLUnidade)
-                            .addComponent(ComboBoxUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
+                            .addComponent(ComboBoxUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBEntrada)
+                            .addComponent(jBSaida))
+                        .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(JLQtdEstoque)
-                            .addComponent(JTFQtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JTFQtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTEntradaSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(JTFQtdMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -407,23 +435,21 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JTableProdutosMouseClicked
 
     private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
-        // TODO add your handling code here:
         // Alterar produto de acordo com a linha selecionada da tabela
         int linhaSelecionada = JTableProdutos.getSelectedRow();
-
         if (linhaSelecionada != -1) {
             try {
                 // Pega os valores da linha selecionada da tabela
                 int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
                 Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
                 int qtdEstoqueAntiga = produtoAtual.getQuantidade();
+
                 String nome = JTFNomeProduto.getText().trim();
                 double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
                 String unidade = ComboBoxUnidade.getSelectedItem().toString();
                 int qtdEstoque = Integer.parseInt(JTFQtdEstoque.getText().trim());
                 int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
                 int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
-
                 String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
                 Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
 
@@ -431,21 +457,26 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     throw new DbException("Categoria não encontrada: " + nomeCategoria);
                 }
 
-                if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-                    JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
+                // Verificar se o estoque foi alterado
+                if (qtdEstoque != qtdEstoqueAntiga) {
+                    JTFQtdEstoque.setText(String.valueOf(qtdEstoqueAntiga));
+                    JOptionPane.showMessageDialog(this,
+                            "A quantidade de estoque não pode ser alterada por esta funcionalidade.\nUse a tela de movimentação de estoque.",
+                            "Alteração não permitida",
+                            JOptionPane.WARNING_MESSAGE);
                     return;
-                } else if (qtdEstoque < qtdMinima) {
-                    JOptionPane.showMessageDialog(this, "A quantidade em estoque é menor do que a quantidade mínima.", "Erro", JOptionPane.WARNING_MESSAGE);
-                    return;
-                } else if (qtdEstoque > qtdMaxima) {
-                    JOptionPane.showMessageDialog(this, "A quantidade em estoque é maior do que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
+                }
+
+                if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                    JOptionPane.showMessageDialog(this,
+                            "Nenhum valor pode ser negativo!\nErro de cadastro.",
+                            "Erro",
+                            JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
                 // Criar e preencher o objeto Produto
                 Produto produto = new Produto();
-                Registro reg = new Registro();
-
                 produto.setId(id);
                 produto.setNome(nome);
                 produto.setPreco(preco);
@@ -454,19 +485,18 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 produto.setQuantidadeMinima(qtdMinima);
                 produto.setQuantidadeMaxima(qtdMaxima);
                 produto.setCategoria(categoria);
+
+                // Registro com movimentação "NENHUM" já que a quantidade não mudou
+                Registro reg = new Registro();
                 reg.setId(id);
                 reg.setData(new Date());
                 reg.setTipoDoProduto(produto);
-                reg.setQuantidade(Math.abs(qtdEstoque - qtdEstoqueAntiga));
-                if (qtdEstoque > qtdEstoqueAntiga) {
-                    reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
-                } else if (qtdEstoque < qtdEstoqueAntiga) {
-                    reg.setMovimentacao(Registro.Movimentacao.SAIDA);
-                }
+                reg.setQuantidade(0); // Nenhuma movimentação
+                reg.setMovimentacao(Registro.Movimentacao.NENHUM);
+                reg.setStatus(Registro.Status.NOMEALTERADO);
 
                 // Atualizar produto no banco de dados
                 produtoDao.atualizarProduto(produto, reg);
-
                 System.out.println("Produto atualizado com sucesso!");
 
                 // Recarregar a tabela
@@ -487,36 +517,244 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         } else {
             System.out.println("Nenhuma linha selecionada para atualizar.");
         }
-
     }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
     private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
         int linhaSelecionada = JTableProdutos.getSelectedRow();
 
         if (linhaSelecionada == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
+            JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
             return;
         }
 
         int idParaDeletarProduto = (int) tabela.getValueAt(linhaSelecionada, 0);
 
         try {
-            produtoDao.deletarProdutoPorId(idParaDeletarProduto);
-            carregarProdutosNaTela();
-            this.JTFNomeProduto.setText("");
-            this.JTFPrecoUnitario.setText("");
-            this.JTFQtdEstoque.setText("");
-            this.JTFQtdMinima.setText("");
-            this.JTFQtdMaxima.setText("");
+            // Obtemos o produto antes de excluir para registrar a exclusão
+            Produto produto = produtoDao.procurarProdutoPorId(idParaDeletarProduto);
+            if (produto == null) {
+                JOptionPane.showMessageDialog(this, "Produto não encontrado.");
+                return;
+            }
 
+            // Exclui o produto e registra a movimentação como EXCLUIDO
+            produtoDao.deletarProdutoPorId(idParaDeletarProduto);
+
+            // Atualiza a tabela
+            carregarProdutosNaTela();
+
+            // Limpa os campos
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
+            JOptionPane.showMessageDialog(this, "Produto excluído com sucesso.");
         } catch (Exception e) {
-            throw new DbException(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Erro ao excluir produto: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_JBExcluirProdutoActionPerformed
 
     private void ComboBoxUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxUnidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ComboBoxUnidadeActionPerformed
+
+    private void jBEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntradaActionPerformed
+         try {
+            int linhaSelecionada = JTableProdutos.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um produto na tabela antes de registrar a entrada.");
+                return;
+            }
+
+            int id = (int) JTableProdutos.getValueAt(linhaSelecionada, 0);
+            Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
+            int qtdEstoqueAntiga = produtoAtual.getQuantidade();
+            int entrada = Integer.parseInt(jTEntradaSaida.getText().trim());
+
+            if (entrada <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "A quantidade de entrada deve ser maior que zero.",
+                        "Entrada inválida",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int qtdEstoqueNova = qtdEstoqueAntiga + entrada;
+
+            String nome = JTFNomeProduto.getText().trim();
+            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
+            String unidade = ComboBoxUnidade.getSelectedItem().toString();
+            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
+            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
+            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+            if (categoria == null) {
+                throw new DbException("Categoria não encontrada: " + nomeCategoria);
+            }
+
+            if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Nenhum valor pode ser negativo!\nErro de cadastro.",
+                        "Erro",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Produto produto = new Produto();
+            produto.setId(id); // Aqui é o ponto-chave: o produto tem ID, como no método de saída
+            produto.setNome(nome);
+            produto.setPreco(preco);
+            produto.setUnidade(unidade);
+            produto.setQuantidade(qtdEstoqueNova);
+            produto.setQuantidadeMinima(qtdMinima);
+            produto.setQuantidadeMaxima(qtdMaxima);
+            produto.setCategoria(categoria);
+
+            Registro reg = new Registro();
+            reg.setId(id);
+            reg.setData(new Date());
+            reg.setTipoDoProduto(produto);
+            reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
+            reg.setQuantidade(entrada); // Adicionado para evitar NullPointerException
+
+            if (qtdEstoqueNova < qtdMinima) {
+                reg.setStatus(Registro.Status.ABAIXO);
+            } else if (qtdEstoqueNova > qtdMaxima) {
+                reg.setStatus(Registro.Status.ACIMA);
+            } else {
+                reg.setStatus(Registro.Status.DENTRO);
+            }
+
+            produtoDao.atualizarProduto(produto, reg);
+            JOptionPane.showMessageDialog(this, "Entrada registrada com sucesso!");
+            carregarProdutosNaTela();
+
+            // Limpar os campos
+            jTEntradaSaida.setText("");
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite um número válido para a quantidade de entrada.",
+                    "Erro de entrada",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            throw new DbException("Erro ao registrar entrada: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jBEntradaActionPerformed
+
+    private void jBSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaidaActionPerformed
+        try {
+            int linhaSelecionada = JTableProdutos.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um produto na tabela antes de registrar a saída.");
+                return;
+            }
+
+            int id = (int) JTableProdutos.getValueAt(linhaSelecionada, 0);
+            Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
+            int qtdEstoqueAntiga = produtoAtual.getQuantidade();
+
+            int saida = Integer.parseInt(jTEntradaSaida.getText().trim());
+            if (saida <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "A quantidade de saída deve ser maior que zero.",
+                        "Saída inválida",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int qtdEstoqueNova = qtdEstoqueAntiga - saida;
+            if (qtdEstoqueNova < 0) {
+                int opcao = JOptionPane.showConfirmDialog(
+                        this,
+                        "Atenção: o estoque ficará negativo!\nDeseja continuar mesmo assim?",
+                        "Aviso",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                if (opcao != JOptionPane.YES_OPTION) {
+                    return; // Cancela a operação
+                }
+            }
+
+            String nome = JTFNomeProduto.getText().trim();
+            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
+            String unidade = ComboBoxUnidade.getSelectedItem().toString();
+            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
+            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
+            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+            if (categoria == null) {
+                throw new DbException("Categoria não encontrada: " + nomeCategoria);
+            }
+
+            if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Nenhum valor pode ser negativo!\nErro de cadastro.",
+                        "Erro",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Produto produto = new Produto();
+            produto.setId(id);
+            produto.setNome(nome);
+            produto.setPreco(preco);
+            produto.setUnidade(unidade);
+            produto.setQuantidade(qtdEstoqueNova);
+            produto.setQuantidadeMinima(qtdMinima);
+            produto.setQuantidadeMaxima(qtdMaxima);
+            produto.setCategoria(categoria);
+
+            Registro reg = new Registro();
+            reg.setId(id);
+            reg.setData(new Date());
+            reg.setTipoDoProduto(produto);
+            reg.setMovimentacao(Registro.Movimentacao.SAIDA);
+            reg.setQuantidade(saida);
+            if (qtdEstoqueNova < qtdMinima) {
+                reg.setStatus(Registro.Status.ABAIXO);
+            } else if (qtdEstoqueNova > qtdMaxima) {
+                reg.setStatus(Registro.Status.ACIMA);
+            } else {
+                reg.setStatus(Registro.Status.DENTRO);
+            }
+
+            produtoDao.atualizarProduto(produto, reg);
+
+            JOptionPane.showMessageDialog(this, "Saída registrada com sucesso!");
+
+            carregarProdutosNaTela();
+
+            // Limpar os campos
+            jTEntradaSaida.setText("");
+            JTFQtdEstoque.setText(String.valueOf(qtdEstoqueNova));
+            this.JTFNomeProduto.setText("");
+            this.JTFPrecoUnitario.setText("");
+            this.JTFQtdEstoque.setText("");
+            this.JTFQtdMinima.setText("");
+            this.JTFQtdMaxima.setText("");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite um número válido para a quantidade de saída.",
+                    "Erro de saída",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            throw new DbException("Erro ao registrar saída: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jBSaidaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -539,7 +777,10 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private javax.swing.JTextField JTFQtdMaxima;
     private javax.swing.JTextField JTFQtdMinima;
     private javax.swing.JTable JTableProdutos;
+    private javax.swing.JButton jBEntrada;
+    private javax.swing.JButton jBSaida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTEntradaSaida;
     // End of variables declaration//GEN-END:variables
 }

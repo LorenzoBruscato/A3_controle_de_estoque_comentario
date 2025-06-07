@@ -35,7 +35,7 @@
                       <Component id="jScrollPane1" min="-2" pref="707" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="36" max="32767" attributes="0"/>
+              <EmptySpace pref="40" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
@@ -62,10 +62,22 @@
                           <Component id="JTFQtdEstoque" alignment="0" max="32767" attributes="0"/>
                           <Component id="JTFQtdMinima" alignment="0" max="32767" attributes="0"/>
                           <Component id="JTFQtdMaxima" alignment="1" max="32767" attributes="0"/>
-                          <Component id="JTFNomeProduto" alignment="0" pref="110" max="32767" attributes="0"/>
-                          <Component id="ComboBoxUnidade" alignment="0" max="32767" attributes="0"/>
+                          <Component id="ComboBoxUnidade" alignment="0" pref="110" max="32767" attributes="0"/>
+                          <Component id="JTFNomeProduto" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="345" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jBEntrada" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jBSaida" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="jTEntradaSaida" min="-2" pref="110" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                               <Component id="JBAlterarProduto" alignment="0" max="32767" attributes="0"/>
@@ -112,11 +124,14 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="ComboBoxUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBSaida" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="JLQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JTFQtdEstoque" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTEntradaSaida" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -354,6 +369,24 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBEntrada">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Entrada"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBEntradaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBSaida">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Saida"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBSaidaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTEntradaSaida">
     </Component>
   </SubComponents>
 </Form>

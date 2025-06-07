@@ -14,7 +14,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     private RegistroDao registroDao;
     private DefaultTableModel tabela;
     private Object[][] dados = new Object[0][0];
-    private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação"};
+    private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação", "Status Estoque"};
     private DaoFactory daoFactory = new DaoFactory();
 
     public FrmMovimentacao() {
@@ -42,9 +42,10 @@ public class FrmMovimentacao extends javax.swing.JFrame {
             tabela.addRow(new Object[]{
                 reg.getId(),
                 reg.getData(),
-                reg.getTipoDoProduto().getNome(), // Nome do produto
+                reg.getTipoDoProduto().getNome(),
                 reg.getQuantidade(),
-                reg.getMovimentacao() // ENTRADA ou SAIDA
+                reg.getMovimentacao(),
+                reg.getStatus() != null ? reg.getStatus().name() : "N/A"
             });
         }
     }
@@ -73,13 +74,13 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         jTableRegistro.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jTableRegistro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "Tipo", "Qtd", "Data"
+                "Nome", "ID", "Tipo", "Qtd", "Data", "Movimentação", "Status Estoque"
             }
         ));
         jTableRegistro.getTableHeader().setReorderingAllowed(false);
