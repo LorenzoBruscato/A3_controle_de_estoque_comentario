@@ -155,7 +155,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
     private void jBAumentarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAumentarPrecoActionPerformed
         try {
-            double percentual = Double.parseDouble(JTFAjustePorcentagem.getText());
+            double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));
             if (percentual <= 0) {
                 JTFAjustePorcentagem.setText("");
                 JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
@@ -182,7 +182,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
 
     private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
     try {
-        double percentual = Double.parseDouble(JTFAjustePorcentagem.getText());
+        double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));
         if (percentual <= 0) {
             JTFAjustePorcentagem.setText("");
             JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
