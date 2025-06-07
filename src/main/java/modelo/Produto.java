@@ -1,147 +1,123 @@
 package modelo;
 
-/**
- * Representa uma categoria de produto com atributos como ID, nome, tamanho e tipo de embalagem.
- * <p>
- * Esta classe é utilizada para agrupar informações relacionadas a uma categoria específica
- * de produto, incluindo seu identificador, nome descritivo, tamanho físico e tipo de embalagem.
- * </p>
- */
-public class Categoria {
+public class Produto {
 
     private Integer id;
     private String nome;
-    private Tamanho tamanho;
-    private Embalagem embalagem;
+    private Double preco;
+    private String unidade;
+    private Categoria categoria;
+    private Integer quantidade;
+    private Integer quantidadeMinima;
+    private Integer quantidadeMaxima;
 
-    /**
-     * Enumeração que define os possíveis tamanhos de uma categoria de produto.
-     * <ul>
-     *     <li>PEQUENO</li>
-     *     <li>MEDIO</li>
-     *     <li>GRANDE</li>
-     * </ul>
-     */
-    public enum Tamanho {
-        PEQUENO, MEDIO, GRANDE
+    public Produto() {
+        this(null, null, null, null, null, null, null, null);
     }
 
-    /**
-     * Enumeração que define os tipos de embalagem disponíveis.
-     * <ul>
-     *     <li>LATA</li>
-     *     <li>VIDRO</li>
-     *     <li>PLASTICO</li>
-     * </ul>
-     */
-    public enum Embalagem {
-        LATA, VIDRO, PLASTICO
-    }
-
-    /**
-     * Construtor padrão.
-     * <p>
-     * Inicializa todos os atributos com valores nulos.
-     * </p>
-     */
-    public Categoria() {
-        this(null, null, null, null);
-    }
-
-    /**
-     * Construtor completo.
-     *
-     * @param id        o identificador único da categoria
-     * @param nome      o nome da categoria
-     * @param tamanho   o tamanho da categoria (PEQUENO, MEDIO, GRANDE)
-     * @param embalagem o tipo de embalagem da categoria (LATA, VIDRO, PLASTICO)
-     */
-    public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {
+    public Produto(Integer id, String nome, Double preco, String unidade, Categoria categoria,
+            Integer quantidade, Integer quantidadeMinima, Integer quantidadeMaxima) {
         this.id = id;
         this.nome = nome;
-        this.tamanho = tamanho;
-        this.embalagem = embalagem;
+        this.preco = preco;
+        this.unidade = unidade;
+        this.categoria = categoria;
+        this.quantidade = quantidade;
+        this.quantidadeMinima = quantidadeMinima;
+        this.quantidadeMaxima = quantidadeMaxima;
     }
 
-    /**
-     * Retorna o identificador da categoria.
-     *
-     * @return o ID da categoria
-     */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    /**
-     * Define o identificador da categoria.
-     *
-     * @param id o novo ID a ser atribuído
-     */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * Retorna o nome da categoria.
-     *
-     * @return o nome da categoria
-     */
     public String getNome() {
         return nome;
     }
 
-    /**
-     * Define o nome da categoria.
-     *
-     * @param nome o novo nome a ser atribuído
-     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * Retorna o tamanho da categoria.
-     *
-     * @return o tamanho (enum Tamanho)
-     */
-    public Tamanho getTamanho() {
-        return tamanho;
+    public double getPreco() {
+        return preco;
     }
 
-    /**
-     * Define o tamanho da categoria.
-     *
-     * @param tamanho o novo tamanho a ser atribuído
-     */
-    public void setTamanho(Tamanho tamanho) {
-        this.tamanho = tamanho;
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
 
-    /**
-     * Retorna o tipo de embalagem da categoria.
-     *
-     * @return a embalagem (enum Embalagem)
-     */
-    public Embalagem getEmbalagem() {
-        return embalagem;
+    public String getUnidade() {
+        return unidade;
     }
 
-    /**
-     * Define o tipo de embalagem da categoria.
-     *
-     * @param embalagem a nova embalagem a ser atribuída
-     */
-    public void setEmbalagem(Embalagem embalagem) {
-        this.embalagem = embalagem;
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
     }
 
-    /**
-     * Retorna uma representação textual da categoria.
-     *
-     * @return uma string contendo ID, nome, tamanho e embalagem
-     */
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public int getQuantidadeMinima() {
+        return quantidadeMinima;
+    }
+
+    public void setQuantidadeMinima(int quantidadeMinima) {
+        this.quantidadeMinima = quantidadeMinima;
+    }
+
+    public int getQuantidadeMaxima() {
+        return quantidadeMaxima;
+    }
+
+    public void setQuantidadeMaxima(int quantidadeMaxima) {
+        this.quantidadeMaxima = quantidadeMaxima;
+    }
+
+    public boolean acimadoMAX() {
+        return this.quantidade > quantidadeMaxima;
+    }
+
+    public boolean abaixodoMIN() {
+        return this.quantidade < quantidadeMinima;
+    }
+
+    public double ValorTotal() {
+        return this.preco * quantidade;
+    }
+
+    public void entrada() {
+        this.quantidade += quantidade;
+    }
+
+    public void saida() {
+        this.quantidade -= quantidade;
+    }
+
+    public void ajustarPreco(double porcentual) {
+        this.preco += preco * (porcentual / 100);
+    }
+
     @Override
     public String toString() {
-        return String.format("ID: %d | Nome: %s | Tamanho: %s | Embalagem: %s", id, nome, tamanho, embalagem);
+        return String.format("ID: %d |nome: %s |preço %.2f |unidade %s |categoria %s |Qtd: %d",
+                id, nome, preco, unidade, categoria.getNome(), quantidade);
     }
 }
