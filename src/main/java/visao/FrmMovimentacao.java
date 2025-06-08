@@ -12,6 +12,7 @@ import modelo.dao.RegistroDao;
  *
  *
  *
+ * @author Lorenzo
  */
 public class FrmMovimentacao extends javax.swing.JFrame {
 

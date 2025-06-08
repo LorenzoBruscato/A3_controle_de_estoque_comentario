@@ -1,7 +1,10 @@
 package modelo;
 
 /**
- * Representa uma categoria de produto, definindo um nome, tamanho e tipo de embalagem.
+ * Representa uma categoria de produto, contendo informações de nome, tamanho e embalagem.
+ * Possui enums internos para os tipos de tamanho e embalagem.
+ * 
+ * @author Lorenzo
  */
 public class Categoria {
 
@@ -11,43 +14,61 @@ public class Categoria {
     private Embalagem embalagem;
 
     /**
-     * Enumeração que define os tamanhos possíveis para a categoria.
+     * Enumeração dos tamanhos possíveis para a categoria.
      */
     public enum Tamanho {
-        /** Categoria de tamanho pequeno. */
+
+        /**
+         *
+         */
         PEQUENO,
-        /** Categoria de tamanho médio. */
+
+        /**
+         *
+         */
         MEDIO,
-        /** Categoria de tamanho grande. */
+
+        /**
+         *
+         */
         GRANDE
     }
 
     /**
-     * Enumeração que define os tipos de embalagem possíveis para a categoria.
+     * Enumeração dos tipos de embalagem possíveis para a categoria.
      */
     public enum Embalagem {
-        /** Embalagem do tipo lata. */
+
+        /**
+         *
+         */
         LATA,
-        /** Embalagem do tipo vidro. */
+
+        /**
+         *
+         */
         VIDRO,
-        /** Embalagem do tipo plástico. */
+
+        /**
+         *
+         */
         PLASTICO
     }
 
     /**
-     * Construtor padrão que inicializa os atributos com valores nulos.
+     * Construtor padrão que inicializa todos os atributos com valor nulo.
      */
     public Categoria() {
         this(null, null, null, null);
     }
 
     /**
-     * Construtor completo para criar uma categoria com todos os atributos definidos.
+     * Construtor completo da categoria.
      * 
-     * @param id identificador da categoria
-     * @param nome nome da categoria
-     * @param tamanho tamanho da categoria
-     * @param embalagem tipo de embalagem da categoria
+     * @param id Identificador da categoria
+     * @param nome Nome da categoria
+     * @param tamanho Tamanho da categoria
+     * @param embalagem Tipo de embalagem da categoria
      */
     public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {
         this.id = id;
@@ -57,7 +78,7 @@ public class Categoria {
     }
 
     /**
-     * Retorna o identificador da categoria.
+     * Retorna o id da categoria.
      * 
      * @return id da categoria
      */
@@ -66,9 +87,9 @@ public class Categoria {
     }
 
     /**
-     * Define o identificador da categoria.
+     * Define o id da categoria.
      * 
-     * @param id id a ser definido
+     * @param id novo id da categoria
      */
     public void setId(Integer id) {
         this.id = id;
@@ -86,7 +107,7 @@ public class Categoria {
     /**
      * Define o nome da categoria.
      * 
-     * @param nome nome a ser definido
+     * @param nome novo nome da categoria
      */
     public void setNome(String nome) {
         this.nome = nome;
@@ -104,7 +125,7 @@ public class Categoria {
     /**
      * Define o tamanho da categoria.
      * 
-     * @param tamanho tamanho a ser definido
+     * @param tamanho novo tamanho da categoria
      */
     public void setTamanho(Tamanho tamanho) {
         this.tamanho = tamanho;
@@ -113,7 +134,7 @@ public class Categoria {
     /**
      * Retorna o tipo de embalagem da categoria.
      * 
-     * @return embalagem da categoria
+     * @return tipo de embalagem da categoria
      */
     public Embalagem getEmbalagem() {
         return embalagem;
@@ -122,16 +143,15 @@ public class Categoria {
     /**
      * Define o tipo de embalagem da categoria.
      * 
-     * @param embalagem embalagem a ser definida
+     * @param embalagem novo tipo de embalagem da categoria
      */
     public void setEmbalagem(Embalagem embalagem) {
         this.embalagem = embalagem;
     }
 
     /**
-     * Retorna uma representação em string da categoria.
-     * 
-     * @return string contendo os dados da categoria
+     *
+     * @return
      */
     @Override
     public String toString() {

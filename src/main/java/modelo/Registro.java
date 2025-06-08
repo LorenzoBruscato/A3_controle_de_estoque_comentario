@@ -3,8 +3,10 @@ package modelo;
 import java.util.Date;
 
 /**
- * Representa um registro de movimentação de produto no estoque, com data, tipo, quantidade,
- * tipo de movimentação e status associado.
+ * Representa um registro de movimentação de produto no estoque, contendo data, tipo do produto,
+ * quantidade movimentada, tipo de movimentação e status associado.
+ * 
+ * @author Lorenzo
  */
 public class Registro {
 
@@ -123,110 +125,74 @@ public class Registro {
         this.status = status;
     }
 
-    /**
-     * Retorna o identificador do registro.
-     * 
-     * @return id do registro
-     */
+    /** Retorna o identificador do registro.
+     * @return  */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * Define o identificador do registro.
-     * 
-     * @param id id a ser definido
-     */
+    /** Define o identificador do registro.
+     * @param id */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * Retorna a data da movimentação registrada.
-     * 
-     * @return data da movimentação
-     */
+    /** Retorna a data da movimentação registrada.
+     * @return  */
     public Date getData() {
         return data;
     }
 
-    /**
-     * Define a data da movimentação registrada.
-     * 
-     * @param data data a ser definida
-     */
+    /** Define a data da movimentação registrada.
+     * @param data */
     public void setData(Date data) {
         this.data = data;
     }
 
-    /**
-     * Retorna o produto associado ao registro.
-     * 
-     * @return produto do registro
-     */
+    /** Retorna o produto associado ao registro.
+     * @return  */
     public Produto getTipoDoProduto() {
         return tipoDoProduto;
     }
 
-    /**
-     * Define o produto associado ao registro.
-     * 
-     * @param tipoDoProduto produto a ser associado
-     */
+    /** Define o produto associado ao registro.
+     * @param tipoDoProduto */
     public void setTipoDoProduto(Produto tipoDoProduto) {
         this.tipoDoProduto = tipoDoProduto;
     }
 
-    /**
-     * Retorna a quantidade movimentada no registro.
-     * 
-     * @return quantidade movimentada
-     */
+    /** Retorna a quantidade movimentada no registro.
+     * @return  */
     public Integer getQuantidade() {
         return quantidade;
     }
 
-    /**
-     * Define a quantidade movimentada no registro.
-     * 
-     * @param quantidade quantidade a ser definida
-     */
+    /** Define a quantidade movimentada no registro.
+     * @param quantidade */
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
-    /**
-     * Retorna o tipo de movimentação (entrada/saída).
-     * 
-     * @return tipo de movimentação
-     */
+    /** Retorna o tipo de movimentação (entrada/saída).
+     * @return  */
     public Movimentacao getMovimentacao() {
         return movimentacao;
     }
 
-    /**
-     * Define o tipo de movimentação (entrada/saída).
-     * 
-     * @param movimentacao tipo a ser definido
-     */
+    /** Define o tipo de movimentação (entrada/saída).
+     * @param movimentacao */
     public void setMovimentacao(Movimentacao movimentacao) {
         this.movimentacao = movimentacao;
     }
 
-    /**
-     * Retorna o status do registro.
-     * 
-     * @return status do registro
-     */
+    /** Retorna o status do registro.
+     * @return  */
     public Status getStatus() {
         return status;
     }
 
-    /**
-     * Define o status do registro.
-     * 
-     * @param status status a ser definido
-     */
+    /** Define o status do registro.
+     * @param status */
     public void setStatus(Status status) {
         this.status = status;
     }

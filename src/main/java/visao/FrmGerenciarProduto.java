@@ -18,6 +18,7 @@ import modelo.dao.db.DbException;
  *
  *
  * 
+ * @author Lorenzo
  */
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 

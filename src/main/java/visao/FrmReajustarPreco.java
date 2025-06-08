@@ -13,6 +13,7 @@ import modelo.dao.db.DbException;
  *
  *
  *
+ * @author Lorenzo
  */
 public class FrmReajustarPreco extends javax.swing.JFrame {
 

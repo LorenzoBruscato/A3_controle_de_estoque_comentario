@@ -1,7 +1,10 @@
 package modelo;
 
 /**
- * Representa um produto com seus dados básicos, categoria, preço e controle de quantidade.
+ * Representa um produto, incluindo dados básicos, categoria e controle de estoque.
+ * Contém métodos para verificar limites e ajustar preço.
+ * 
+ * @author Lorenzo
  */
 public class Produto {
     private Integer id;
@@ -14,23 +17,23 @@ public class Produto {
     private Integer quantidadeMaxima;
 
     /**
-     * Construtor padrão que inicializa os atributos como nulos.
+     * Construtor padrão que inicializa todos os atributos como nulos.
      */
     public Produto() {
         this(null, null, null, null, null, null, null, null);
     }
 
     /**
-     * Construtor completo para criar um produto com todos os dados definidos.
+     * Construtor completo para criar o produto com todos os atributos definidos.
      * 
-     * @param id identificador do produto
-     * @param nome nome do produto
-     * @param preco preço unitário do produto
-     * @param unidade unidade de medida do produto (ex: kg, unidade)
-     * @param categoria categoria a que o produto pertence
-     * @param quantidade quantidade atual em estoque
-     * @param quantidadeMinima quantidade mínima permitida em estoque
-     * @param quantidadeMaxima quantidade máxima permitida em estoque
+     * @param id Identificador do produto
+     * @param nome Nome do produto
+     * @param preco Preço unitário do produto
+     * @param unidade Unidade de medida do produto
+     * @param categoria Categoria do produto
+     * @param quantidade Quantidade atual em estoque
+     * @param quantidadeMinima Quantidade mínima permitida
+     * @param quantidadeMaxima Quantidade máxima permitida
      */
     public Produto(Integer id, String nome, Double preco, String unidade, Categoria categoria,
                    Integer quantidade, Integer quantidadeMinima, Integer quantidadeMaxima) {
@@ -44,146 +47,98 @@ public class Produto {
         this.quantidadeMaxima = quantidadeMaxima;
     }
 
-    /**
-     * Retorna o identificador do produto.
-     * 
-     * @return id do produto
-     */
+    /** Retorna o identificador do produto.
+     * @return  */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * Define o identificador do produto.
-     * 
-     * @param id id a ser definido
-     */
+    /** Define o identificador do produto.
+     * @param id */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * Retorna o nome do produto.
-     * 
-     * @return nome do produto
-     */
+    /** Retorna o nome do produto.
+     * @return  */
     public String getNome() {
         return nome;
     }
 
-    /**
-     * Define o nome do produto.
-     * 
-     * @param nome nome a ser definido
-     */
+    /** Define o nome do produto.
+     * @param nome */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * Retorna o preço unitário do produto.
-     * 
-     * @return preço do produto
-     */
+    /** Retorna o preço unitário do produto.
+     * @return  */
     public Double getPreco() {
         return preco;
     }
 
-    /**
-     * Define o preço unitário do produto.
-     * 
-     * @param preco preço a ser definido
-     */
+    /** Define o preço unitário do produto.
+     * @param preco */
     public void setPreco(Double preco) {
         this.preco = preco;
     }
 
-    /**
-     * Retorna a unidade de medida do produto.
-     * 
-     * @return unidade do produto
-     */
+    /** Retorna a unidade de medida do produto.
+     * @return  */
     public String getUnidade() {
         return unidade;
     }
 
-    /**
-     * Define a unidade de medida do produto.
-     * 
-     * @param unidade unidade a ser definida
-     */
+    /** Define a unidade de medida do produto.
+     * @param unidade */
     public void setUnidade(String unidade) {
         this.unidade = unidade;
     }
 
-    /**
-     * Retorna a categoria do produto.
-     * 
-     * @return categoria do produto
-     */
+    /** Retorna a categoria do produto.
+     * @return  */
     public Categoria getCategoria() {
         return categoria;
     }
 
-    /**
-     * Define a categoria do produto.
-     * 
-     * @param categoria categoria a ser definida
-     */
+    /** Define a categoria do produto.
+     * @param categoria */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    /**
-     * Retorna a quantidade atual em estoque do produto.
-     * 
-     * @return quantidade atual
-     */
+    /** Retorna a quantidade atual em estoque.
+     * @return  */
     public Integer getQuantidade() {
         return quantidade;
     }
 
-    /**
-     * Define a quantidade atual em estoque do produto.
-     * 
-     * @param quantidade quantidade a ser definida
-     */
+    /** Define a quantidade atual em estoque.
+     * @param quantidade */
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
-    /**
-     * Retorna a quantidade mínima permitida em estoque.
-     * 
-     * @return quantidade mínima
-     */
+    /** Retorna a quantidade mínima permitida em estoque.
+     * @return  */
     public Integer getQuantidadeMinima() {
         return quantidadeMinima;
     }
 
-    /**
-     * Define a quantidade mínima permitida em estoque.
-     * 
-     * @param quantidadeMinima quantidade mínima a ser definida
-     */
+    /** Define a quantidade mínima permitida em estoque.
+     * @param quantidadeMinima */
     public void setQuantidadeMinima(Integer quantidadeMinima) {
         this.quantidadeMinima = quantidadeMinima;
     }
 
-    /**
-     * Retorna a quantidade máxima permitida em estoque.
-     * 
-     * @return quantidade máxima
-     */
+    /** Retorna a quantidade máxima permitida em estoque.
+     * @return  */
     public Integer getQuantidadeMaxima() {
         return quantidadeMaxima;
     }
 
-    /**
-     * Define a quantidade máxima permitida em estoque.
-     * 
-     * @param quantidadeMaxima quantidade máxima a ser definida
-     */
+    /** Define a quantidade máxima permitida em estoque.
+     * @param quantidadeMaxima */
     public void setQuantidadeMaxima(Integer quantidadeMaxima) {
         this.quantidadeMaxima = quantidadeMaxima;
     }
@@ -191,7 +146,7 @@ public class Produto {
     /**
      * Verifica se a quantidade atual está acima do limite máximo.
      * 
-     * @return true se quantidade > quantidadeMaxima, false caso contrário
+     * @return true se quantidade estiver acima da quantidade máxima, false caso contrário
      */
     public boolean acimadoMAX() {
         return this.quantidade != null && this.quantidadeMaxima != null && this.quantidade > quantidadeMaxima;
@@ -200,16 +155,16 @@ public class Produto {
     /**
      * Verifica se a quantidade atual está abaixo do limite mínimo.
      * 
-     * @return true se quantidade < quantidadeMinima, false caso contrário
+     * @return true se quantidade estiver abaixo da quantidade mínima, false caso contrário
      */
     public boolean abaixodoMIN() {
         return this.quantidade != null && this.quantidadeMinima != null && this.quantidade < quantidadeMinima;
     }
 
     /**
-     * Calcula o valor total do produto com base no preço e quantidade.
+     * Calcula o valor total do produto (preço * quantidade).
      * 
-     * @return valor total (preço * quantidade)
+     * @return valor total ou 0.0 se preço ou quantidade forem nulos
      */
     public double ValorTotal() {
         if (preco == null || quantidade == null) {
@@ -219,7 +174,7 @@ public class Produto {
     }
 
     /**
-     * Adiciona a quantidade atual a si mesma (exemplo de entrada).
+     * Incrementa a quantidade atual (exemplo de entrada de estoque).
      */
     public void entrada() {
         if (quantidade != null) {
@@ -228,7 +183,7 @@ public class Produto {
     }
 
     /**
-     * Subtrai a quantidade atual de si mesma (exemplo de saída).
+     * Decrementa a quantidade atual (exemplo de saída de estoque).
      */
     public void saida() {
         if (quantidade != null) {
@@ -237,9 +192,9 @@ public class Produto {
     }
 
     /**
-     * Ajusta o preço do produto com base em uma porcentagem.
+     * Ajusta o preço do produto em uma porcentagem dada.
      * 
-     * @param porcentual porcentagem para ajustar o preço (ex: 10 para +10%)
+     * @param porcentual porcentagem de ajuste no preço (ex: 10 para aumentar 10%)
      */
     public void ajustarPreco(double porcentual) {
         if (preco != null) {
@@ -248,9 +203,8 @@ public class Produto {
     }
 
     /**
-     * Retorna uma representação em string com informações resumidas do produto.
-     * 
-     * @return string contendo id, nome, preço, unidade, categoria e quantidade
+     *
+     * @return
      */
     @Override
     public String toString() {

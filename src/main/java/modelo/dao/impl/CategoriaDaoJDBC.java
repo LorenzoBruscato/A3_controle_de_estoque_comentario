@@ -14,7 +14,10 @@ import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 
 /**
- * Implementação JDBC da interface CategoriaDao para manipulação de dados da tabela categoria.
+ * Implementação JDBC da interface CategoriaDao para manipulação de dados
+ * da tabela categoria no banco de dados.
+ * 
+ * @author Lorenzo
  */
 public class CategoriaDaoJDBC implements CategoriaDao {
 

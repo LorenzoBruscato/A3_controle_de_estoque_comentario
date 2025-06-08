@@ -7,9 +7,10 @@ import modelo.Registro;
 /**
  * Interface DAO para operações com produtos, incluindo CRUD, ajustes de preço,
  * atualização de categoria e geração de relatórios em diversos formatos.
+ * 
+ * @author Lorenzo
  */
 public interface ProdutoDao {
-
     /**
      * Busca um produto pelo seu ID.
      *

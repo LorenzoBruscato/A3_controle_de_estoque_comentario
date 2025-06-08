@@ -17,6 +17,8 @@ import modelo.dao.db.DbException;
  * 
  * Cada operação realizada em produtos é registrada na tabela `registro`,
  * mantendo o histórico de movimentações do sistema.
+ * 
+ * @author Lorenzo
  */
 public class RegistroDaoJDBC implements RegistroDao {
 

@@ -11,6 +11,7 @@ import modelo.dao.ProdutoDao;
  *
  *
  *
+ * @author Lorenzo
  */
 public class FrmEmitirRelatorio extends javax.swing.JFrame {
 

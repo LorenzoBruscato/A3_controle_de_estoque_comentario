@@ -15,6 +15,7 @@ import modelo.dao.ProdutoDao;
  *
  *
  *
+ * @author Lorenzo
  */
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
