@@ -15,14 +15,42 @@ public class Categoria {
      * Enumeração para os possíveis tamanhos da categoria.
      */
     public enum Tamanho {
-        PEQUENO, MEDIO, GRANDE
+
+        /**
+         *
+         */
+        PEQUENO,
+
+        /**
+         *
+         */
+        MEDIO,
+
+        /**
+         *
+         */
+        GRANDE
     }
 
     /**
      * Enumeração para os tipos de embalagem disponíveis.
      */
     public enum Embalagem {
-        LATA, VIDRO, PLASTICO
+
+        /**
+         *
+         */
+        LATA,
+
+        /**
+         *
+         */
+        VIDRO,
+
+        /**
+         *
+         */
+        PLASTICO
     }
 
     /**

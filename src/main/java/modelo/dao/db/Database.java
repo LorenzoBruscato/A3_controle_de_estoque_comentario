@@ -1,6 +1,5 @@
 package modelo.dao.db;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.sql.Statement;
@@ -10,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ *
+ * @author Lorenzo
+ */
 public class Database {
 
     /**
