@@ -604,7 +604,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     public void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
 
-        // Força extensão e nome do arquivo se for só pasta
+        // Garante extensão e nome do arquivo
         if (!caminhoArquivoSaidaExcel.toLowerCase().endsWith(".xlsx")) {
             if (caminhoArquivoSaidaExcel.endsWith("\\") || caminhoArquivoSaidaExcel.endsWith("/")) {
                 caminhoArquivoSaidaExcel = String.format("%s%s.xlsx", caminhoArquivoSaidaExcel, nomePlanilha).trim();
@@ -613,38 +613,36 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT * FROM registro";
+        String sql = "SELECT id, data, tipo, quantidade, movimentacao, status FROM registro ORDER BY data ASC";
 
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
-
+        try (
+                PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); Workbook workBook = new XSSFWorkbook()) {
             File arquivo = new File(caminhoArquivoSaidaExcel);
             File diretorio = arquivo.getParentFile();
             if (diretorio != null && !diretorio.exists()) {
                 diretorio.mkdirs();
             }
+
             FileOutputStream fileOut = new FileOutputStream(arquivo);
             Sheet sheet = workBook.createSheet(nomePlanilha);
 
-            String[] colunas = {"id", "data", "tipo", "quantidade", "movimentação, status"};
+            String[] colunas = {"ID", "Data", "Tipo", "Quantidade", "Movimentação", "Status"};
             Row header = sheet.createRow(0);
             for (int i = 0; i < colunas.length; i++) {
                 header.createCell(i).setCellValue(colunas[i]);
             }
+
             int rowNum = 1;
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                Date data = rs.getDate("data"); // java.sql.Date
-                String tipo = rs.getString("tipo");
-                int quantidade = rs.getInt("quantidade");
-                String movimentacao = rs.getString("movimentacao");
-
                 Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(id);
-                row.createCell(1).setCellValue(data.toString()); // ou usar SimpleDateFormat se quiser formatar
-                row.createCell(2).setCellValue(tipo);
-                row.createCell(3).setCellValue(quantidade);
-                row.createCell(4).setCellValue(movimentacao);
+
+                row.createCell(0).setCellValue(rs.getInt("id"));
+                row.createCell(1).setCellValue(rs.getDate("data").toString());
+                row.createCell(2).setCellValue(rs.getString("tipo"));
+                row.createCell(3).setCellValue(rs.getInt("quantidade"));
+                row.createCell(4).setCellValue(rs.getString("movimentacao"));
+                row.createCell(5).setCellValue(rs.getString("status"));
             }
 
             for (int i = 0; i < colunas.length; i++) {
@@ -664,7 +662,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Erro ao escrever o arquivo:\n" + e.getMessage());
         }
-
     }
 
     @Override
@@ -1035,18 +1032,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT data, tipo, quantidade, movimentacao FROM registro ORDER BY data ASC";
+        String sql = "SELECT id, data, tipo, quantidade, movimentacao, status FROM registro ORDER BY data ASC";
 
         try (
                 PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); XWPFDocument document = new XWPFDocument()) {
-            // Cria diretório se não existir
             File arquivo = new File(caminhoArquivoSaidaDoc);
-            File diretorio = arquivo.getParentFile();
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
 
-            // Cria título do documento
             XWPFParagraph titulo = document.createParagraph();
             titulo.setAlignment(ParagraphAlignment.CENTER);
             XWPFRun runTitulo = titulo.createRun();
@@ -1054,29 +1045,30 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             runTitulo.setBold(true);
             runTitulo.setFontSize(16);
 
-            // Espaço
-            document.createParagraph();
+            document.createParagraph(); // espaço
 
-            // Cria tabela
             XWPFTable table = document.createTable();
 
-            // Cabeçalho da tabela
+            // Cabeçalho
             XWPFTableRow header = table.getRow(0);
-            header.getCell(0).setText("Data");
-            header.addNewTableCell().setText("Produto");
+            header.getCell(0).setText("ID");
+            header.addNewTableCell().setText("Data");
+            header.addNewTableCell().setText("Tipo");
             header.addNewTableCell().setText("Quantidade");
             header.addNewTableCell().setText("Movimentação");
+            header.addNewTableCell().setText("Status");
 
-            // Preenche a tabela com os dados do banco
+            // Dados
             while (rs.next()) {
                 XWPFTableRow row = table.createRow();
-                row.getCell(0).setText(rs.getDate("data").toString());
-                row.getCell(1).setText(rs.getString("tipo"));
-                row.getCell(2).setText(String.valueOf(rs.getInt("quantidade")));
-                row.getCell(3).setText(rs.getString("movimentacao"));
+                row.getCell(0).setText(String.valueOf(rs.getInt("id")));
+                row.getCell(1).setText(rs.getDate("data").toString());
+                row.getCell(2).setText(rs.getString("tipo"));
+                row.getCell(3).setText(String.valueOf(rs.getInt("quantidade")));
+                row.getCell(4).setText(rs.getString("movimentacao"));
+                row.getCell(5).setText(rs.getString("status"));
             }
 
-            // Salva o arquivo
             try (FileOutputStream out = new FileOutputStream(arquivo)) {
                 document.write(out);
                 JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso:\n" + caminhoArquivoSaidaDoc);
@@ -1543,12 +1535,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             }
         }
 
-        String sql = "SELECT id, data, tipo, quantidade, movimentacao FROM registro ORDER BY data ASC";
+        String sql = "SELECT id, data, tipo, quantidade, movimentacao, status FROM registro ORDER BY data ASC";
 
-        PDPageContentStream content = null;
-
-        try (PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
-
+        try (
+                PreparedStatement st = conn.prepareStatement(sql); ResultSet rs = st.executeQuery(); PDDocument document = new PDDocument()) {
             File arquivo = new File(caminhoArquivoSaidaPDF);
             File diretorio = arquivo.getParentFile();
             if (diretorio != null && !diretorio.exists()) {
@@ -1557,15 +1547,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             PDFont fonte = PDType1Font.HELVETICA;
             PDFont fonteNegrito = PDType1Font.HELVETICA_BOLD;
-            float fontSize = 11;
-            float leading = 15;
-            float margin = 50;
-            float yStart = 750;
-            float y = yStart;
+            float fontSize = 11, leading = 15, margin = 50;
+            float yStart = 750, y = yStart;
 
             PDPage page = new PDPage();
             document.addPage(page);
-            content = new PDPageContentStream(document, page);
+            PDPageContentStream content = new PDPageContentStream(document, page);
 
             // Título
             content.beginText();
@@ -1577,8 +1564,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             // Cabeçalho
             content.setFont(fonteNegrito, fontSize);
-            escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
-                    new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação"});
+            escreverLinha(content, y, margin, new float[]{0, 80, 160, 260, 360, 460},
+                    new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação", "Status Estoque"});
             y -= leading;
             content.setFont(fonte, fontSize);
 
@@ -1591,26 +1578,20 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     y = yStart;
 
                     content.setFont(fonteNegrito, fontSize);
-                    escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
-                            new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação"});
+                    escreverLinha(content, y, margin, new float[]{0, 80, 160, 260, 360, 460},
+                            new String[]{"ID", "Data", "Tipo", "Quantidade", "Movimentação", "Status Estoque"});
                     y -= leading;
                     content.setFont(fonte, fontSize);
                 }
 
-                int id = rs.getInt("id");
-                Date data = rs.getDate("data");
-                String tipo = rs.getString("tipo");
-                int quantidade = rs.getInt("quantidade");
-                String movimentacao = rs.getString("movimentacao");
-
-                escreverLinha(content, y, margin, new float[]{0, 100, 200, 300, 400},
-                        new String[]{
-                            String.valueOf(id),
-                            data.toString(),
-                            tipo,
-                            String.valueOf(quantidade),
-                            movimentacao
-                        });
+                escreverLinha(content, y, margin, new float[]{0, 80, 160, 260, 360, 460}, new String[]{
+                    String.valueOf(rs.getInt("id")),
+                    rs.getDate("data").toString(),
+                    rs.getString("tipo"),
+                    String.valueOf(rs.getInt("quantidade")),
+                    rs.getString("movimentacao"),
+                    rs.getString("status")
+                });
                 y -= leading;
             }
 

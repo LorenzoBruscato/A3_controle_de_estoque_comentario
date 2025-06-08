@@ -72,7 +72,7 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText("Tipo de arquivo");
 
-        JBSalvarcomo.setText("Selecione o destino");
+        JBSalvarcomo.setText("Selecione o destino...");
         JBSalvarcomo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBSalvarcomoActionPerformed(evt);
@@ -108,13 +108,12 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                         .addGap(49, 49, 49))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(180, 180, 180))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(JBSalvarcomo)
-                        .addGap(201, 201, 201))))
+                .addComponent(jLabel1)
+                .addGap(180, 180, 180))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(193, 193, 193)
+                .addComponent(JBSalvarcomo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,7 +245,7 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
             filtro = new FileNameExtensionFilter("Arquivos Excel", "xlsx");
             fileChooser.setFileFilter(filtro);
         } else if ("Doc".equalsIgnoreCase(tipoFormatacao)) {
-            filtro = new FileNameExtensionFilter("Arquivos DOC", "doc");
+            filtro = new FileNameExtensionFilter("Arquivos DOC", "docx");
             fileChooser.setFileFilter(filtro);
         }
 
@@ -260,8 +259,8 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
                 caminhoArquivoSelecionado += ".pdf";
             } else if ("Excel".equalsIgnoreCase(tipoFormatacao) && !caminhoArquivoSelecionado.toLowerCase().endsWith(".xlsx")) {
                 caminhoArquivoSelecionado += ".xlsx";
-            } else if ("Doc".equalsIgnoreCase(tipoFormatacao) && !caminhoArquivoSelecionado.toLowerCase().endsWith(".doc")) {
-                caminhoArquivoSelecionado += ".doc";
+            } else if ("Doc".equalsIgnoreCase(tipoFormatacao) && !caminhoArquivoSelecionado.toLowerCase().endsWith(".docx")) {
+                caminhoArquivoSelecionado += ".docx";
             }
             JTFCaminhoArquivo.setText(caminhoArquivoSelecionado);
         }
