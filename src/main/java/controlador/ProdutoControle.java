@@ -19,6 +19,7 @@ import modelo.dao.impl.ProdutoDaoJDBC;
  *
  * Inclui validações básicas para integridade dos dados.
  *
+ * @author Henrique
  */
 public class ProdutoControle {
 

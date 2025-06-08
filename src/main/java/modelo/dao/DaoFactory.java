@@ -9,7 +9,7 @@ import modelo.dao.impl.RegistroDaoJDBC;
  * Fábrica de objetos DAO para acesso ao banco de dados.
  * Fornece instâncias dos DAOs para Produto, Categoria e Registro.
  * 
- * @author Lorenzo
+ * @author Diego
  */
 public class DaoFactory {
     

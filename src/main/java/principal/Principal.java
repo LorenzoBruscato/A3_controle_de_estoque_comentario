@@ -4,7 +4,7 @@ import visao.FrmMenuPrincipal;
 
 /**
  *
- * @author Lorenzo
+ * @author Victor
  */
 public class Principal {
 

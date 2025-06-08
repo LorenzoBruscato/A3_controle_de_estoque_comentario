@@ -3,7 +3,8 @@ package modelo.dao.db;
 /**
  *
  *
- * @author Lorenzo
+ * @author Diego
+ * 
  */
 public class DbException extends RuntimeException {
 

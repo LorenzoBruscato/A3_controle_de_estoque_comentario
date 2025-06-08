@@ -16,9 +16,8 @@ import modelo.dao.db.DbException;
 
 /**
  *
+ * @author Victor
  *
- * 
- * @author Lorenzo
  */
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
@@ -374,36 +373,36 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
             Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
 
-           Produto pro = new Produto();
-        pro.setNome(proNome);
-        pro.setPreco(preco);
-        pro.setUnidade(nomeUnidade);
-        pro.setQuantidade(qtdEstoque);
-        pro.setQuantidadeMinima(qtdMinima);
-        pro.setQuantidadeMaxima(qtdMaxima);
-        pro.setCategoria(categoriaExistente);
+            Produto pro = new Produto();
+            pro.setNome(proNome);
+            pro.setPreco(preco);
+            pro.setUnidade(nomeUnidade);
+            pro.setQuantidade(qtdEstoque);
+            pro.setQuantidadeMinima(qtdMinima);
+            pro.setQuantidadeMaxima(qtdMaxima);
+            pro.setCategoria(categoriaExistente);
 
-        // Criar o registro para a entrada desse produto
-        Registro registro = new Registro();
-        registro.setData(new java.util.Date()); // data atual
-        registro.setTipoDoProduto(pro);         // associa o produto criado
-        registro.setQuantidade(qtdEstoque);
-        registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
-        registro.setStatus(Registro.Status.ADICIONADO);
+            // Criar o registro para a entrada desse produto
+            Registro registro = new Registro();
+            registro.setData(new java.util.Date()); // data atual
+            registro.setTipoDoProduto(pro);         // associa o produto criado
+            registro.setQuantidade(qtdEstoque);
+            registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
+            registro.setStatus(Registro.Status.ADICIONADO);
 
-        // Salvar o registro no banco
-        produtoDao.cadastrarProduto(pro);
-        registroDao.AdicionarProdutoRegistro(registro);
+            // Salvar o registro no banco
+            produtoDao.cadastrarProduto(pro);
+            registroDao.AdicionarProdutoRegistro(registro);
 
-        // Atualizar tabela ou lista de produtos na interface
-        carregarProdutosNaTela();
+            // Atualizar tabela ou lista de produtos na interface
+            carregarProdutosNaTela();
 
-        // Limpar campos após cadastro
-        JTFNomeProduto.setText("");
-        JTFPrecoUnitario.setText("");
-        JTFQtdEstoque.setText("");
-        JTFQtdMinima.setText("");
-        JTFQtdMaxima.setText("");
+            // Limpar campos após cadastro
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
 
         } catch (NumberFormatException e) {
             throw new DbException(e.getMessage());
@@ -461,6 +460,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 int qtdMinimaAntiga = produtoAtual.getQuantidadeMinima();
                 int qtdMaximaAntiga = produtoAtual.getQuantidadeMaxima();
                 String nomeAntigo = produtoAtual.getNome();
+                Categoria categoriaAntiga = produtoAtual.getCategoria();
 
                 String nome = JTFNomeProduto.getText().trim();
                 double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
@@ -511,8 +511,14 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     reg.setQuantidade(0);
                 }
 
-// Determinar status
-                if (qtdEstoque < qtdMinima) {
+                // Determinar status
+                if (!categoriaAntiga.getNome().equals(categoria.getNome())
+                        && nome.equals(nomeAntigo)
+                        && qtdEstoque == qtdEstoqueAntiga
+                        && qtdMinima == qtdMinimaAntiga
+                        && qtdMaxima == qtdMaximaAntiga) {
+                    reg.setStatus(Registro.Status.ALCATEGORIA);
+                } else if (qtdEstoque < qtdMinima) {
                     reg.setStatus(Registro.Status.ABAIXO);
                 } else if (qtdEstoque > qtdMaxima) {
                     reg.setStatus(Registro.Status.ACIMA);

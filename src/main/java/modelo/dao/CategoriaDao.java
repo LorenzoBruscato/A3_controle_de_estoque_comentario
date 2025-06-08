@@ -6,7 +6,7 @@ import modelo.Categoria;
 /**
  * Interface para operações CRUD da entidade Categoria.
  * 
- * @author Lorenzo
+ * @author Diego
  */
 public interface CategoriaDao {
 

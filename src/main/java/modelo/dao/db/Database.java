@@ -12,7 +12,8 @@ import java.util.Properties;
 /**
  *
  *
- * @author Lorenzo
+ * @author Diego
+ * 
  */
 public class Database {
     /**

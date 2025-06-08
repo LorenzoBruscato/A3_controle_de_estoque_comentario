@@ -4,7 +4,7 @@ package modelo;
  * Representa um produto, incluindo dados básicos, categoria e controle de estoque.
  * Contém métodos para verificar limites e ajustar preço.
  * 
- * @author Lorenzo
+ * @author Henrique
  */
 public class Produto {
     private Integer id;

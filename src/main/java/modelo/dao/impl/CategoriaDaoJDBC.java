@@ -18,6 +18,7 @@ import modelo.dao.CategoriaDao;
  * da tabela categoria no banco de dados.
  * 
  * @author Lorenzo
+ * 
  */
 public class CategoriaDaoJDBC implements CategoriaDao {
 

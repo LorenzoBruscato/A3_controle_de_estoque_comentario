@@ -10,9 +10,8 @@ import modelo.dao.RegistroDao;
 
 /**
  *
+ * @author Victor
  *
- *
- * @author Lorenzo
  */
 public class FrmMovimentacao extends javax.swing.JFrame {
 

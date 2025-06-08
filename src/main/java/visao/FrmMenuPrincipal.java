@@ -2,7 +2,8 @@ package visao;
 
 /**
  *
- * @author Lorenzo
+ * @author Victor
+ *
  */
 public class FrmMenuPrincipal extends javax.swing.JFrame {
 

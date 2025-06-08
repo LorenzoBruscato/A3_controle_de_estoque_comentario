@@ -41,6 +41,7 @@ import org.apache.poi.ss.usermodel.Sheet;
  *
  *
  * @author Lorenzo
+ * 
  */
 public class ProdutoDaoJDBC implements ProdutoDao {
 
@@ -313,6 +314,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     /**
+     * 
+     * Execel feito totalmento pelo DIEGO, Henrique e Lorenzo
      *
      * @param percentual
      * @param categoria
@@ -747,7 +750,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     /**
-     *
+     * Doc feito totalmento pelo Lorenzo e Henrique
+     * 
      * @param caminhoArquivoSaidaDoc
      * @param nomeArquivoDoc
      */
@@ -1196,6 +1200,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     /**
+     * Pdf feito totalmento pelo Victor
      *
      * @param caminhoArquivoSaidaPDF
      * @param nomeArquivoPDF

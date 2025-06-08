@@ -16,6 +16,7 @@ import modelo.dao.impl.CategoriaDaoJDBC;
  *
  * Regras de validação são aplicadas antes das operações de persistência.
  *
+ * @author Henrique
  */
 public class CategoriaControle {
 

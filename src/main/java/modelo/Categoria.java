@@ -4,7 +4,7 @@ package modelo;
  * Representa uma categoria de produto, contendo informações de nome, tamanho e embalagem.
  * Possui enums internos para os tipos de tamanho e embalagem.
  * 
- * @author Lorenzo
+ * @author Henrique
  */
 public class Categoria {
 

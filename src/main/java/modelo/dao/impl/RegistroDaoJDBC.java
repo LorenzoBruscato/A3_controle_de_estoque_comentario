@@ -19,6 +19,7 @@ import modelo.dao.db.DbException;
  * mantendo o histórico de movimentações do sistema.
  * 
  * @author Lorenzo
+ * 
  */
 public class RegistroDaoJDBC implements RegistroDao {
 

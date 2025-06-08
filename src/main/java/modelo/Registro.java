@@ -6,7 +6,7 @@ import java.util.Date;
  * Representa um registro de movimentação de produto no estoque, contendo data, tipo do produto,
  * quantidade movimentada, tipo de movimentação e status associado.
  * 
- * @author Lorenzo
+ * @author Henrique
  */
 public class Registro {
 

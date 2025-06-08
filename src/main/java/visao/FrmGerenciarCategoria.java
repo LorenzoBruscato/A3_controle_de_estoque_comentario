@@ -1,25 +1,30 @@
 package visao;
 
 import java.text.Normalizer;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
 import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
+import modelo.Produto;
+import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
+import modelo.dao.RegistroDao;
 
 /**
  *
+ * @author Victor
  *
- *
- * @author Lorenzo
  */
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private DaoFactory daoFactory = new DaoFactory();
+    private RegistroDao resgistroDao;
     private CategoriaDao categoriaDao;
     private ProdutoDao produtoDao;
     private DefaultTableModel tabela;
@@ -31,6 +36,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
      */
     public FrmGerenciarCategoria() {
         initComponents();
+        resgistroDao = daoFactory.insinstanciarRegistro();
         categoriaDao = daoFactory.instanciarCategoriaDao();
         produtoDao = daoFactory.instanciarProdutoDao();
         tabela = new DefaultTableModel(dados, colunas) {
@@ -280,33 +286,47 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
         try {
-            int linhaSelecionada = JTableCategoria.getSelectedRow();
-            if (linhaSelecionada == -1) {
-                System.out.println("Nenhuma linha selecionada para alterar.");
-                return;
-            }
-            // Pega o id da linha selecionada
-            int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
-            // Pegamos o nome antigo da categoria diretamente da tabela
-            String nomeAntigo = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
-            // Pega o novo nome da categoria a partir do campo de texto
-            String nomeNovo = JTFNomeDeCategoria.getText().trim();
-            // Pega os enums a partir dos combos
-            String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
-            Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
-            String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
-            Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
-            // Cria o objeto Categoria com os dados atualizados
-            Categoria cat = new Categoria(id, nomeNovo, tamanho, embalagem);
-            // Atualiza os produtos que tinham a categoria com o nome antigo
-            produtoDao.atualizarProdutoCategoria(nomeNovo, nomeAntigo);
-            // Atualiza a própria categoria na tabela de categorias
-            categoriaDao.atualizarCategoria(cat);
-            carregarCategoriasNaTela();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        int linhaSelecionada = JTableCategoria.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            System.out.println("Nenhuma linha selecionada para alterar.");
+            return;
         }
+
+        // Pega dados da categoria selecionada
+        int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
+        String nomeAntigo = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
+        String nomeNovo = JTFNomeDeCategoria.getText().trim();
+
+        // Enum Tamanho e Embalagem
+        String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
+        Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
+        String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
+        Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
+
+        List<Produto> produtosAfetados = produtoDao.resgatarProdutos().stream()
+            .filter(p -> p.getCategoria().getNome().equals(nomeAntigo))
+            .collect(Collectors.toList());
+
+        Categoria cat = new Categoria(id, nomeNovo, tamanho, embalagem);
+        categoriaDao.atualizarCategoria(cat);
+
+        produtoDao.atualizarProdutoCategoria(nomeNovo, nomeAntigo);
+
+        for (Produto produto : produtosAfetados) {
+            Registro reg = new Registro();
+            reg.setData(new Date());
+            reg.setTipoDoProduto(produto);
+            reg.setQuantidade(produto.getQuantidade());
+            reg.setMovimentacao(Registro.Movimentacao.ENTRADA); // Ou criar um novo tipo, como .ALTERACAO
+            reg.setStatus(Registro.Status.ALCATEGORIA);
+            resgistroDao.AdicionarProdutoRegistro(reg);
+        }
+
+        carregarCategoriasNaTela();
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
     private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
