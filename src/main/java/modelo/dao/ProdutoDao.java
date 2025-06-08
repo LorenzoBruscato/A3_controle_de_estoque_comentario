@@ -66,13 +66,6 @@ public interface ProdutoDao {
     void aumentarTodosPrecos(double percentual);
 
     /**
-     * Diminui o preço de todos os produtos por uma porcentagem informada.
-     *
-     * @param percentual a porcentagem de desconto aplicada a todos os preços
-     */
-    void diminuirTodosPrecos(double percentual);
-
-    /**
      * Aumenta o preço dos produtos pertencentes a uma categoria específica.
      *
      * @param percentual a porcentagem de aumento aplicada
@@ -80,6 +73,13 @@ public interface ProdutoDao {
      * aumentado
      */
     public void aumentarPrecoPorCategoria(double percentual, String categoria);
+
+    /**
+     * Diminui o preço de todos os produtos por uma porcentagem informada.
+     *
+     * @param percentual a porcentagem de desconto aplicada a todos os preços
+     */
+    void diminuirTodosPrecos(double percentual);
 
     /**
      * Diminui o preço dos produtos pertencentes a uma categoria específica.

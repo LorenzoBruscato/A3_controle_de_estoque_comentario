@@ -37,14 +37,33 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+/**
+ * Implementação JDBC da interface ProdutoDao para operações de banco de dados
+ * relacionadas a produtos. Esta classe gerencia todas as operações CRUD para
+ * produtos, incluindo registro de movimentações.
+ *
+ */
 public class ProdutoDaoJDBC implements ProdutoDao {
 
-    private Connection conn;
+    private Connection conn; // Conexão com o banco de dados
 
+    /**
+     * Constrói um ProdutoDaoJDBC com a conexão especificada.
+     *
+     * @param conn Objeto Connection para comunicação com o banco de dados
+     * @throws IllegalArgumentException Se a conexão for nula
+     */
     public ProdutoDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     * Busca um produto pelo seu ID.
+     *
+     * @param id ID do produto a ser buscado
+     * @return Objeto Produto correspondente ao ID, ou null se não encontrado
+     * @throws DbException Se ocorrer um erro de banco de dados
+     */
     @Override
     public Produto procurarProdutoPorId(Integer id) {
         String sql = "SELECT * FROM produto WHERE id = ?";
@@ -65,6 +84,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return null;
     }
 
+    /**
+     * Insere um novo produto no banco de dados e registra a movimentação.
+     *
+     * @param obj Produto a ser cadastrado
+     * @throws DbException Se ocorrer um erro de banco de dados ou nenhuma linha
+     * for afetada
+     * @throws IllegalArgumentException Se o produto for nulo
+     */
     @Override
     public void cadastrarProduto(Produto obj) {
         String sql = "INSERT INTO produto "
@@ -106,6 +133,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Atualiza um produto existente no banco de dados e registra a
+     * movimentação.
+     *
+     * @param obj Produto com os dados atualizados
+     * @param reg Registro contendo informações sobre a movimentação
+     * @throws DbException Se ocorrer um erro de banco de dados
+     * @throws IllegalArgumentException Se o produto ou registro forem nulos
+     */
     @Override
     public void atualizarProduto(Produto obj, Registro reg) {
         String sql
@@ -150,6 +186,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Atualiza a categoria de todos os produtos que possuem a categoria antiga.
+     *
+     * @param nomeNovo Nome da nova categoria
+     * @param nomeAntigo Nome da categoria a ser substituída
+     * @throws DbException Se ocorrer um erro de banco de dados
+     * @throws IllegalArgumentException Se qualquer dos nomes for nulo ou vazio
+     */
     @Override
     public void atualizarProdutoCategoria(String nomeNovo, String nomeAntigo) {
         String sql = "UPDATE produto SET categoria = ? WHERE categoria = ?";
@@ -162,6 +206,13 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Remove um produto do banco de dados e registra a exclusão.
+     *
+     * @param objid ID do produto a ser removido
+     * @throws DbException Se o produto não for encontrado ou ocorrer um erro de
+     * banco de dados
+     */
     @Override
     public void deletarProdutoPorId(int objId) {
         // 1. Buscar o produto antes de excluir
@@ -194,6 +245,13 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Recupera todos os produtos do banco de dados com suas categorias
+     * associadas.
+     *
+     * @return Lista de todos os produtos ordenados por nome
+     * @throws DbException Se ocorrer um erro de banco de dados
+     */
     @Override
     public List<Produto> resgatarProdutos() {
         List<Produto> lista = new ArrayList<>();
@@ -227,6 +285,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return lista;
     }
 
+    /**
+     *
+     * @param percentual
+     */
     @Override
     public void aumentarTodosPrecos(double percentual
     ) {
@@ -239,6 +301,34 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Aumenta o preço de todos os produtos pelo percentual especificado.
+     *
+     * @param percentual Percentual de aumento (ex: 10 para 10%)
+     * @throws DbException Se ocorrer um erro de banco de dados
+     * @throws IllegalArgumentException Se o percentual for negativo
+     */
+    @Override
+    public void aumentarPrecoPorCategoria(double percentual, String categoria
+    ) {
+        String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100) WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setDouble(1, percentual);
+            st.setString(2, categoria);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Diminui o preço de todos os produtos pelo percentual especificado.
+     *
+     * @param percentual Percentual de redução (ex: 10 para 10%)
+     * @throws DbException Se ocorrer um erro de banco de dados
+     * @throws IllegalArgumentException Se o percentual for negativo
+     */
     @Override
     public void diminuirTodosPrecos(double percentual
     ) {
@@ -251,19 +341,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    @Override
-    public void aumentarPrecoPorCategoria(double percentual, String categoria
-    ) {
-        String sql = "UPDATE produto SET preco_unitario = preco_unitario * (1 + ? / 100) WHERE categoria = ?";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setDouble(1, percentual);
-            st.setString(2, categoria);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
-    }
-
+    /**
+     *
+     * @param percentual
+     * @param categoria
+     */
     @Override
     public void diminuirPrecoPorCategoria(double percentual, String categoria
     ) {
@@ -277,6 +359,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel com a lista de preços de todos os produtos.
+     *
+     * @param caminhoArquivoSaidaExcel Caminho onde o arquivo será salvo (pode
+     * incluir ou não a extensão .xlsx)
+     * @param nomePlanilha Nome da planilha que será criada no arquivo Excel
+     * @throws DbException Se ocorrer um erro ao acessar o banco de dados
+     * @throws IllegalArgumentException Se os parâmetros forem nulos ou vazios
+     */
     @Override
     public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -339,6 +430,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel com o balanço físico-financeiro do estoque
+     * (quantidade e valor total por produto).
+     *
+     * @param caminhoArquivoSaidaExcel Caminho onde o arquivo será salvo
+     * @param nomePlanilha Nome da planilha no arquivo Excel
+     * @throws DbException Se ocorrer erro no banco de dados
+     * @throws IOException Se ocorrer erro ao escrever o arquivo
+     *
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -414,6 +515,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel com os produtos que estão abaixo da quantidade
+     * mínima em estoque.
+     *
+     * @param caminhoArquivoSaidaExcel Caminho para salvar o arquivo Excel
+     * @param nomePlanilha Nome da planilha no arquivo
+     * @throws DbException Se ocorrer erro na consulta SQL
+     * @throws FileNotFoundException Se não conseguir criar o arquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -476,6 +586,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel com os produtos que estão acima da quantidade
+     * máxima em estoque.
+     *
+     * @param caminhoArquivoSaidaExcel Caminho completo ou diretório para salvar
+     * o arquivo
+     * @param nomePlanilha Nome da planilha Excel
+     * @throws DbException Para erros de banco de dados
+     * @throws IOException Para erros de arquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -538,6 +658,15 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel agrupando produtos por categoria com contagem.
+     *
+     * @param caminhoArquivoSaidaExcel Local de saída do arquivo (auto-completa
+     * extensão se necessário)
+     * @param nomePlanilha Nome da aba no Excel
+     * @throws DbException Para erros SQL
+     * @throws IOException Para erros de I/O
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -599,6 +728,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em Excel com todas as movimentações registradas no
+     * sistema.
+     *
+     * @param caminhoArquivoSaidaExcel Caminho para o arquivo de saída
+     * @param nomePlanilha Nome da planilha no arquivo Excel
+     * @throws DbException Se ocorrer erro no banco de dados
+     * @throws FileNotFoundException Se o arquivo não puder ser criado
+     * @throws IOException Se ocorrer erro ao escrever no arquivo
+     */
     @Override
     public void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
@@ -663,6 +802,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em formato DOCX (Word) com a lista de preços de todos
+     * os produtos.
+     *
+     * @param caminhoArquivoSaidaDoc Caminho onde o arquivo será salvo (pode
+     * incluir ou não a extensão .docx)
+     * @param nomeArquivoDoc Nome do documento que será criado
+     * @throws DbException Se ocorrer um erro ao acessar o banco de dados
+     * @throws IOException Se ocorrer erro ao escrever o arquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -732,6 +881,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em DOCX com o balanço físico-financeiro do estoque.
+     *
+     * @param caminhoArquivoSaidaDoc Caminho para o arquivo de saída
+     * @param nomeArquivoDoc Nome do documento Word
+     * @throws DbException Para erros de banco de dados
+     * @throws IOException Para erros de arquivo
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -819,6 +976,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em DOCX com produtos abaixo do estoque mínimo.
+     *
+     * @param caminhoArquivoSaidaDoc Caminho para salvar o documento
+     * @param nomeArquivoDoc Nome do arquivo Word
+     * @throws DbException Se a consulta SQL falhar
+     * @throws IOException Se ocorrer erro de I/O
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -886,6 +1051,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em DOCX com produtos acima do estoque máximo.
+     *
+     * @param caminhoArquivoSaidaDoc Caminho de saída do documento
+     * @param nomeArquivoDoc Nome do arquivo Word
+     * @throws DbException Para erros SQL
+     * @throws IOException Para erros de arquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -953,6 +1126,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em DOCX agrupando produtos por categoria.
+     *
+     * @param caminhoArquivoSaidaDoc Local para salvar o documento
+     * @param nomeArquivoDoc Nome do arquivo DOCX
+     * @throws DbException Para erros de banco de dados
+     * @throws IOException Para erros de escrita
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -1018,6 +1199,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório em DOCX com o histórico de movimentações de produtos.
+     *
+     * @param caminhoArquivoSaidaDoc Caminho completo ou diretório para salvar
+     * @param nomeArquivoDoc Nome do documento Word
+     * @throws DbException Para erros na consulta
+     * @throws IOException Para erros no arquivo
+     */
     @Override
     public void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
@@ -1082,6 +1271,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF com a lista de preços de todos os produtos.
+     *
+     * @param caminhoArquivoSaidaPDF Caminho onde o PDF será salvo
+     * (auto-completa extensão .pdf se necessário)
+     * @param nomeArquivoPDF Nome base do arquivo PDF (usado se caminho for
+     * diretório)
+     * @throws DbException Se ocorrer erro na consulta SQL
+     * @throws IOException Se ocorrer erro na geração do PDF
+     */
     @Override
     public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF
     ) {
@@ -1169,6 +1368,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF com o balanço físico-financeiro do estoque.
+     *
+     * @param caminhoArquivoSaidaPDF Caminho de saída para o arquivo PDF
+     * @param nomeArquivo Nome do arquivo PDF
+     * @throws DbException Para erros de banco de dados
+     * @throws IOException Para erros de escrita do PDF
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1264,6 +1471,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF com produtos abaixo do estoque mínimo.
+     *
+     * @param caminhoArquivoSaidaPDF Local para salvar o PDF
+     * @param nomeArquivo Nome do arquivo PDF
+     * @throws DbException Se a consulta SQL falhar
+     * @throws IOException Se ocorrer erro ao gerar PDF
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1349,6 +1564,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF com produtos acima do estoque máximo.
+     *
+     * @param caminhoArquivoSaidaPDF Caminho para o arquivo PDF
+     * @param nomeArquivo Nome do arquivo PDF
+     * @throws DbException Para erros SQL
+     * @throws IOException Para erros de arquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1436,6 +1659,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF agrupando produtos por categoria.
+     *
+     * @param caminhoArquivoSaidaPDF Caminho de saída do PDF
+     * @param nomeArquivo Nome do arquivo PDF
+     * @throws DbException Para erros de banco de dados
+     * @throws IOException Para erros de geração de PDF
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1522,6 +1753,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Gera um relatório PDF com o histórico de movimentações de estoque.
+     *
+     * @param caminhoArquivoSaidaPDF Caminho completo ou diretório para salvar
+     * @param nomeArquivoPDF Nome do arquivo PDF
+     * @throws DbException Para erros na consulta
+     * @throws IOException Para erros no arquivo
+     */
     @Override
     public void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
@@ -1605,6 +1844,16 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Método auxiliar para escrever uma linha formatada no PDF.
+     *
+     * @param content Fluxo de conteúdo do PDF
+     * @param y Posição vertical inicial
+     * @param margin Margem esquerda
+     * @param xOffsets Array de offsets horizontais para cada coluna
+     * @param textos Array de textos para cada coluna
+     * @throws IOException Se ocorrer erro ao escrever no PDF
+     */
     private void escreverLinha(PDPageContentStream content, float y, float margin, float[] xOffsets, String[] textos) throws IOException {
         for (int i = 0; i < textos.length; i++) {
             content.beginText();
@@ -1614,6 +1863,13 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     * Instancia um objeto Produto a partir de um ResultSet.
+     *
+     * @param rs ResultSet com os dados do produto
+     * @return Objeto Produto populado
+     * @throws SQLException Se ocorrer erro ao acessar os dados
+     */
     private Produto instanciarProduto(ResultSet rs) throws SQLException {
         Produto prod = new Produto();
         prod.setId(rs.getInt("id"));
@@ -1631,6 +1887,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return prod;
     }
 
+    /**
+     * Instancia um objeto Categoria a partir de um ResultSet.
+     *
+     * @param rs ResultSet com os dados da categoria
+     * @param categoriald ID da categoria
+     * @return Objeto Categoria populado
+     * @throws SQLException Se ocorrer erro ao acessar os dados
+     */
     private Categoria instanciarCategoria(ResultSet rs, int categoriaId) throws SQLException {
         Categoria cat = new Categoria();
         cat.setId(categoriaId);
