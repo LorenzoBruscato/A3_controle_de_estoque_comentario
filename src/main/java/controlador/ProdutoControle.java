@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.List;
 import modelo.Categoria;
 import modelo.Produto;
-import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.ProdutoDao;
 import modelo.dao.impl.CategoriaDaoJDBC;
@@ -62,15 +61,14 @@ public class ProdutoControle {
      * Atualiza um produto existente, validando a presença de um ID válido.
      *
      * @param produto Produto a ser atualizado.
-     * @param reg Registro associado à atualização.
      * @throws IllegalArgumentException se o produto for nulo ou se o ID for
      * inválido.
      */
-    public void atualizarProduto(Produto produto, Registro reg) {
+    public void atualizarProduto(Produto produto) {
         if (produto == null || produto.getId() <= 0) {
             throw new IllegalArgumentException("Produto inválido ou sem ID.");
         }
-        produtoDao.atualizarProduto(produto, reg);
+        produtoDao.atualizarProduto(produto);
     }
 
     /**
