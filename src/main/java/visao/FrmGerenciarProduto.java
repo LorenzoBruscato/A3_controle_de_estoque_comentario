@@ -579,7 +579,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     reg.setStatus(Registro.Status.ALQTDMI);
                 } else if (qtdMaxima != qtdMaximaAntiga) {
                     reg.setStatus(Registro.Status.ALQTMAX);
-                } else {
+                } else if(qtdEstoque >= qtdMinima && qtdEstoque <= qtdMaxima){
+                    reg.setStatus(Registro.Status.DENTRO);
+                }else{
                     reg.setStatus(Registro.Status.NENHUM);
                 }
 
