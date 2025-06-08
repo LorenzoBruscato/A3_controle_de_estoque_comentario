@@ -1,7 +1,14 @@
 package visao;
 
+/**
+ *
+ * @author Lorenzo
+ */
 public class FrmMenuPrincipal extends javax.swing.JFrame {
 
+    /**
+     *
+     */
     public FrmMenuPrincipal() {
         initComponents();
     }

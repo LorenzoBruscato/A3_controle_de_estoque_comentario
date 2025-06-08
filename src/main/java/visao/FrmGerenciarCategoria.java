@@ -12,6 +12,10 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import modelo.dao.db.DbException;
 
+/**
+ *
+ *
+ */
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
     private DaoFactory daoFactory = new DaoFactory();
@@ -21,6 +25,9 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private Object[][] dados = new Object[0][0];
     private String[] colunas = {"ID", "Nome", "Tamanho", "Embalagem"};
 
+    /**
+     *
+     */
     public FrmGerenciarCategoria() {
         initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();
@@ -35,6 +42,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         carregarCategoriasNaTela();
     }
 
+    /**
+     *
+     * @param texto
+     * @return
+     */
     public static String removerAcentos(String texto) {
         return Normalizer.normalize(texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");

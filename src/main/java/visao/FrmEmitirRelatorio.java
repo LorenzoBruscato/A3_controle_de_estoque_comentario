@@ -7,6 +7,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 
+/**
+ *
+ *
+ */
 public class FrmEmitirRelatorio extends javax.swing.JFrame {
 
     // atributos se necessario
@@ -14,6 +18,9 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
     private String caminhoArquivoSelecionado = null;
     private DaoFactory daoFactory = new DaoFactory();
 
+    /**
+     *
+     */
     public FrmEmitirRelatorio() {
         initComponents();
         produtoDao = daoFactory.instanciarProdutoDao();

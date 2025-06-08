@@ -8,6 +8,10 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import modelo.dao.RegistroDao;
 
+/**
+ *
+ *
+ */
 public class FrmMovimentacao extends javax.swing.JFrame {
 
     private ProdutoDao produtoDao;
@@ -17,6 +21,9 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação", "Status Estoque"};
     private DaoFactory daoFactory = new DaoFactory();
 
+    /**
+     *
+     */
     public FrmMovimentacao() {
         initComponents();
         registroDao = daoFactory.insinstanciarRegistro();

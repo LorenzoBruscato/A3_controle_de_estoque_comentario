@@ -13,14 +13,26 @@ import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 
+/**
+ *
+ *
+ */
 public class CategoriaDaoJDBC implements CategoriaDao {
 
     private Connection conn;
 
+    /**
+     *
+     * @param conn
+     */
     public CategoriaDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     *
+     * @param obj
+     */
     @Override
     public void cadastrarCategoria(Categoria obj) {
         String sql = "INSERT INTO categoria "
@@ -46,6 +58,10 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
+    /**
+     *
+     * @param obj
+     */
     @Override
     public void atualizarCategoria(Categoria obj) {
         String sql = "UPDATE categoria "
@@ -62,6 +78,10 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void deletarCategoriaPorId(int id) {
         String sql = "DELETE FROM categoria WHERE id = ?";
@@ -76,6 +96,10 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Categoria> resgatarCategorias() {
         String sql = "SELECT * FROM categoria ORDER BY nome";
@@ -92,7 +116,11 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
-
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Categoria procurarCategoriaPorId(Integer id) {
         String sql = "SELECT * FROM categoria WHERE id = ?";
@@ -109,6 +137,11 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         return null;
     }
 
+    /**
+     *
+     * @param nome
+     * @return
+     */
     @Override
     public Categoria CategoriabuscarPorNome(String nome) {
         String sql = "SELECT * FROM categoria WHERE nome = ?";

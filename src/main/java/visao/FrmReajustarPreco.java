@@ -9,6 +9,10 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import modelo.dao.db.DbException;
 
+/**
+ *
+ *
+ */
 public class FrmReajustarPreco extends javax.swing.JFrame {
 
     
@@ -16,6 +20,9 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
     private ProdutoDao produtoDao;
     private DaoFactory daoFactory = new DaoFactory();
 
+    /**
+     *
+     */
     public FrmReajustarPreco() {
          initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();

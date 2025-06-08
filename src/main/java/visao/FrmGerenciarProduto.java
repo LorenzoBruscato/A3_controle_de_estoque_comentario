@@ -11,9 +11,12 @@ import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
-import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
+/**
+ *
+ *
+ */
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
     private Registro registro;
@@ -24,6 +27,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     private String[] colunas = {"ID", "Nome", "Preço", "Unidade", "Qtd Estoque", "Qtd Mínima", "Qtd Máxima", "Categoria"};
     private DaoFactory daoFactory = new DaoFactory();
 
+    /**
+     *
+     */
     public FrmGerenciarProduto() {
         initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();

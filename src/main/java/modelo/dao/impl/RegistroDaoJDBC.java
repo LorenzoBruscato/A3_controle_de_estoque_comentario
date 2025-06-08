@@ -11,14 +11,26 @@ import modelo.Registro;
 import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
+/**
+ *
+ *
+ */
 public class RegistroDaoJDBC implements RegistroDao {
 
     private Connection conn;
 
+    /**
+     *
+     * @param conn
+     */
     public RegistroDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     *
+     * @param reg
+     */
     @Override
     public void AdicionarProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
@@ -34,6 +46,10 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
+    /**
+     *
+     * @param reg
+     */
     @Override
     public void RemoverProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro (data, tipo, quantidade, movimentacao) VALUES (?, ?, ?, ?)";
@@ -49,6 +65,10 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Registro> resgatarRegistros() {
         List<Registro> lista = new ArrayList<>();

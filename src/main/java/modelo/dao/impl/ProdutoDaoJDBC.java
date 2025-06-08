@@ -37,7 +37,10 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-
+/**
+ *
+ *
+ */
 public class ProdutoDaoJDBC implements ProdutoDao {
 
     private Connection conn; // Conexão com o banco de dados
@@ -52,6 +55,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         this.conn = conn;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Produto procurarProdutoPorId(Integer id) {
         String sql = "SELECT * FROM produto WHERE id = ?";
@@ -72,6 +80,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return null;
     }
 
+    /**
+     *
+     * @param obj
+     */
     @Override
     public void cadastrarProduto(Produto obj) {
         String sql = "INSERT INTO produto "
@@ -113,6 +125,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param obj
+     * @param reg
+     */
     @Override
     public void atualizarProduto(Produto obj, Registro reg) {
         String sql
@@ -157,6 +174,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param nomeNovo
+     * @param nomeAntigo
+     */
     @Override
     public void atualizarProdutoCategoria(String nomeNovo, String nomeAntigo) {
         String sql = "UPDATE produto SET categoria = ? WHERE categoria = ?";
@@ -169,7 +191,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param objId
+     */
     @Override
     public void deletarProdutoPorId(int objId) {
         // 1. Buscar o produto antes de excluir
@@ -202,7 +227,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Produto> resgatarProdutos() {
         List<Produto> lista = new ArrayList<>();
@@ -236,7 +264,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return lista;
     }
 
-
+    /**
+     *
+     * @param percentual
+     */
     @Override
     public void aumentarTodosPrecos(double percentual
     ) {
@@ -249,7 +280,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @param percentual
+     * @param categoria
+     */
     @Override
     public void aumentarPrecoPorCategoria(double percentual, String categoria
     ) {
@@ -264,6 +299,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     }
 
+    /**
+     *
+     * @param percentual
+     */
     @Override
     public void diminuirTodosPrecos(double percentual
     ) {
@@ -276,6 +315,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param percentual
+     * @param categoria
+     */
     @Override
     public void diminuirPrecoPorCategoria(double percentual, String categoria
     ) {
@@ -289,7 +333,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -352,6 +400,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -427,6 +480,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -489,6 +547,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -551,7 +614,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha
     ) {
@@ -613,7 +680,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @param caminhoArquivoSaidaExcel
+     * @param nomePlanilha
+     */
     @Override
     public void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaExcel);
@@ -678,7 +749,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -748,6 +823,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -835,6 +915,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -902,7 +987,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -970,7 +1059,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-  
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc
     ) {
@@ -1036,7 +1129,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param caminhoArquivoSaidaDoc
+     * @param nomeArquivoDoc
+     */
     @Override
     public void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaDoc);
@@ -1101,7 +1198,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-  
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivoPDF
+     */
     @Override
     public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF
     ) {
@@ -1189,7 +1290,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivo
+     */
     @Override
     public void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1285,7 +1390,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1371,7 +1480,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivo
+     */
     @Override
     public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1459,7 +1572,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-   
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivo
+     */
     @Override
     public void gerarRelatorioListaProdutoPorCategoriaPDF(String caminhoArquivoSaidaPDF, String nomeArquivo
     ) {
@@ -1546,7 +1663,11 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
- 
+    /**
+     *
+     * @param caminhoArquivoSaidaPDF
+     * @param nomeArquivoPDF
+     */
     @Override
     public void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF) {
         System.out.println("Tentando salvar arquivo em: " + caminhoArquivoSaidaPDF);
