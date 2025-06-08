@@ -6,32 +6,34 @@ import modelo.dao.impl.ProdutoDaoJDBC;
 import modelo.dao.impl.RegistroDaoJDBC;
 
 /**
- *
- *
+ * Fábrica de objetos DAO para acesso ao banco de dados.
  */
 public class DaoFactory {
-
-    Database database = new Database();
+    
+    private Database database = new Database();
 
     /**
-     *
-     * @return
+     * Instancia o DAO para manipulação de produtos.
+     * 
+     * @return objeto ProdutoDao
      */
     public ProdutoDao instanciarProdutoDao() {
         return new ProdutoDaoJDBC(database.getConnection());
     }
 
     /**
-     *
-     * @return
+     * Instancia o DAO para manipulação de categorias.
+     * 
+     * @return objeto CategoriaDao
      */
     public CategoriaDao instanciarCategoriaDao() {
         return new CategoriaDaoJDBC(database.getConnection());
     }
 
     /**
-     *
-     * @return
+     * Instancia o DAO para manipulação de registros.
+     * 
+     * @return objeto RegistroDao
      */
     public RegistroDao insinstanciarRegistro() {
         return new RegistroDaoJDBC(database.getConnection());

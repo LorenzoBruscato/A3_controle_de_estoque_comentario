@@ -4,47 +4,51 @@ import java.util.List;
 import modelo.Categoria;
 
 /**
- *
- *
+ * Interface para operações CRUD da entidade Categoria.
  */
 public interface CategoriaDao {
 
     /**
-     *
-     * @param obj
+     * Cadastra uma nova categoria.
+     * 
+     * @param obj objeto Categoria a ser cadastrado
      */
     public void cadastrarCategoria(Categoria obj);
 
     /**
-     *
-     * @param obj
+     * Atualiza uma categoria existente.
+     * 
+     * @param obj objeto Categoria com dados atualizados
      */
     public void atualizarCategoria(Categoria obj);
 
     /**
-     *
-     * @param id
+     * Deleta uma categoria pelo seu identificador.
+     * 
+     * @param id identificador da categoria a ser deletada
      */
     public void deletarCategoriaPorId(int id);
 
     /**
-     *
-     * @return
+     * Recupera a lista de todas as categorias cadastradas.
+     * 
+     * @return lista de categorias
      */
     public List<Categoria> resgatarCategorias();
 
     /**
-     *
-     * @param id
-     * @return
+     * Procura uma categoria pelo seu identificador.
+     * 
+     * @param id identificador da categoria
+     * @return categoria encontrada ou null se não existir
      */
     Categoria procurarCategoriaPorId(Integer id);
 
     /**
-     *
-     * @param nome
-     * @return
+     * Busca uma categoria pelo nome.
+     * 
+     * @param nome nome da categoria
+     * @return categoria encontrada ou null se não existir
      */
     Categoria CategoriabuscarPorNome(String nome);
-
 }

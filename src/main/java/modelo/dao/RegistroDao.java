@@ -4,26 +4,25 @@ import java.util.List;
 import modelo.Registro;
 
 /**
- *
- *
+ * Interface DAO para operações de registro de movimentações de produtos.
  */
 public interface RegistroDao {
 
     /**
-     *
-     * @param reg
+     * Adiciona um registro de movimentação de produto.
+     * @param reg registro a ser adicionado
      */
-    public void AdicionarProdutoRegistro(Registro reg);
+    void AdicionarProdutoRegistro(Registro reg);
 
     /**
-     *
-     * @param reg
+     * Remove um registro de movimentação de produto.
+     * @param reg registro a ser removido
      */
-    public void RemoverProdutoRegistro(Registro reg);
+    void RemoverProdutoRegistro(Registro reg);
 
     /**
-     *
-     * @return
+     * Retorna a lista de todos os registros.
+     * @return lista de registros
      */
-    public List<Registro> resgatarRegistros();
+    List<Registro> resgatarRegistros();
 }

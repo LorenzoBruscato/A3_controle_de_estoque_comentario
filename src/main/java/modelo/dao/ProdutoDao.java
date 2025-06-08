@@ -5,200 +5,199 @@ import modelo.Produto;
 import modelo.Registro;
 
 /**
- * Interface DAO para operações de acesso e manipulação dos dados da entidade
- * Produto. Define os métodos para CRUD, ajustes de preços, atualização de
- * categorias e geração de relatórios.
+ * Interface DAO para operações com produtos, incluindo CRUD,
+ * ajustes de preço, atualização de categoria e geração de relatórios.
  */
 public interface ProdutoDao {
 
     /**
-     *
-     * @param id
-     * @return
+     * Busca um produto pelo seu ID.
+     * @param id identificador do produto
+     * @return produto encontrado ou null
      */
-    public Produto procurarProdutoPorId(Integer id);
+    Produto procurarProdutoPorId(Integer id);
 
     /**
-     *
-     * @param obj
+     * Cadastra um novo produto.
+     * @param obj produto a ser cadastrado
      */
-    public void cadastrarProduto(Produto obj);
+    void cadastrarProduto(Produto obj);
 
     /**
-     *
-     * @param obj
-     * @param reg
+     * Atualiza um produto e registra a operação.
+     * @param obj produto a ser atualizado
+     * @param reg registro da atualização
      */
-    public void atualizarProduto(Produto obj, Registro reg);
+    void atualizarProduto(Produto obj, Registro reg);
 
     /**
-     *
-     * @param nomeNovo
-     * @param nomeAntigo
+     * Atualiza o nome da categoria dos produtos.
+     * @param nomeNovo novo nome da categoria
+     * @param nomeAntigo nome antigo da categoria
      */
-    public void atualizarProdutoCategoria(String nomeNovo, String nomeAntigo);
+    void atualizarProdutoCategoria(String nomeNovo, String nomeAntigo);
 
     /**
-     *
-     * @param objId
+     * Deleta produto pelo ID.
+     * @param objId ID do produto a ser deletado
      */
-    public void deletarProdutoPorId(int objId);
+    void deletarProdutoPorId(int objId);
 
     /**
-     *
-     * @return
+     * Retorna a lista de todos os produtos.
+     * @return lista de produtos
      */
-    public List<Produto> resgatarProdutos();
+    List<Produto> resgatarProdutos();
 
     /**
-     *
-     * @param percentual
+     * Aumenta o preço de todos os produtos por um percentual.
+     * @param percentual valor percentual para aumento
      */
     void aumentarTodosPrecos(double percentual);
 
     /**
-     *
-     * @param percentual
-     * @param categoria
+     * Aumenta o preço dos produtos de uma categoria específica.
+     * @param percentual percentual para aumento
+     * @param categoria nome da categoria
      */
-    public void aumentarPrecoPorCategoria(double percentual, String categoria);
+    void aumentarPrecoPorCategoria(double percentual, String categoria);
 
     /**
-     *
-     * @param percentual
+     * Diminui o preço de todos os produtos por um percentual.
+     * @param percentual valor percentual para diminuição
      */
     void diminuirTodosPrecos(double percentual);
 
     /**
-     *
-     * @param percentual
-     * @param categoria
+     * Diminui o preço dos produtos de uma categoria específica.
+     * @param percentual percentual para diminuição
+     * @param categoria nome da categoria
      */
-    public void diminuirPrecoPorCategoria(double percentual, String categoria);
+    void diminuirPrecoPorCategoria(double percentual, String categoria);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomeDoArquivo
+     * Gera relatório de lista de preços em formato Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomeDoArquivo nome do arquivo Excel
      */
-    public void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomeDoArquivo);
+    void gerarRelatorioListaDePrecoExcel(String caminhoArquivoSaidaExcel, String nomeDoArquivo);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomePlanilha
+     * Gera relatório de balanço físico-financeiro em Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomePlanilha nome da planilha
      */
-    public void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomePlanilha
+     * Gera relatório de produtos com preço abaixo da quantidade mínima em Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomePlanilha nome da planilha
      */
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomePlanilha
+     * Gera relatório de produtos com preço acima da quantidade máxima em Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomePlanilha nome da planilha
      */
-    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomePlanilha
+     * Gera relatório de produtos por categoria em Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomePlanilha nome da planilha
      */
-    public void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    void gerarRelatorioListaProdutoPorCategoriaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     *
-     * @param caminhoArquivoSaidaExcel
-     * @param nomePlanilha
+     * Gera relatório de movimentações em Excel.
+     * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo
+     * @param nomePlanilha nome da planilha
      */
-    public void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
+    void gerarRelatorioMovimentacaoExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de lista de preços em formato DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioListaDePrecoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de balanço físico-financeiro em DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de produtos com preço abaixo da quantidade mínima em DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de produtos com preço acima da quantidade máxima em DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de produtos por categoria em DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioListaProdutoPorCategoriaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaDoc
-     * @param nomeArquivoDoc
+     * Gera relatório de movimentações em DOC.
+     * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo
+     * @param nomeArquivoDoc nome do arquivo DOC
      */
-    public void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
+    void gerarRelatorioMovimentacaoDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     *
-     * @param caminhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de lista de preços em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioListaDePrecoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     *
-     * @param caminhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de balanço físico-financeiro em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     *
-     * @param caminnhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de produtos com preço abaixo da quantidade mínima em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminnhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     *
-     * @param caminnhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de produtos com preço acima da quantidade máxima em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaPDF(String caminnhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioListaDePrecoAcimaDaQuantidadeMaximaPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     *
-     * @param caminnhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de produtos por categoria em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioListaProdutoPorCategoriaPDF(String caminnhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioListaProdutoPorCategoriaPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     *
-     * @param caminhoArquivoSaidaPDF
-     * @param nomeArquivoPDF
+     * Gera relatório de movimentações em PDF.
+     * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo
+     * @param nomeArquivoPDF nome do arquivo PDF
      */
-    public void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
+    void gerarRelatorioMovimentacaoPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 }

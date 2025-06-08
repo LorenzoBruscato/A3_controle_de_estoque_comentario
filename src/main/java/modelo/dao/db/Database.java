@@ -11,10 +11,9 @@ import java.util.Properties;
 
 /**
  *
- * @author Lorenzo
+ *
  */
 public class Database {
-
     /**
      * Atributo do tipo Connection para realizar a conexão com o banco de dados
      */
@@ -112,5 +111,4 @@ public class Database {
             throw new DbException("Erro ao carregar db.properties: " + e.getMessage());
         }
     }
-
 }
