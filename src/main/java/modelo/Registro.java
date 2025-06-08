@@ -16,7 +16,7 @@ public class Registro {
     }
 
     public enum Status {
-        ACIMA, ABAIXO, DENTRO, ADICIONADO, NOMEALTERADO, DELETADO
+        ACIMA, ABAIXO, DENTRO, ADICIONADO, NOMEALTERADO, DELETADO, NENHUM, ALQTDMI, ALQTMAX, ALQMAEMI, ALCATEGORIA
     }
 
     public Registro() {

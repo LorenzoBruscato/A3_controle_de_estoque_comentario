@@ -359,12 +359,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
                 JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
                 return;
-            } else if (qtdEstoque < qtdMinima) {
-                JOptionPane.showMessageDialog(this, "A quantidade em estoque é menor do que a quantidade mínima.", "Erro", JOptionPane.WARNING_MESSAGE);
-                return;
-            } else if (qtdEstoque > qtdMaxima) {
-                JOptionPane.showMessageDialog(this, "A quantidade em estoque é maior do que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
-                return;
             }
 
             String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
@@ -443,6 +437,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 int id = (Integer) JTableProdutos.getValueAt(linhaSelecionada, 0);
                 Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
                 int qtdEstoqueAntiga = produtoAtual.getQuantidade();
+                int qtdMinimaAntiga = produtoAtual.getQuantidadeMinima();
+                int qtdMaximaAntiga = produtoAtual.getQuantidadeMaxima();
+                String nomeAntigo = produtoAtual.getNome();
 
                 String nome = JTFNomeProduto.getText().trim();
                 double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
@@ -455,16 +452,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
                 if (categoria == null) {
                     throw new DbException("Categoria não encontrada: " + nomeCategoria);
-                }
-
-                // Verificar se o estoque foi alterado
-                if (qtdEstoque != qtdEstoqueAntiga) {
-                    JTFQtdEstoque.setText(String.valueOf(qtdEstoqueAntiga));
-                    JOptionPane.showMessageDialog(this,
-                            "A quantidade de estoque não pode ser alterada por esta funcionalidade.\nUse a tela de movimentação de estoque.",
-                            "Alteração não permitida",
-                            JOptionPane.WARNING_MESSAGE);
-                    return;
                 }
 
                 if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
@@ -486,14 +473,39 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 produto.setQuantidadeMaxima(qtdMaxima);
                 produto.setCategoria(categoria);
 
-                // Registro com movimentação "NENHUM" já que a quantidade não mudou
                 Registro reg = new Registro();
                 reg.setId(id);
                 reg.setData(new Date());
                 reg.setTipoDoProduto(produto);
-                reg.setQuantidade(0); // Nenhuma movimentação
-                reg.setMovimentacao(Registro.Movimentacao.NENHUM);
-                reg.setStatus(Registro.Status.NOMEALTERADO);
+
+// Determinar tipo de movimentação (entrada, saída ou nenhum)
+                if (qtdEstoque > qtdEstoqueAntiga) {
+                    reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
+                    reg.setQuantidade(qtdEstoque - qtdEstoqueAntiga);
+                } else if (qtdEstoque < qtdEstoqueAntiga) {
+                    reg.setMovimentacao(Registro.Movimentacao.SAIDA);
+                    reg.setQuantidade(qtdEstoqueAntiga - qtdEstoque);
+                } else {
+                    reg.setMovimentacao(Registro.Movimentacao.NENHUM);
+                    reg.setQuantidade(0);
+                }
+
+// Determinar status
+                if (qtdEstoque < qtdMinima) {
+                    reg.setStatus(Registro.Status.ABAIXO);
+                } else if (qtdEstoque > qtdMaxima) {
+                    reg.setStatus(Registro.Status.ACIMA);
+                } else if (!nome.equals(nomeAntigo)) {
+                    reg.setStatus(Registro.Status.NOMEALTERADO);
+                } else if (qtdMinima != qtdMinimaAntiga && qtdMaxima != qtdMaximaAntiga) {
+                    reg.setStatus(Registro.Status.ALQMAEMI);
+                } else if (qtdMinima != qtdMinimaAntiga) {
+                    reg.setStatus(Registro.Status.ALQTDMI);
+                } else if (qtdMaxima != qtdMaximaAntiga) {
+                    reg.setStatus(Registro.Status.ALQTMAX);
+                } else {
+                    reg.setStatus(Registro.Status.NENHUM);
+                }
 
                 // Atualizar produto no banco de dados
                 produtoDao.atualizarProduto(produto, reg);
@@ -514,8 +526,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             } catch (Exception e) {
                 throw new DbException("Erro ao atualizar produto: " + e.getMessage());
             }
-        } else {
-            System.out.println("Nenhuma linha selecionada para atualizar.");
         }
     }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
@@ -563,7 +573,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_ComboBoxUnidadeActionPerformed
 
     private void jBEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntradaActionPerformed
-         try {
+        try {
             int linhaSelecionada = JTableProdutos.getSelectedRow();
             if (linhaSelecionada == -1) {
                 JOptionPane.showMessageDialog(this, "Selecione um produto na tabela antes de registrar a entrada.");
@@ -572,9 +582,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
             int id = (int) JTableProdutos.getValueAt(linhaSelecionada, 0);
             Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
-            int qtdEstoqueAntiga = produtoAtual.getQuantidade();
-            int entrada = Integer.parseInt(jTEntradaSaida.getText().trim());
 
+            int entrada = Integer.parseInt(jTEntradaSaida.getText().trim());
             if (entrada <= 0) {
                 JOptionPane.showMessageDialog(this,
                         "A quantidade de entrada deve ser maior que zero.",
@@ -583,54 +592,31 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 return;
             }
 
-            int qtdEstoqueNova = qtdEstoqueAntiga + entrada;
+            int qtdEstoqueNova = produtoAtual.getQuantidade() + entrada;
 
-            String nome = JTFNomeProduto.getText().trim();
-            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
-            String unidade = ComboBoxUnidade.getSelectedItem().toString();
-            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
-            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
-            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
-            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+            // Atualiza apenas o campo de quantidade
+            produtoAtual.setQuantidade(qtdEstoqueNova);
 
-            if (categoria == null) {
-                throw new DbException("Categoria não encontrada: " + nomeCategoria);
-            }
-
-            if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Nenhum valor pode ser negativo!\nErro de cadastro.",
-                        "Erro",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Produto produto = new Produto();
-            produto.setId(id); // Aqui é o ponto-chave: o produto tem ID, como no método de saída
-            produto.setNome(nome);
-            produto.setPreco(preco);
-            produto.setUnidade(unidade);
-            produto.setQuantidade(qtdEstoqueNova);
-            produto.setQuantidadeMinima(qtdMinima);
-            produto.setQuantidadeMaxima(qtdMaxima);
-            produto.setCategoria(categoria);
-
+            // Prepara o registro da movimentação
             Registro reg = new Registro();
             reg.setId(id);
             reg.setData(new Date());
-            reg.setTipoDoProduto(produto);
+            reg.setTipoDoProduto(produtoAtual);
             reg.setMovimentacao(Registro.Movimentacao.ENTRADA);
-            reg.setQuantidade(entrada); // Adicionado para evitar NullPointerException
+            reg.setQuantidade(entrada);
 
-            if (qtdEstoqueNova < qtdMinima) {
+            // Define o status com base nos limites
+            if (qtdEstoqueNova < produtoAtual.getQuantidadeMinima()) {
                 reg.setStatus(Registro.Status.ABAIXO);
-            } else if (qtdEstoqueNova > qtdMaxima) {
+            } else if (qtdEstoqueNova > produtoAtual.getQuantidadeMaxima()) {
                 reg.setStatus(Registro.Status.ACIMA);
             } else {
                 reg.setStatus(Registro.Status.DENTRO);
             }
 
-            produtoDao.atualizarProduto(produto, reg);
+            // Atualiza o produto no banco
+            produtoDao.atualizarProduto(produtoAtual, reg);
+
             JOptionPane.showMessageDialog(this, "Entrada registrada com sucesso!");
             carregarProdutosNaTela();
 
@@ -662,9 +648,10 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
             int id = (int) JTableProdutos.getValueAt(linhaSelecionada, 0);
             Produto produtoAtual = produtoDao.procurarProdutoPorId(id);
-            int qtdEstoqueAntiga = produtoAtual.getQuantidade();
 
+            int qtdEstoqueAntiga = produtoAtual.getQuantidade();
             int saida = Integer.parseInt(jTEntradaSaida.getText().trim());
+
             if (saida <= 0) {
                 JOptionPane.showMessageDialog(this,
                         "A quantidade de saída deve ser maior que zero.",
@@ -674,6 +661,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             }
 
             int qtdEstoqueNova = qtdEstoqueAntiga - saida;
+
             if (qtdEstoqueNova < 0) {
                 int opcao = JOptionPane.showConfirmDialog(
                         this,
@@ -688,51 +676,27 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 }
             }
 
-            String nome = JTFNomeProduto.getText().trim();
-            double preco = Double.parseDouble(JTFPrecoUnitario.getText().trim().replace(",", "."));
-            String unidade = ComboBoxUnidade.getSelectedItem().toString();
-            int qtdMinima = Integer.parseInt(JTFQtdMinima.getText().trim());
-            int qtdMaxima = Integer.parseInt(JTFQtdMaxima.getText().trim());
-            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
-            Categoria categoria = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+            // Atualiza apenas a quantidade do produto
+            produtoAtual.setQuantidade(qtdEstoqueNova);
 
-            if (categoria == null) {
-                throw new DbException("Categoria não encontrada: " + nomeCategoria);
-            }
-
-            if (preco < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Nenhum valor pode ser negativo!\nErro de cadastro.",
-                        "Erro",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Produto produto = new Produto();
-            produto.setId(id);
-            produto.setNome(nome);
-            produto.setPreco(preco);
-            produto.setUnidade(unidade);
-            produto.setQuantidade(qtdEstoqueNova);
-            produto.setQuantidadeMinima(qtdMinima);
-            produto.setQuantidadeMaxima(qtdMaxima);
-            produto.setCategoria(categoria);
-
+            // Criar registro da saída
             Registro reg = new Registro();
             reg.setId(id);
             reg.setData(new Date());
-            reg.setTipoDoProduto(produto);
+            reg.setTipoDoProduto(produtoAtual);
             reg.setMovimentacao(Registro.Movimentacao.SAIDA);
             reg.setQuantidade(saida);
-            if (qtdEstoqueNova < qtdMinima) {
+
+            // Define status com base nos limites
+            if (qtdEstoqueNova < produtoAtual.getQuantidadeMinima()) {
                 reg.setStatus(Registro.Status.ABAIXO);
-            } else if (qtdEstoqueNova > qtdMaxima) {
+            } else if (qtdEstoqueNova > produtoAtual.getQuantidadeMaxima()) {
                 reg.setStatus(Registro.Status.ACIMA);
             } else {
                 reg.setStatus(Registro.Status.DENTRO);
             }
 
-            produtoDao.atualizarProduto(produto, reg);
+            produtoDao.atualizarProduto(produtoAtual, reg);
 
             JOptionPane.showMessageDialog(this, "Saída registrada com sucesso!");
 
@@ -740,12 +704,12 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
             // Limpar os campos
             jTEntradaSaida.setText("");
-            JTFQtdEstoque.setText(String.valueOf(qtdEstoqueNova));
-            this.JTFNomeProduto.setText("");
-            this.JTFPrecoUnitario.setText("");
-            this.JTFQtdEstoque.setText("");
-            this.JTFQtdMinima.setText("");
-            this.JTFQtdMaxima.setText("");
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
                     "Digite um número válido para a quantidade de saída.",
@@ -754,6 +718,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         } catch (Exception e) {
             throw new DbException("Erro ao registrar saída: " + e.getMessage());
         }
+
     }//GEN-LAST:event_jBSaidaActionPerformed
 
 

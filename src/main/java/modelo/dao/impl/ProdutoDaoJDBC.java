@@ -91,7 +91,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
                         try (PreparedStatement str = conn.prepareStatement(sqlRegistro)) {
                             str.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-                            str.setInt(2, obj.getId());  // Passa o id do produto
+                            str.setString(2, obj.getNome());  // Passa o id do produto
                             str.setInt(3, obj.getQuantidade());
                             str.setString(4, Registro.Movimentacao.ENTRADA.name());
                             str.setString(5, Registro.Status.ADICIONADO.name());
