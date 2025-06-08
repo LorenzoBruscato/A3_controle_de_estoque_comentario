@@ -1,16 +1,17 @@
 package modelo.dao;
 
 import java.util.List;
+import modelo.Categoria;
 import modelo.Produto;
-import modelo.Registro;
 
 /**
  * Interface DAO para operações com produtos, incluindo CRUD, ajustes de preço,
  * atualização de categoria e geração de relatórios em diversos formatos.
- * 
+ *
  * @author Diego
  */
 public interface ProdutoDao {
+
     /**
      * Busca um produto pelo seu ID.
      *
@@ -56,6 +57,16 @@ public interface ProdutoDao {
     List<Produto> resgatarProdutos();
 
     /**
+     * Busca um produto pelo nome, categoria e unidade.
+     *
+     * @param nome nome do produto
+     * @param categoria categoria do produto
+     * @param unidade unidade do produto
+     * @return produto encontrado ou null se não existir
+     */
+    public Produto procurarProdutoPorNomeCategoriaUnidade(String nome, Categoria categoria, String unidade);
+
+    /**
      * Remove todos os produtos associados a uma determinada categoria.
      *
      * @param nomeCategoria nome da categoria para remoção dos produtos
@@ -70,7 +81,8 @@ public interface ProdutoDao {
     void aumentarTodosPrecos(double percentual);
 
     /**
-     * Aumenta o preço dos produtos de uma categoria específica por um percentual.
+     * Aumenta o preço dos produtos de uma categoria específica por um
+     * percentual.
      *
      * @param percentual percentual para aumento
      * @param categoria nome da categoria alvo
@@ -85,7 +97,8 @@ public interface ProdutoDao {
     void diminuirTodosPrecos(double percentual);
 
     /**
-     * Diminui o preço dos produtos de uma categoria específica por um percentual.
+     * Diminui o preço dos produtos de uma categoria específica por um
+     * percentual.
      *
      * @param percentual percentual para diminuição
      * @param categoria nome da categoria alvo
@@ -109,7 +122,8 @@ public interface ProdutoDao {
     void gerarRelatorioBalancoFisicoFinanceiroExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     * Gera relatório de produtos com preço abaixo da quantidade mínima no formato Excel.
+     * Gera relatório de produtos com preço abaixo da quantidade mínima no
+     * formato Excel.
      *
      * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo Excel
      * @param nomePlanilha nome da planilha no Excel
@@ -117,7 +131,8 @@ public interface ProdutoDao {
     void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaExcel(String caminhoArquivoSaidaExcel, String nomePlanilha);
 
     /**
-     * Gera relatório de produtos com preço acima da quantidade máxima no formato Excel.
+     * Gera relatório de produtos com preço acima da quantidade máxima no
+     * formato Excel.
      *
      * @param caminhoArquivoSaidaExcel caminho para salvar o arquivo Excel
      * @param nomePlanilha nome da planilha no Excel
@@ -157,7 +172,8 @@ public interface ProdutoDao {
     void gerarRelatorioBalancoFisicoFinanceiroDOC(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     * Gera relatório de produtos com preço abaixo da quantidade mínima no formato DOC.
+     * Gera relatório de produtos com preço abaixo da quantidade mínima no
+     * formato DOC.
      *
      * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo DOC
      * @param nomeArquivoDoc nome do arquivo DOC gerado
@@ -165,7 +181,8 @@ public interface ProdutoDao {
     void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaDoc(String caminhoArquivoSaidaDoc, String nomeArquivoDoc);
 
     /**
-     * Gera relatório de produtos com preço acima da quantidade máxima no formato DOC.
+     * Gera relatório de produtos com preço acima da quantidade máxima no
+     * formato DOC.
      *
      * @param caminhoArquivoSaidaDoc caminho para salvar o arquivo DOC
      * @param nomeArquivoDoc nome do arquivo DOC gerado
@@ -205,7 +222,8 @@ public interface ProdutoDao {
     void gerarRelatorioBalancoFisicoFinanceiroPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     * Gera relatório de produtos com preço abaixo da quantidade mínima no formato PDF.
+     * Gera relatório de produtos com preço abaixo da quantidade mínima no
+     * formato PDF.
      *
      * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo PDF
      * @param nomeArquivoPDF nome do arquivo PDF gerado
@@ -213,7 +231,8 @@ public interface ProdutoDao {
     void gerarRelatorioListaDePrecoAbaixoDaQuantidadeMinimaPDF(String caminhoArquivoSaidaPDF, String nomeArquivoPDF);
 
     /**
-     * Gera relatório de produtos com preço acima da quantidade máxima no formato PDF.
+     * Gera relatório de produtos com preço acima da quantidade máxima no
+     * formato PDF.
      *
      * @param caminhoArquivoSaidaPDF caminho para salvar o arquivo PDF
      * @param nomeArquivoPDF nome do arquivo PDF gerado

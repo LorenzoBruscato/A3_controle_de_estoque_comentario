@@ -1,3 +1,4 @@
+
 package visao;
 
 import java.util.Date;
@@ -16,11 +17,12 @@ import modelo.dao.db.DbException;
 
 /**
  * Classe que representa a interface gráfica para gerenciamento de produtos.
- * Permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar) em produtos,
- * além de registrar movimentações de entrada e saída no estoque.
- * 
+ * Permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar) em
+ * produtos, além de registrar movimentações de entrada e saída no estoque.
+ *
  * @author Victor
  */
+
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
     /**
@@ -377,10 +379,10 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-     /**
-     * Manipulador de evento para o botão Voltar.
-     * Fecha a janela atual e retorna ao menu principal.
-     * 
+    /**
+     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
+     * ao menu principal.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBVoltarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarProdutoActionPerformed
@@ -391,69 +393,78 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JBVoltarProdutoActionPerformed
 
     /**
-     * Manipulador de evento para o botão Novo Produto.
-     * Cadastra um novo produto com os dados informados nos campos.
-     * 
+     * Manipulador de evento para o botão Novo Produto. Cadastra um novo produto
+     * com os dados informados nos campos.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
-        try {
-            String proNome = JTFNomeProduto.getText().trim();
-            String proPreco = JTFPrecoUnitario.getText().trim().replace(",", ".");
-            String nomeUnidade = ComboBoxUnidade.getSelectedItem().toString();
-            String proQtdEstoque = JTFQtdEstoque.getText().trim();
-            String proQtdMIN = JTFQtdMinima.getText().trim();
-            String proQtdMAX = JTFQtdMaxima.getText().trim();
+     try {
+        String proNome = JTFNomeProduto.getText().trim();
+        String proPreco = JTFPrecoUnitario.getText().trim().replace(",", ".");
+        String nomeUnidade = ComboBoxUnidade.getSelectedItem().toString();
+        String proQtdEstoque = JTFQtdEstoque.getText().trim();
+        String proQtdMIN = JTFQtdMinima.getText().trim();
+        String proQtdMAX = JTFQtdMaxima.getText().trim();
 
-            double preco = Double.parseDouble(proPreco);
-            int qtdEstoque = Integer.parseInt(proQtdEstoque);
-            int qtdMinima = Integer.parseInt(proQtdMIN);
-            int qtdMaxima = Integer.parseInt(proQtdMAX);
+        double preco = Double.parseDouble(proPreco);
+        int qtdEstoque = Integer.parseInt(proQtdEstoque);
+        int qtdMinima = Integer.parseInt(proQtdMIN);
+        int qtdMaxima = Integer.parseInt(proQtdMAX);
 
-            if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-                JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
-            Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
-
-            Produto pro = new Produto();
-            pro.setNome(proNome);
-            pro.setPreco(preco);
-            pro.setUnidade(nomeUnidade);
-            pro.setQuantidade(qtdEstoque);
-            pro.setQuantidadeMinima(qtdMinima);
-            pro.setQuantidadeMaxima(qtdMaxima);
-            pro.setCategoria(categoriaExistente);
-
-            // Criar o registro para a entrada desse produto
-            Registro registro = new Registro();
-            registro.setData(new java.util.Date()); // data atual
-            registro.setTipoDoProduto(pro);         // associa o produto criado
-            registro.setQuantidade(qtdEstoque);
-            registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
-            registro.setStatus(Registro.Status.ADICIONADO);
-
-            // Salvar o registro no banco
-            produtoDao.cadastrarProduto(pro);
-            registroDao.AdicionarProdutoRegistro(registro);
-
-            // Atualizar tabela ou lista de produtos na interface
-            carregarProdutosNaTela();
-
-            // Limpar campos após cadastro
-            JTFNomeProduto.setText("");
-            JTFPrecoUnitario.setText("");
-            JTFQtdEstoque.setText("");
-            JTFQtdMinima.setText("");
-            JTFQtdMaxima.setText("");
-
-        } catch (NumberFormatException e) {
-            throw new DbException(e.getMessage());
-        } catch (Exception e) {
-            throw new DbException(e.getMessage());
+        if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+            JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+        Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+
+        Produto produtoExistente = produtoDao.procurarProdutoPorNomeCategoriaUnidade(proNome, categoriaExistente, nomeUnidade);
+
+        if (produtoExistente != null) {
+            JOptionPane.showMessageDialog(this,
+                    "Já existe um produto com esse nome, categoria e unidade.\nModifique um dos campos.",
+                    "Erro",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Produto pro = new Produto();
+        pro.setNome(proNome);
+        pro.setPreco(preco);
+        pro.setUnidade(nomeUnidade);
+        pro.setQuantidade(qtdEstoque);
+        pro.setQuantidadeMinima(qtdMinima);
+        pro.setQuantidadeMaxima(qtdMaxima);
+        pro.setCategoria(categoriaExistente);
+
+        Registro registro = new Registro();
+        registro.setData(new java.util.Date());
+        registro.setTipoDoProduto(pro);
+        registro.setQuantidade(qtdEstoque);
+        registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
+        registro.setStatus(Registro.Status.ADICIONADO);
+
+        produtoDao.cadastrarProduto(pro);
+        registroDao.AdicionarProdutoRegistro(registro);
+
+        carregarProdutosNaTela();
+
+        JTFNomeProduto.setText("");
+        JTFPrecoUnitario.setText("");
+        JTFQtdEstoque.setText("");
+        JTFQtdMinima.setText("");
+        JTFQtdMaxima.setText("");
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "Erro ao converter número. Verifique os campos numéricos.",
+                "Erro",
+                JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        throw new DbException(e.getMessage());
+    } 
     }//GEN-LAST:event_JBNovoProdutoActionPerformed
 
     /**
@@ -532,6 +543,22 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     return;
                 }
 
+                if (!nome.equalsIgnoreCase(nomeAntigo)
+                        || !categoria.equals(categoriaAntiga)
+                        || !unidade.equalsIgnoreCase(produtoAtual.getUnidade())) {
+
+                    Produto produtoExistente = produtoDao.procurarProdutoPorNomeCategoriaUnidade(nome, categoria, unidade);
+
+                    // Se encontrou um produto com mesmo nome, categoria e unidade — e não é o próprio produto sendo editado
+                    if (produtoExistente != null && produtoExistente.getId() != produtoAtual.getId()) {
+                        JOptionPane.showMessageDialog(this,
+                                "Já existe um produto com esse nome, categoria e unidade.\nModifique um dos campos.",
+                                "Erro",
+                                JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+
                 // Criar e preencher o objeto Produto
                 Produto produto = new Produto();
                 produto.setId(id);
@@ -579,9 +606,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     reg.setStatus(Registro.Status.ALQTDMI);
                 } else if (qtdMaxima != qtdMaximaAntiga) {
                     reg.setStatus(Registro.Status.ALQTMAX);
-                } else if(qtdEstoque >= qtdMinima && qtdEstoque <= qtdMaxima){
+                } else if (qtdEstoque >= qtdMinima && qtdEstoque <= qtdMaxima) {
                     reg.setStatus(Registro.Status.DENTRO);
-                }else{
+                } else {
                     reg.setStatus(Registro.Status.NENHUM);
                 }
 

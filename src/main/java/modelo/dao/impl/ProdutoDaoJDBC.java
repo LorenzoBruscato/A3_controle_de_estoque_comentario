@@ -261,6 +261,51 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     /**
+     * Busca um produto no banco de dados com base no nome, categoria e unidade
+     * especificados.
+     *
+     * Este método é usado para verificar a existência de um produto com uma
+     * combinação específica de nome, categoria e unidade. Isso é útil para
+     * evitar duplicações de produtos com a mesma identidade lógica.
+     *
+     * @param nome o nome do produto a ser buscado (exato, sensível a
+     * maiúsculas/minúsculas).
+     * @param categoria a categoria à qual o produto pertence.
+     * @param unidade a unidade de medida do produto (ex: "Kg", "L", "Un").
+     *
+     * @return o {@code Produto} correspondente se encontrado; caso contrário,
+     * {@code null}.
+     *
+     * @throws DbException se ocorrer um erro de SQL durante a operação de
+     * busca.
+     */
+    @Override
+    public Produto procurarProdutoPorNomeCategoriaUnidade(String nome, Categoria categoria, String unidade) {
+        String sql = "SELECT produto.*, categoria.id AS categoria_id, categoria.nome AS categoria_nome, "
+                + "categoria.tamanho, categoria.embalagem "
+                + "FROM produto "
+                + "INNER JOIN categoria ON produto.categoria = categoria.nome "
+                + "WHERE produto.nome = ? AND produto.categoria = ? AND produto.unidade = ?";
+
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, nome);
+            st.setString(2, categoria.getNome());
+            st.setString(3, unidade);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    Categoria cat = instanciarCategoria(rs, rs.getInt("categoria_id"));
+                    return instanciarProduto(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Remove todos os produtos associados a uma determinada categoria pelo
      * nome.
      *
