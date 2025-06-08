@@ -4,8 +4,9 @@ import java.util.List;
 import modelo.Categoria;
 
 /**
- * Interface para operações de acesso a dados (DAO) relacionadas à entidade Categoria.
- * Define métodos para cadastro, atualização, exclusão e consulta de categorias de produtos.
+ * Interface para operações de acesso a dados (DAO) relacionadas à entidade
+ * Categoria. Define métodos para cadastro, atualização, exclusão e consulta de
+ * categorias de produtos.
  */
 public interface CategoriaDao {
 
@@ -49,7 +50,8 @@ public interface CategoriaDao {
      * Busca uma categoria pelo seu nome.
      *
      * @param nome Nome da categoria a ser buscada.
-     * @return Objeto Categoria correspondente ao nome ou null se não encontrada.
+     * @return Objeto Categoria correspondente ao nome ou null se não
+     * encontrada.
      */
     Categoria CategoriabuscarPorNome(String nome);
 

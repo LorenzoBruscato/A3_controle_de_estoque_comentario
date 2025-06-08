@@ -1,7 +1,8 @@
 package modelo;
 
 /**
- * Representa uma categoria de produto com atributos como ID, nome, tamanho e tipo de embalagem.
+ * Representa uma categoria de produto com atributos como ID, nome, tamanho e
+ * tipo de embalagem.
  */
 public class Categoria {
 
@@ -34,9 +35,9 @@ public class Categoria {
     /**
      * Construtor que permite inicializar todos os atributos da categoria.
      *
-     * @param id        o identificador da categoria
-     * @param nome      o nome da categoria
-     * @param tamanho   o tamanho da categoria
+     * @param id o identificador da categoria
+     * @param nome o nome da categoria
+     * @param tamanho o tamanho da categoria
      * @param embalagem o tipo de embalagem da categoria
      */
     public Categoria(Integer id, String nome, Tamanho tamanho, Embalagem embalagem) {

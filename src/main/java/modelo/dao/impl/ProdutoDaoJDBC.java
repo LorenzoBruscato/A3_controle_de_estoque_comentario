@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.dao.db.DbException;
 import java.sql.Statement;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;

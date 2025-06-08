@@ -5,22 +5,36 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import modelo.Produto;
 import modelo.Registro;
 import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
+/**
+ * Implementação JDBC da interface RegistroDao para manipulação dos registros de
+ * movimentação de produtos no banco de dados.
+ *
+ * @author Lorenzo
+ */
 public class RegistroDaoJDBC implements RegistroDao {
 
     private Connection conn;
 
+    /**
+     * Construtor que recebe a conexão JDBC ativa.
+     *
+     * @param conn conexão com o banco de dados.
+     */
     public RegistroDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     * Adiciona um registro de movimentação de produto no banco.
+     *
+     * @param reg Objeto Registro contendo os dados da movimentação.
+     */
     @Override
     public void AdicionarProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro "
@@ -38,6 +52,11 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
+    /**
+     * Registra a remoção de um produto no banco de dados.
+     *
+     * @param reg Objeto Registro contendo os dados da remoção.
+     */
     @Override
     public void RemoverProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro "
@@ -55,6 +74,12 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
+    /**
+     * Recupera todos os registros de movimentação de produtos cadastrados no
+     * banco.
+     *
+     * @return Lista com todos os registros encontrados.
+     */
     @Override
     public List<Registro> resgatarRegistros() {
         List<Registro> lista = new ArrayList<>();
@@ -64,23 +89,18 @@ public class RegistroDaoJDBC implements RegistroDao {
                 Registro reg = new Registro();
                 reg.setId(rs.getInt("id"));
                 reg.setData(rs.getDate("data"));
-
                 Produto produto = new Produto();
                 produto.setNome(rs.getString("tipo"));
                 reg.setTipoDoProduto(produto);
-
                 reg.setQuantidade(rs.getInt("quantidade"));
                 reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao")));
-
-                // Aqui está o ponto crítico:
                 String statusStr = rs.getString("status");
                 if (statusStr != null) {
                     reg.setStatus(Registro.Status.valueOf(statusStr));
                 } else {
-                    // Opcional: setar um valor padrão para evitar nulo
+                    // Define valor padrão para evitar nulo
                     reg.setStatus(Registro.Status.DENTRO);
                 }
-
                 lista.add(reg);
             }
         } catch (SQLException e) {
@@ -89,6 +109,15 @@ public class RegistroDaoJDBC implements RegistroDao {
         return lista;
     }
 
+    /**
+     * Instancia um objeto Registro a partir do ResultSet e do produto
+     * fornecido.
+     *
+     * @param rs ResultSet com os dados do registro.
+     * @param produto Produto associado ao registro.
+     * @return Objeto Registro populado.
+     * @throws SQLException Caso ocorra erro no acesso ao ResultSet.
+     */
     private Registro instanciarRegistro(ResultSet rs, Produto produto) throws SQLException {
         Registro reg = new Registro();
         reg.setId(rs.getInt("id"));
@@ -98,5 +127,4 @@ public class RegistroDaoJDBC implements RegistroDao {
         reg.setMovimentacao(Registro.Movimentacao.valueOf(rs.getString("movimentacao").toUpperCase()));
         return reg;
     }
-
 }

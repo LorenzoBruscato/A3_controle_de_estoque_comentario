@@ -15,7 +15,7 @@ public class Database {
     /**
      * Atributo do tipo Connection para realizar a conexão com o banco de dados
      */
-    private  Connection conn = null;
+    private Connection conn = null;
 
     /**
      * Retorna uma conexão com o banco de dados, carregando as propriedades do
@@ -24,7 +24,7 @@ public class Database {
      * @return Connection ativa com o banco de dados
      * @throws SQLException se ocorrer erro na conexão
      */
-    public  Connection getConnection() {
+    public Connection getConnection() {
         if (conn == null) {
             try {
                 Properties props = loadProperties();
@@ -40,7 +40,7 @@ public class Database {
     /**
      * Fecha a conexão com o banco de dados se ela estiver aberta.
      */
-    public  void closeConnection() {
+    public void closeConnection() {
         if (conn != null) {
             try {
                 conn.close();
@@ -100,16 +100,15 @@ public class Database {
      * @return Properties objeto contendo as propriedades carregadas
      * @throws IOException se ocorrer erro ao ler o arquivo
      */
- private static Properties loadProperties() {
-    try (InputStream in = Database.class.getClassLoader().getResourceAsStream("db.propriedade")) {
-        Properties props = new Properties();
-        props.load(in);
-        System.out.println("URL do banco carregada: " + props.getProperty("dburl"));
-        return props;
-    } catch (IOException e) {
-        throw new DbException("Erro ao carregar db.properties: " + e.getMessage());
+    private static Properties loadProperties() {
+        try (InputStream in = Database.class.getClassLoader().getResourceAsStream("db.propriedade")) {
+            Properties props = new Properties();
+            props.load(in);
+            System.out.println("URL do banco carregada: " + props.getProperty("dburl"));
+            return props;
+        } catch (IOException e) {
+            throw new DbException("Erro ao carregar db.properties: " + e.getMessage());
+        }
     }
-}
-
 
 }

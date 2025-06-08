@@ -11,28 +11,32 @@ import modelo.dao.impl.CategoriaDaoJDBC;
 import modelo.dao.impl.ProdutoDaoJDBC;
 
 /**
- * Classe de controle responsável por gerenciar operações relacionadas à entidade Produto.
- * Atua como intermediária entre a camada de apresentação e a camada de persistência.
- * 
- * Funcionalidades:
- * - Cadastrar, atualizar e deletar produtos.
- * - Listar todos os produtos.
- * - Ajustar preços de produtos, de forma geral ou por categoria.
- * 
+ * Classe de controle responsável por gerenciar operações relacionadas à
+ * entidade Produto. Atua como intermediária entre a camada de apresentação e a
+ * camada de persistência.
+ *
+ * Funcionalidades: - Cadastrar, atualizar e deletar produtos. - Listar todos os
+ * produtos. - Ajustar preços de produtos, de forma geral ou por categoria.
+ *
  * Inclui validações básicas para integridade dos dados.
- * 
+ *
  */
 public class ProdutoControle {
 
-    /** Objeto de acesso a dados para Produto. */
+    /**
+     * Objeto de acesso a dados para Produto.
+     */
     private ProdutoDao produtoDao;
-    
-    /** Objeto de acesso a dados para Categoria. */
+
+    /**
+     * Objeto de acesso a dados para Categoria.
+     */
     private CategoriaDao categoriaDao;
 
     /**
-     * Construtor que inicializa os DAOs de Produto e Categoria com uma conexão específica.
-     * 
+     * Construtor que inicializa os DAOs de Produto e Categoria com uma conexão
+     * específica.
+     *
      * @param conn Conexão com o banco de dados.
      */
     public ProdutoControle(Connection conn) {
@@ -42,9 +46,10 @@ public class ProdutoControle {
 
     /**
      * Cadastra um novo produto após validar seu nome.
-     * 
+     *
      * @param produto Produto a ser cadastrado.
-     * @throws IllegalArgumentException se o produto for nulo ou se o nome estiver ausente ou em branco.
+     * @throws IllegalArgumentException se o produto for nulo ou se o nome
+     * estiver ausente ou em branco.
      */
     public void cadastrarProduto(Produto produto) {
         if (produto == null || produto.getNome() == null || produto.getNome().isBlank()) {
@@ -55,10 +60,11 @@ public class ProdutoControle {
 
     /**
      * Atualiza um produto existente, validando a presença de um ID válido.
-     * 
+     *
      * @param produto Produto a ser atualizado.
      * @param reg Registro associado à atualização.
-     * @throws IllegalArgumentException se o produto for nulo ou se o ID for inválido.
+     * @throws IllegalArgumentException se o produto for nulo ou se o ID for
+     * inválido.
      */
     public void atualizarProduto(Produto produto, Registro reg) {
         if (produto == null || produto.getId() <= 0) {
@@ -69,9 +75,10 @@ public class ProdutoControle {
 
     /**
      * Deleta um produto a partir do seu ID.
-     * 
+     *
      * @param id Identificador do produto a ser deletado.
-     * @throws IllegalArgumentException se o ID for inválido (menor ou igual a zero).
+     * @throws IllegalArgumentException se o ID for inválido (menor ou igual a
+     * zero).
      */
     public void deletarProduto(int id) {
         if (id <= 0) {
@@ -82,7 +89,7 @@ public class ProdutoControle {
 
     /**
      * Lista todos os produtos cadastrados no banco de dados.
-     * 
+     *
      * @return Lista de objetos Produto.
      */
     public List<Produto> listarProdutos() {
@@ -90,10 +97,12 @@ public class ProdutoControle {
     }
 
     /**
-     * Aumenta o preço de todos os produtos cadastrados, com base em um percentual informado.
-     * 
+     * Aumenta o preço de todos os produtos cadastrados, com base em um
+     * percentual informado.
+     *
      * @param percentual Percentual de aumento (deve ser maior que zero).
-     * @throws IllegalArgumentException se o percentual for menor ou igual a zero.
+     * @throws IllegalArgumentException se o percentual for menor ou igual a
+     * zero.
      */
     public void aumentarTodosPrecos(double percentual) {
         if (percentual <= 0) {
@@ -103,10 +112,12 @@ public class ProdutoControle {
     }
 
     /**
-     * Diminui o preço de todos os produtos cadastrados, com base em um percentual informado.
-     * 
+     * Diminui o preço de todos os produtos cadastrados, com base em um
+     * percentual informado.
+     *
      * @param percentual Percentual de redução (deve ser maior que zero).
-     * @throws IllegalArgumentException se o percentual for menor ou igual a zero.
+     * @throws IllegalArgumentException se o percentual for menor ou igual a
+     * zero.
      */
     public void diminuirTodosPrecos(double percentual) {
         if (percentual <= 0) {
@@ -117,10 +128,12 @@ public class ProdutoControle {
 
     /**
      * Aumenta o preço de todos os produtos de uma categoria específica.
-     * 
-     * @param nomeCategoria Nome da categoria cujos produtos terão os preços ajustados.
+     *
+     * @param nomeCategoria Nome da categoria cujos produtos terão os preços
+     * ajustados.
      * @param percentual Percentual de aumento (deve ser maior que zero).
-     * @throws IllegalArgumentException se a categoria não for encontrada ou se o percentual for inválido.
+     * @throws IllegalArgumentException se a categoria não for encontrada ou se
+     * o percentual for inválido.
      */
     public void aumentarPrecoPorCategoria(String nomeCategoria, double percentual) {
         Categoria cat = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
@@ -132,10 +145,12 @@ public class ProdutoControle {
 
     /**
      * Diminui o preço de todos os produtos de uma categoria específica.
-     * 
-     * @param nomeCategoria Nome da categoria cujos produtos terão os preços ajustados.
+     *
+     * @param nomeCategoria Nome da categoria cujos produtos terão os preços
+     * ajustados.
      * @param percentual Percentual de redução (deve ser maior que zero).
-     * @throws IllegalArgumentException se a categoria não for encontrada ou se o percentual for inválido.
+     * @throws IllegalArgumentException se a categoria não for encontrada ou se
+     * o percentual for inválido.
      */
     public void diminuirPrecoPorCategoria(String nomeCategoria, double percentual) {
         Categoria cat = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
