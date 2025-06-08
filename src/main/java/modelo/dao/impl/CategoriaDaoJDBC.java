@@ -13,31 +13,14 @@ import modelo.Categoria.Embalagem;
 import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 
-/**
- * Implementação JDBC da interface CategoriaDao para manipulação de dados de
- * Categoria no banco. Realiza operações CRUD utilizando PreparedStatement para
- * segurança e performance.
- *
- *
- */
 public class CategoriaDaoJDBC implements CategoriaDao {
 
     private Connection conn;
 
-    /**
-     * Construtor que recebe a conexão JDBC para o banco de dados.
-     *
-     * @param conn Conexão ativa com o banco de dados.
-     */
     public CategoriaDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
-    /**
-     * Insere uma nova categoria no banco de dados.
-     *
-     * @param obj Objeto Categoria a ser cadastrado.
-     */
     @Override
     public void cadastrarCategoria(Categoria obj) {
         String sql = "INSERT INTO categoria "
@@ -63,11 +46,6 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
-    /**
-     * Atualiza os dados de uma categoria existente no banco.
-     *
-     * @param obj Objeto Categoria com os dados atualizados.
-     */
     @Override
     public void atualizarCategoria(Categoria obj) {
         String sql = "UPDATE categoria "
@@ -84,11 +62,6 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
-    /**
-     * Deleta uma categoria do banco de dados pelo seu identificador.
-     *
-     * @param id ID da categoria a ser deletada.
-     */
     @Override
     public void deletarCategoriaPorId(int id) {
         String sql = "DELETE FROM categoria WHERE id = ?";
@@ -103,11 +76,6 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
-    /**
-     * Retorna uma lista com todas as categorias do banco, ordenadas por nome.
-     *
-     * @return Lista de categorias.
-     */
     @Override
     public List<Categoria> resgatarCategorias() {
         String sql = "SELECT * FROM categoria ORDER BY nome";
@@ -124,12 +92,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         }
     }
 
-    /**
-     * Procura uma categoria pelo seu identificador.
-     *
-     * @param id ID da categoria buscada.
-     * @return Categoria encontrada ou null se não existir.
-     */
+
     @Override
     public Categoria procurarCategoriaPorId(Integer id) {
         String sql = "SELECT * FROM categoria WHERE id = ?";
@@ -146,12 +109,6 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         return null;
     }
 
-    /**
-     * Busca uma categoria pelo nome.
-     *
-     * @param nome Nome da categoria buscada.
-     * @return Categoria encontrada ou null se não existir.
-     */
     @Override
     public Categoria CategoriabuscarPorNome(String nome) {
         String sql = "SELECT * FROM categoria WHERE nome = ?";
@@ -168,13 +125,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
         return null;
     }
 
-    /**
-     * Cria uma instância de Categoria a partir de um ResultSet.
-     *
-     * @param rs ResultSet contendo os dados da categoria.
-     * @return Objeto Categoria populado.
-     * @throws SQLException Caso ocorra erro no acesso ao ResultSet.
-     */
+
     private Categoria instantiateCategoria(ResultSet rs) throws SQLException {
         Categoria cat = new Categoria();
         cat.setId(rs.getInt("id"));

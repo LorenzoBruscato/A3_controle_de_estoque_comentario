@@ -25,7 +25,6 @@ public class Database {
      * arquivo
      *
      * @return Connection ativa com o banco de dados
-     * @throws SQLException se ocorrer erro na conexão
      */
     public Connection getConnection() {
         if (conn == null) {
