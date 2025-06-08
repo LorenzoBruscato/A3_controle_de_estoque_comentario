@@ -13,66 +13,12 @@
 
 Este é um software desenvolvido em conjunto para gerenciar um banco de dados MySQL com duas tabelas principais: **Produto** e **Categoria**. Ele permite cadastrar, listar, atualizar e excluir produtos e categorias de forma simples e eficiente.
 
-📦 Requisitos Funcionais
+## 📦 Requisitos Funcionais e Regras de Negócio
+RF01 - Cadastro de Produtos
+O sistema deve permitir cadastrar produtos, informando: Nome, Preço unitário, Unidade, Quantidade em estoque, Quantidade mínima em estoque, Quantidade máxima em estoque, Categoria.
 
-- RF01 - Cadastrar produtos:
-Nome,
-Preço unitário,
-Unidade,
-Quantidade em estoque,
-Quantidade mínima em estoque,
-Quantidade máxima em estoque,
-Categoria,
+Regras relacionadas:
 
-- RF02 - Cadastrar categorias:
-Nome,
-Tamanho (Pequeno, Médio, Grande),
-Embalagem (Lata, Vidro, Plástico),
-
-- RF02: Cadastro de Produto com Categoria
-O sistema deve permitir o cadastro de produtos já vinculando cada um a uma categoria existente
-
-- RF03 - Permitir operações:
-Inclusão,
-Alteração,
-Exclusão,
-Listagem de produtos e categorias,
-
-- RF03 - Reajuste de preço
-Permite reajustar o percentual de preço em todos os produtos.
-
-- RF04: Listar Produtos e Categorias
-O sistema deve exibir todos os produtos e categorias cadastrados.
-
-- RF05: Emissão de Relatórios
-O sistema deve gerar relatórios nos formatos Excel, DOC ou PDF.
-
-- RF06 - Movimentação de Produtos
-O sistema deve registrar entradas e saídas de produtos no estoque.
-
-📦 Requisitos Não Funcionais
-
-- RNF01 – Desempenho de Relatórios:
-O sistema deve emitir relatórios em até 3 segundos.
-
-- RNF02 – Usabilidade da Interface:
-O sistema deve possuir uma interface gráfica de fácil entendimento.
-
-- RNF03 – Privacidade do Usuário:
-O sistema deve garantir a privacidade dos dados dos usuários.
-
-- RNF04 – Compatibilidade com Windows:
-O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
-
-## Regra de Negócios
-
-📁 Categorias
-- RN01 – O nome da categoria deve ser único (não pode haver duas categorias com o mesmo nome).
-- RN02 – O tamanho da categoria deve ser selecionado entre os valores permitidos pelo ENUM.
-- RN03 – A embalagem da categoria deve ser selecionada entre os valores definidos pelo ENUM.
-- RN04 – Não é permitido excluir uma categoria que esteja associada a um ou mais produtos.
-
-📦 Produtos
 - RN05 – Cada produto deve obrigatoriamente estar vinculado a uma categoria existente.
 - RN06 – O nome do produto deve conter entre 1 e 100 caracteres.
 - RN07 – O preço do produto deve ser maior que zero.
@@ -80,14 +26,58 @@ O sistema deve ser compatível com qualquer versão do sistema operacional Windo
 - RN09 – A quantidade mínima deve ser menor ou igual à quantidade máxima.
 - RN10 – A quantidade em estoque deve estar entre a quantidade mínima e máxima permitida.
 - RN11 – Não é permitido cadastrar dois produtos com o mesmo nome e categoria.
-- RN12 – Não é permitido excluir um produto se ele estiver sendo utilizado em algum relatório ativo (se aplicável).
-- RN13 – Produtos com estoque abaixo da quantidade mínima devem ser destacados (visualmente ou em relatório).
 
-📊 Relatórios
+RF02 - Cadastro de Categorias
+O sistema deve permitir cadastrar categorias, informando: Nome, Tamanho (Pequeno, Médio, Grande), Embalagem (Lata, Vidro, Plástico).
+
+Regras relacionadas:
+
+- RN01 – O nome da categoria deve ser único (não pode haver duas categorias com o mesmo nome).
+- RN02 – O tamanho da categoria deve ser selecionado entre os valores permitidos pelo ENUM.
+- RN03 – A embalagem da categoria deve ser selecionada entre os valores definidos pelo ENUM.
+
+RF03 - Operações de Inclusão, Alteração, Exclusão e Listagem
+O sistema deve permitir operações de inclusão, alteração, exclusão e listagem de produtos e categorias.
+
+Regras relacionadas:
+
+- RN04 – Não é permitido excluir uma categoria que esteja associada a um ou mais produtos.
+- RN12 – Não é permitido excluir um produto se ele estiver sendo utilizado em algum relatório ativo (se aplicável).
+
+RF04 - Cadastro de Produtos com Categoria Vinculada
+O sistema deve permitir o cadastro de produtos já vinculando cada um a uma categoria existente.
+
+Regras relacionadas:
+
+- RN05 (repetida para reforço).
+
+RF05 - Reajuste de Preço
+Permite reajustar o percentual de preço em todos os produtos.
+
+- Sem regras listadas
+
+RF06 - Exibir Produtos e Categorias
+O sistema deve exibir todos os produtos e categorias cadastrados.
+
+- Sem regras listadas.
+
+RF07 - Geração de Relatórios
+O sistema deve gerar relatórios nos formatos Excel, DOC ou PDF.
+
+Regras relacionadas:
+
+- RN13 – Produtos com estoque abaixo da quantidade mínima devem ser destacados (visualmente ou em relatório).
 - RN14 – O usuário deve escolher o formato do relatório (Excel, DOC ou PDF) antes da geração.
 - RN15 – O nome do arquivo do relatório deve ser definido pelo usuário.
 - RN16 – O relatório deve conter a data de geração e a lista completa de produtos ou categorias conforme a opção escolhida.
 - RN17 – O caminho de salvamento do relatório deve ser um diretório válido no sistema de arquivos.
+
+## 📦 Requisitos Não Funcionais
+
+- RNF01 – O sistema deve emitir relatórios em até 3 segundos.
+- RNF02 – O sistema deve possuir uma interface gráfica de fácil entendimento.
+- RsNF03 – O sistema deve garantir a privacidade dos dados dos usuários.
+- RNF04 – O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
 
 ## 🧱 Estrutura do Banco de Dados
 
@@ -112,6 +102,17 @@ O sistema deve ser compatível com qualquer versão do sistema operacional Windo
 | quantidade_minima  | INT           | quantidade minima permitida      |
 | quantidade_maxima  | INT           | quantidade maxima permitida      |
 | categoria          | categoria     | categoria do produto             |
+
+**Tabela: Registro**
+
+| Campo        | Tipo         | Descrição                             |
+| ------------ | ------------ | ------------------------------------- |
+| id           | INT          | Identificador único (auto incremento) |
+| data         | DATE         | Data da movimentação                  |
+| tipo         | VARCHAR(100) | Tipo do produto ou registro           |
+| quantidade   | INT          | Quantidade movimentada                |
+| movimentacao | VARCHAR(20)  | Tipo de movimentação (entrada/saída)  |
+| status       | VARCHAR(20)  | Status da movimentação                |
 
 ## ⚙️ Tecnologias Utilizadas
 
