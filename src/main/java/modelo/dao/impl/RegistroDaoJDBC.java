@@ -12,14 +12,13 @@ import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
 /**
- * Implementação JDBC da interface RegistroDao para manipulação de registros de
- * movimentações de produtos (entradas, saídas e atualizações).
+ * Implementação JDBC da interface ProdutoDao para manipulação dos dados da entidade Produto.
  * 
- * Cada operação realizada em produtos é registrada na tabela `registro`,
- * mantendo o histórico de movimentações do sistema.
+ * Esta classe realiza operações CRUD (criar, ler, atualizar, deletar) diretamente no banco de dados,
+ * utilizando uma conexão JDBC fornecida. Garante a persistência dos dados dos produtos e 
+ * mantém a integridade das informações relacionadas a categorias e registros.
  * 
  * @author Lorenzo
- * 
  */
 public class RegistroDaoJDBC implements RegistroDao {
 
