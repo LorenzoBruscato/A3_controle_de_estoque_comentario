@@ -10,9 +10,9 @@ import modelo.Categoria.Tamanho;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
-import modelo.dao.db.DbException;
 
 /**
+ *
  *
  *
  */
@@ -72,7 +72,6 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             System.err.println("Erro ao atualizar tabela de categorias:");
-            e.printStackTrace();
         }
     }
 
@@ -346,19 +345,27 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
         if (linhaSelecionada == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um produto para excluir.");
+            JOptionPane.showMessageDialog(this, "Selecione uma categoria para excluir.");
             return;
         }
 
-        int idParaDeletarProduto = (int) tabela.getValueAt(linhaSelecionada, 0);
+        DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
+        int idCategoria = (int) tabela.getValueAt(linhaSelecionada, 0);
+        String nomeCategoria = (String) tabela.getValueAt(linhaSelecionada, 1);
 
         try {
-            categoriaDao.deletarCategoriaPorId(idParaDeletarProduto);
+            // 1. Remover os produtos associados pelo nome da categoria
+            produtoDao.removerPorNomeCategoria(nomeCategoria);
+
+            // 2. Remover a categoria
+            categoriaDao.deletarCategoriaPorId(idCategoria);
+
+            // 3. Limpar campos e atualizar a interface
             carregarCategoriasNaTela();
             this.JTFNomeDeCategoria.setText("");
 
         } catch (Exception e) {
-            throw new DbException(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_JBExcluirGerenciamentoCActionPerformed
 

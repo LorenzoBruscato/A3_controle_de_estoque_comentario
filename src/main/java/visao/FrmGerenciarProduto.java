@@ -11,15 +11,18 @@ import modelo.Registro;
 import modelo.dao.CategoriaDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
+import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
 /**
  *
  *
+ * 
  */
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
     private Registro registro;
+    private RegistroDao registroDao;
     private CategoriaDao categoriaDao;
     private ProdutoDao produtoDao;
     private DefaultTableModel tabela;
@@ -32,6 +35,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
      */
     public FrmGerenciarProduto() {
         initComponents();
+        registroDao = daoFactory.insinstanciarRegistro();
         categoriaDao = daoFactory.instanciarCategoriaDao();
         produtoDao = daoFactory.instanciarProdutoDao();
         carregarCategoriasNoComboBox();
@@ -45,7 +49,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         };
         JTableProdutos.setModel(tabela);
         carregarProdutosNaTela();
-
     }
 
     private void carregarCategoriasNoComboBox() {
@@ -370,25 +373,36 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
             Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
 
-            Produto pro = new Produto();
-            pro.setNome(proNome);
-            pro.setPreco(preco);
-            pro.setUnidade(nomeUnidade);
-            pro.setQuantidade(qtdEstoque);
-            pro.setQuantidadeMinima(qtdMinima);
-            pro.setQuantidadeMaxima(qtdMaxima);
-            pro.setCategoria(categoriaExistente);
+           Produto pro = new Produto();
+        pro.setNome(proNome);
+        pro.setPreco(preco);
+        pro.setUnidade(nomeUnidade);
+        pro.setQuantidade(qtdEstoque);
+        pro.setQuantidadeMinima(qtdMinima);
+        pro.setQuantidadeMaxima(qtdMaxima);
+        pro.setCategoria(categoriaExistente);
 
-            produtoDao.cadastrarProduto(pro);
+        // Criar o registro para a entrada desse produto
+        Registro registro = new Registro();
+        registro.setData(new java.util.Date()); // data atual
+        registro.setTipoDoProduto(pro);         // associa o produto criado
+        registro.setQuantidade(qtdEstoque);
+        registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
+        registro.setStatus(Registro.Status.ADICIONADO);
 
-            carregarProdutosNaTela();
+        // Salvar o registro no banco
+        produtoDao.cadastrarProduto(pro);
+        registroDao.AdicionarProdutoRegistro(registro);
 
-            // Limpar campos após cadastro
-            JTFNomeProduto.setText("");
-            JTFPrecoUnitario.setText("");
-            JTFQtdEstoque.setText("");
-            JTFQtdMinima.setText("");
-            JTFQtdMaxima.setText("");
+        // Atualizar tabela ou lista de produtos na interface
+        carregarProdutosNaTela();
+
+        // Limpar campos após cadastro
+        JTFNomeProduto.setText("");
+        JTFPrecoUnitario.setText("");
+        JTFQtdEstoque.setText("");
+        JTFQtdMinima.setText("");
+        JTFQtdMaxima.setText("");
 
         } catch (NumberFormatException e) {
             throw new DbException(e.getMessage());
@@ -514,7 +528,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 }
 
                 // Atualizar produto no banco de dados
-                produtoDao.atualizarProduto(produto, reg);
+                registroDao.AtualizarProdutoRegistro(reg);
+                produtoDao.atualizarProduto(produto);
                 System.out.println("Produto atualizado com sucesso!");
 
                 // Recarregar a tabela
@@ -621,7 +636,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
             }
 
             // Atualiza o produto no banco
-            produtoDao.atualizarProduto(produtoAtual, reg);
+            registroDao.AtualizarProdutoRegistro(reg);
+            produtoDao.atualizarProduto(produtoAtual);
 
             JOptionPane.showMessageDialog(this, "Entrada registrada com sucesso!");
             carregarProdutosNaTela();
@@ -702,7 +718,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 reg.setStatus(Registro.Status.DENTRO);
             }
 
-            produtoDao.atualizarProduto(produtoAtual, reg);
+            registroDao.AtualizarProdutoRegistro(reg);
+            produtoDao.atualizarProduto(produtoAtual);
 
             JOptionPane.showMessageDialog(this, "Saída registrada com sucesso!");
 

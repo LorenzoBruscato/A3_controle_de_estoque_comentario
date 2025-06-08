@@ -40,6 +40,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 /**
  *
  *
+ * @author Lorenzo
  */
 public class ProdutoDaoJDBC implements ProdutoDao {
 
@@ -104,17 +105,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     if (rs.next()) {
                         int id = rs.getInt(1);
                         obj.setId(id);
-
-                        String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
-
-                        try (PreparedStatement str = conn.prepareStatement(sqlRegistro)) {
-                            str.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-                            str.setString(2, obj.getNome());  // Passa o id do produto
-                            str.setInt(3, obj.getQuantidade());
-                            str.setString(4, Registro.Movimentacao.ENTRADA.name());
-                            str.setString(5, Registro.Status.ADICIONADO.name());
-                            str.executeUpdate();
-                        }
                     }
                 }
             } else {
@@ -127,11 +117,9 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     /**
      *
-     * @param obj
-     * @param reg
      */
     @Override
-    public void atualizarProduto(Produto obj, Registro reg) {
+    public void atualizarProduto(Produto obj) {
         String sql
                 = "UPDATE produto SET "
                 + "nome = ?, "
@@ -155,20 +143,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             st.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
-
-        // Inserir registro da movimentação com status
-        String sqlr = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement st = conn.prepareStatement(sqlr)) {
-            java.sql.Date sqlDate = new java.sql.Date(reg.getData().getTime());
-            st.setDate(1, sqlDate);
-            st.setString(2, reg.getTipoDoProduto().getNome());
-            st.setInt(3, reg.getQuantidade());
-            st.setString(4, reg.getMovimentacao().name());
-            st.setString(5, reg.getStatus().name());  // Adicionado status aqui
-            st.executeUpdate();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -262,6 +236,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
 
         return lista;
+    }
+
+    /**
+     * Remove todos os produtos associados a uma determinada categoria pelo
+     * nome.
+     *
+     * Este método executa uma operação de exclusão na tabela de produtos,
+     * eliminando todos os registros cuja categoria corresponda ao nome
+     * informado.
+     *
+     * @param nomeCategoria nome da categoria cujos produtos serão removidos
+     * @throws DbException se ocorrer algum erro durante a execução do comando
+     * SQL
+     */
+    @Override
+    public void removerPorNomeCategoria(String nomeCategoria) {
+        String sql = "DELETE FROM produto WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, nomeCategoria);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     /**
@@ -1751,7 +1748,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
     }
 
-    
     private void escreverLinha(PDPageContentStream content, float y, float margin, float[] xOffsets, String[] textos) throws IOException {
         for (int i = 0; i < textos.length; i++) {
             content.beginText();
@@ -1785,7 +1781,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return prod;
     }
 
-   
     private Categoria instanciarCategoria(ResultSet rs, int categoriaId) throws SQLException {
         Categoria cat = new Categoria();
         cat.setId(categoriaId);

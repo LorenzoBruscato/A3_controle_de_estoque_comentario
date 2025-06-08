@@ -19,8 +19,20 @@ public class Registro {
      * Enumeração para os tipos de movimentação que um registro pode ter.
      */
     public enum Movimentacao {
+
+        /**
+         *
+         */
         NENHUM,
+
+        /**
+         *
+         */
         ENTRADA,
+
+        /**
+         *
+         */
         SAIDA
     }
 
@@ -28,16 +40,60 @@ public class Registro {
      * Enumeração para os diferentes status que um registro pode ter.
      */
     public enum Status {
+
+        /**
+         *
+         */
         ACIMA,
+
+        /**
+         *
+         */
         ABAIXO,
+
+        /**
+         *
+         */
         DENTRO,
+
+        /**
+         *
+         */
         ADICIONADO,
+
+        /**
+         *
+         */
         NOMEALTERADO,
+
+        /**
+         *
+         */
         DELETADO,
+
+        /**
+         *
+         */
         NENHUM,
+
+        /**
+         *
+         */
         ALQTDMI,
+
+        /**
+         *
+         */
         ALQTMAX,
+
+        /**
+         *
+         */
         ALQMAEMI,
+
+        /**
+         *
+         */
         ALCATEGORIA
     }
 
