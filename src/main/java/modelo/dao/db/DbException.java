@@ -4,7 +4,6 @@ package modelo.dao.db;
  *
  *
  * @author Diego
- * 
  */
 public class DbException extends RuntimeException {
 

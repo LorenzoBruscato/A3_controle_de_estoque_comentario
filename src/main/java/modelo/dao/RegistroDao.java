@@ -8,7 +8,6 @@ import modelo.Registro;
  * produtos no sistema.
  * 
  * @author Diego
- * 
  */
 public interface RegistroDao {
 

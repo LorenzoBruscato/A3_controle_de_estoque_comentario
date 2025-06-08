@@ -47,13 +47,13 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="JTFPrecoUnitario" alignment="0" max="32767" attributes="0"/>
                   <Component id="JTFQtdEstoque" alignment="0" max="32767" attributes="0"/>
                   <Component id="JTFQtdMinima" alignment="0" max="32767" attributes="0"/>
                   <Component id="JTFQtdMaxima" alignment="1" max="32767" attributes="0"/>
-                  <Component id="ComboBoxUnidade" alignment="0" max="32767" attributes="0"/>
-                  <Component id="JTFNomeProduto" alignment="1" pref="110" max="32767" attributes="0"/>
                   <Component id="ComboBoxCategoria" max="32767" attributes="0"/>
+                  <Component id="JTFNomeProduto" max="32767" attributes="0"/>
+                  <Component id="JTFPrecoUnitario" alignment="0" max="32767" attributes="0"/>
+                  <Component id="ComboBoxUnidade" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -74,7 +74,7 @@
               <Component id="JBNovoProduto" min="-2" pref="85" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
               <Component id="JBAlterarProduto" min="-2" pref="85" max="-2" attributes="0"/>
-              <EmptySpace pref="84" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="JBExcluirProduto" min="-2" pref="85" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
               <Component id="JBVoltarProduto" min="-2" pref="85" max="-2" attributes="0"/>
@@ -104,14 +104,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="JTFPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JLPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JTFPrecoUnitario" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="ComboBoxUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JLUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTEntradaSaida" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ComboBoxUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -280,16 +280,6 @@
         <Property name="text" type="java.lang.String" value="Gerenciamento de Produtos"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="JTFNomeProduto">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JTFNomeProdutoActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="JTFPrecoUnitario">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JTFPrecoUnitarioActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JTextField" name="JTFQtdEstoque">
     </Component>
     <Component class="javax.swing.JTextField" name="JTFQtdMinima">
@@ -348,24 +338,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBExcluirProdutoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="ComboBoxUnidade">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="KG"/>
-            <StringItem index="1" value="g"/>
-            <StringItem index="2" value="L"/>
-            <StringItem index="3" value="ml"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ComboBoxUnidadeActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JButton" name="jBEntrada">
       <Properties>
         <Property name="text" type="java.lang.String" value="Entrada"/>
@@ -388,6 +360,28 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Adi&#xe7;&#xe3;o e subtra&#xe7;&#xe3;o de produto"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="JTFNomeProduto">
+      <Properties>
+        <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="JTFPrecoUnitario">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="ComboBoxUnidade">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="KG"/>
+            <StringItem index="1" value="g"/>
+            <StringItem index="2" value="L"/>
+            <StringItem index="3" value="ml"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

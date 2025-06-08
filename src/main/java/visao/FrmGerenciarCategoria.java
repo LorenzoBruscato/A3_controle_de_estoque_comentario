@@ -17,22 +17,52 @@ import modelo.dao.ProdutoDao;
 import modelo.dao.RegistroDao;
 
 /**
+ * Classe que representa a interface gráfica para gerenciamento de categorias de
+ * produtos. Permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar)
+ * em categorias, além de visualizar as categorias existentes em uma tabela.
  *
  * @author Victor
- *
  */
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
+    /**
+     * Factory para criação dos DAOs necessários.
+     */
     private DaoFactory daoFactory = new DaoFactory();
+
+    /**
+     * DAO para operações com registros de movimentação.
+     */
     private RegistroDao resgistroDao;
+
+    /**
+     * DAO para operações com categorias.
+     */
     private CategoriaDao categoriaDao;
+
+    /**
+     * DAO para operações com produtos.
+     */
     private ProdutoDao produtoDao;
+
+    /**
+     * Modelo de tabela para exibição das categorias.
+     */
     private DefaultTableModel tabela;
+
+    /**
+     * Dados iniciais da tabela (vazios).
+     */
     private Object[][] dados = new Object[0][0];
+
+    /**
+     * Nomes das colunas da tabela.
+     */
     private String[] colunas = {"ID", "Nome", "Tamanho", "Embalagem"};
 
     /**
-     *
+     * Constrói a janela de gerenciamento de categorias. Inicializa os
+     * componentes da interface e configura os DAOs necessários.
      */
     public FrmGerenciarCategoria() {
         initComponents();
@@ -50,15 +80,19 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     }
 
     /**
+     * Remove acentos e caracteres especiais de uma string.
      *
-     * @param texto
-     * @return
+     * @param texto O texto a ser normalizado
+     * @return O texto sem acentos e caracteres especiais
      */
     public static String removerAcentos(String texto) {
         return Normalizer.normalize(texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
+    /**
+     * Carrega as categorias do banco de dados e as exibe na tabela.
+     */
     private void carregarCategoriasNaTela() {
         try {
             // Busca todas as categorias atualizadas do banco
@@ -82,6 +116,12 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Manipulador de evento para o botão Novo. Cria uma nova categoria com os
+     * dados informados nos campos.
+     *
+     * @param evt Evento de ação do botão
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -94,9 +134,9 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         JBAlterarGerenciamentoC = new javax.swing.JButton();
         JBExcluirGerenciamentoC = new javax.swing.JButton();
         JBVoltarCategoria = new javax.swing.JButton();
+        JCBTipoEmbalagemGerenciamentoC = new javax.swing.JComboBox<>();
         JTFNomeDeCategoria = new javax.swing.JTextField();
         JCBTipoTamanhoGerenciamentoC = new javax.swing.JComboBox<>();
-        JCBTipoEmbalagemGerenciamentoC = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Categoria");
@@ -159,20 +199,9 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
             }
         });
 
-        JTFNomeDeCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTFNomeDeCategoriaActionPerformed(evt);
-            }
-        });
+        JCBTipoEmbalagemGerenciamentoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lata", "Vidro", "Plástico" }));
 
         JCBTipoTamanhoGerenciamentoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeno", "Médio", "Grande" }));
-        JCBTipoTamanhoGerenciamentoC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JCBTipoTamanhoGerenciamentoCActionPerformed(evt);
-            }
-        });
-
-        JCBTipoEmbalagemGerenciamentoC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lata", "Vidro", "Plástico" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,11 +218,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                             .addComponent(JLGerenciamentoProdutos)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(JBNovoGerenciamentoC)
                                         .addGap(18, 18, 18)
-                                        .addComponent(JBAlterarGerenciamentoC)))
+                                        .addComponent(JBAlterarGerenciamentoC))
+                                    .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -202,7 +231,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                                         .addComponent(JBVoltarCategoria))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGap(12, 12, 12)
                                         .addComponent(JCBTipoEmbalagemGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(96, Short.MAX_VALUE))
         );
@@ -220,9 +249,9 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JCBTipoEmbalagemGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JLNomeGerenciamentoC)
                     .addComponent(JTFNomeDeCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JLNomeGerenciamentoC))
+                    .addComponent(JCBTipoTamanhoGerenciamentoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(97, Short.MAX_VALUE))
@@ -232,14 +261,12 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JTFNomeDeCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTFNomeDeCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JTFNomeDeCategoriaActionPerformed
-
-    private void JCBTipoTamanhoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCBTipoTamanhoGerenciamentoCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JCBTipoTamanhoGerenciamentoCActionPerformed
-
+    /**
+     * Manipulador de evento para o botão Novo. Cria uma nova categoria com os
+     * dados informados nos campos.
+     *
+     * @param evt Evento de ação do botão
+     */
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
         String catNome = JTFNomeDeCategoria.getText().trim();
         String catNomeNormalizado = removerAcentos(catNome).trim().toUpperCase();
@@ -274,61 +301,84 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
 
+    /**
+     * Método chamado quando a janela é aberta. Carrega as categorias na tabela.
+     *
+     * @param evt Evento de abertura da janela
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         carregarCategoriasNaTela();
     }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
+     * ao menu principal.
+     *
+     * @param evt Evento de ação do botão
+     */
     private void JBVoltarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarCategoriaActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_JBVoltarCategoriaActionPerformed
 
+    /**
+     * Manipulador de evento para o botão Alterar. Atualiza os dados da
+     * categoria selecionada na tabela.
+     *
+     * @param evt Evento de ação do botão
+     */
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
         try {
-        int linhaSelecionada = JTableCategoria.getSelectedRow();
-        if (linhaSelecionada == -1) {
-            System.out.println("Nenhuma linha selecionada para alterar.");
-            return;
+            int linhaSelecionada = JTableCategoria.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                System.out.println("Nenhuma linha selecionada para alterar.");
+                return;
+            }
+
+            // Pega dados da categoria selecionada
+            int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
+            String nomeAntigo = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
+            String nomeNovo = JTFNomeDeCategoria.getText().trim();
+
+            // Enum Tamanho e Embalagem
+            String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
+            Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
+            String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
+            Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
+
+            List<Produto> produtosAfetados = produtoDao.resgatarProdutos().stream()
+                    .filter(p -> p.getCategoria().getNome().equals(nomeAntigo))
+                    .collect(Collectors.toList());
+
+            Categoria cat = new Categoria(id, nomeNovo, tamanho, embalagem);
+            categoriaDao.atualizarCategoria(cat);
+
+            produtoDao.atualizarProdutoCategoria(nomeNovo, nomeAntigo);
+
+            for (Produto produto : produtosAfetados) {
+                Registro reg = new Registro();
+                reg.setData(new Date());
+                reg.setTipoDoProduto(produto);
+                reg.setQuantidade(produto.getQuantidade());
+                reg.setMovimentacao(Registro.Movimentacao.ENTRADA); // Ou criar um novo tipo, como .ALTERACAO
+                reg.setStatus(Registro.Status.ALCATEGORIA);
+                resgistroDao.AdicionarProdutoRegistro(reg);
+            }
+
+            carregarCategoriasNaTela();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Pega dados da categoria selecionada
-        int id = (Integer) JTableCategoria.getValueAt(linhaSelecionada, 0);
-        String nomeAntigo = (String) JTableCategoria.getValueAt(linhaSelecionada, 1);
-        String nomeNovo = JTFNomeDeCategoria.getText().trim();
-
-        // Enum Tamanho e Embalagem
-        String tamanhoStr = removerAcentos(JCBTipoTamanhoGerenciamentoC.getSelectedItem().toString());
-        Tamanho tamanho = Tamanho.valueOf(tamanhoStr.toUpperCase());
-        String embalagemStr = removerAcentos(JCBTipoEmbalagemGerenciamentoC.getSelectedItem().toString());
-        Embalagem embalagem = Embalagem.valueOf(embalagemStr.toUpperCase());
-
-        List<Produto> produtosAfetados = produtoDao.resgatarProdutos().stream()
-            .filter(p -> p.getCategoria().getNome().equals(nomeAntigo))
-            .collect(Collectors.toList());
-
-        Categoria cat = new Categoria(id, nomeNovo, tamanho, embalagem);
-        categoriaDao.atualizarCategoria(cat);
-
-        produtoDao.atualizarProdutoCategoria(nomeNovo, nomeAntigo);
-
-        for (Produto produto : produtosAfetados) {
-            Registro reg = new Registro();
-            reg.setData(new Date());
-            reg.setTipoDoProduto(produto);
-            reg.setQuantidade(produto.getQuantidade());
-            reg.setMovimentacao(Registro.Movimentacao.ENTRADA); // Ou criar um novo tipo, como .ALTERACAO
-            reg.setStatus(Registro.Status.ALCATEGORIA);
-            resgistroDao.AdicionarProdutoRegistro(reg);
-        }
-
-        carregarCategoriasNaTela();
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao atualizar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
+    /**
+     * Manipulador de evento para clique na tabela. Carrega os dados da
+     * categoria selecionada nos campos de edição.
+     *
+     * @param evt Evento de clique do mouse
+     */
     private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
@@ -362,6 +412,12 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JTableCategoriaMouseClicked
 
+    /**
+     * Manipulador de evento para o botão Excluir. Remove a categoria
+     * selecionada e seus produtos associados.
+     *
+     * @param evt Evento de ação do botão
+     */
     private void JBExcluirGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirGerenciamentoCActionPerformed
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
