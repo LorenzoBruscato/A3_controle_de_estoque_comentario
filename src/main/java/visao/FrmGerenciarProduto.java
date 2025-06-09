@@ -427,8 +427,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 return;
             }
 
-            if (qtdMinima >= qtdMaxima) {
-                JOptionPane.showMessageDialog(this, "A quantidade minima não pode ultrapassar a quatidade máxima.\n", "Erro", JOptionPane.WARNING_MESSAGE);
+            if (qtdMinima > qtdMaxima) {
+                JOptionPane.showMessageDialog(this, "A quantidade mínima não pode ser maior que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -561,8 +561,8 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                     }
                 }
 
-                if (qtdMaxima >= qtdMinima || qtdMaximaAntiga >= qtdMinimaAntiga) {
-                    JOptionPane.showMessageDialog(this, "A quantidade minima não pode ultrapassar a quatidade máxima.\n", "Erro", JOptionPane.WARNING_MESSAGE);
+                if (qtdMinima > qtdMaxima) {
+                    JOptionPane.showMessageDialog(this, "A quantidade mínima não pode ser maior que a quantidade máxima.", "Erro", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
