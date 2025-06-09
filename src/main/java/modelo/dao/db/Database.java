@@ -51,63 +51,6 @@ public class Database {
     }
 
     /**
-     * Fecha a conexão com o banco de dados se ela estiver aberta.
-     */
-    public void closeConnection() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Fecha um objeto {@link Statement} caso ele não seja {@code null}.
-     *
-     * <p>
-     * Esse método é utilizado para liberar os recursos associados a um
-     * {@link Statement} após sua execução, evitando vazamentos de memória e
-     * conexões abertas no banco de dados.</p>
-     *
-     * @param st O {@link Statement} a ser fechado
-     * @throws DbException Se ocorrer uma {@link SQLException} durante o
-     * fechamento
-     */
-    public static void closeStatement(Statement st) {
-        if (st != null) {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Fecha um objeto {@link ResultSet} caso ele não seja {@code null}.
-     *
-     * <p>
-     * Esse método é utilizado para liberar os recursos associados a um
-     * {@link ResultSet} após sua utilização, evitando vazamentos de recursos e
-     * mantendo a aplicação eficiente.</p>
-     *
-     * @param rs O {@link ResultSet} a ser fechado
-     * @throws DbException Se ocorrer uma {@link SQLException} durante o
-     * fechamento
-     */
-    public static void closeResultSet(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        }
-    }
-
-    /**
      * Método para carregar as propriedades do arquivo db.properties
      *
      * @return Properties objeto contendo as propriedades carregadas
