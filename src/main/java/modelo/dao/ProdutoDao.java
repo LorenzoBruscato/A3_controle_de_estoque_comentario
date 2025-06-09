@@ -57,6 +57,17 @@ public interface ProdutoDao {
     List<Produto> resgatarProdutos();
 
     /**
+     * Busca e retorna uma lista de produtos associados a uma categoria com o
+     * nome especificado.
+     *
+     * @param nomeCategoria o nome da categoria utilizada como critério de
+     * busca.
+     * @return uma lista de objetos Produto que pertencem à categoria
+     * especificada.
+     */
+    List<Produto> buscarProdutosPorNomeCategoria(String nomeCategoria);
+
+    /**
      * Busca um produto pelo nome, categoria e unidade.
      *
      * @param nome nome do produto

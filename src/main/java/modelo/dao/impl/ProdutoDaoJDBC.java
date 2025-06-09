@@ -270,6 +270,39 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     /**
+     * Busca produtos no banco de dados que pertencem a uma categoria com o nome
+     * especificado.
+     *
+     * Este método executa uma consulta SQL que seleciona todos os produtos cuja
+     * categoria corresponda ao nome passado como parâmetro. Os resultados são
+     * convertidos em objetos Produto por meio do método auxiliar
+     * instanciarProduto.
+     *
+     * @param nomeCategoria o nome da categoria a ser usada como filtro na
+     * consulta.
+     * @return uma lista de produtos associados à categoria informada.
+     * @throws DbException se ocorrer algum erro durante a execução da consulta
+     * SQL.
+     */
+    @Override
+    public List<Produto> buscarProdutosPorNomeCategoria(String nomeCategoria) {
+        String sql = "SELECT * FROM produto WHERE categoria = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, nomeCategoria);
+            try (ResultSet rs = st.executeQuery()) {
+                List<Produto> list = new ArrayList<>();
+                while (rs.next()) {
+                    Produto p = instanciarProduto(rs); // Método que você já tem
+                    list.add(p);
+                }
+                return list;
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    /**
      * Busca um produto no banco de dados com base no nome, categoria e unidade
      * especificados.
      *

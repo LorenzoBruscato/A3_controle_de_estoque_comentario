@@ -1,6 +1,7 @@
 package visao;
 
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -421,29 +422,44 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
     private void JBExcluirGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirGerenciamentoCActionPerformed
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
-        if (linhaSelecionada == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione uma categoria para excluir.");
-            return;
+    if (linhaSelecionada == -1) {
+        JOptionPane.showMessageDialog(this, "Selecione uma categoria para excluir.");
+        return;
+    }
+
+    DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
+    int idCategoria = (int) tabela.getValueAt(linhaSelecionada, 0);
+    String nomeCategoria = (String) tabela.getValueAt(linhaSelecionada, 1);
+
+    try {
+        // 1. Buscar os produtos da categoria
+        List<Produto> produtos = produtoDao.buscarProdutosPorNomeCategoria(nomeCategoria);
+
+        // 2. Para cada produto, criar registro de movimentação "SAIDA" com status "DELETADO"
+        for (Produto p : produtos) {
+            Registro r = new Registro();
+            r.setTipoDoProduto(p);
+            r.setData(new Date()); // ou new Date()
+            r.setMovimentacao(Registro.Movimentacao.SAIDA);
+            r.setStatus(Registro.Status.DELETADO);
+            r.setQuantidade(p.getQuantidade());
+
+            resgistroDao.AdicionarProdutoRegistro(r); // Assumindo que esse método já existe
         }
 
-        DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
-        int idCategoria = (int) tabela.getValueAt(linhaSelecionada, 0);
-        String nomeCategoria = (String) tabela.getValueAt(linhaSelecionada, 1);
+        // 3. Remover os produtos da categoria
+        produtoDao.removerPorNomeCategoria(nomeCategoria);
 
-        try {
-            // 1. Remover os produtos associados pelo nome da categoria
-            produtoDao.removerPorNomeCategoria(nomeCategoria);
+        // 4. Remover a categoria
+        categoriaDao.deletarCategoriaPorId(idCategoria);
 
-            // 2. Remover a categoria
-            categoriaDao.deletarCategoriaPorId(idCategoria);
+        // 5. Limpar e atualizar a interface
+        carregarCategoriasNaTela();
+        this.JTFNomeDeCategoria.setText("");
 
-            // 3. Limpar campos e atualizar a interface
-            carregarCategoriasNaTela();
-            this.JTFNomeDeCategoria.setText("");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_JBExcluirGerenciamentoCActionPerformed
 
 
