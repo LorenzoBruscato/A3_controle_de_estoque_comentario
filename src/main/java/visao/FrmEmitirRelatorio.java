@@ -97,7 +97,7 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
             }
         });
 
-        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de preço", "Balanço físico/financeiro", "Relatório de produtos abaixo da quantidade mínima", "Relatório de produtos abaixo da quantidade máxima", "Relatório da quantidade de produtos por categoria", "Relatório de movimentação" }));
+        ComboBoxRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de preço", "Balanço físico/financeiro", "Relatório de produtos abaixo da quantidade mínima", "Relatório de produtos acima da quantidade máxima", "Relatório da quantidade de produtos por categoria", "Relatório de movimentação" }));
         ComboBoxRelatorio.setPreferredSize(new java.awt.Dimension(323, 24));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
