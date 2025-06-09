@@ -38,7 +38,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 /**
+ * Implementação da interface {@link ProdutoDao} usando JDBC para realizar
+ * operações com a tabela de produtos no banco de dados.
  *
+ * <p>
+ * Responsável por executar comandos SQL para cadastrar, atualizar, buscar e
+ * manipular os dados da entidade {@link Produto}.</p>
+ *
+ * <p>
+ * Essa classe depende de uma {@link Connection} ativa passada via
+ * construtor.</p>
  *
  * @author Lorenzo
  */
