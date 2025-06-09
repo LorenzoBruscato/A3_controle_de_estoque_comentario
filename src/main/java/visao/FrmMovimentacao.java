@@ -168,9 +168,9 @@ public class FrmMovimentacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Manipulador de evento para o botão Voltar.
-     * Fecha a janela atual e retorna ao menu principal do sistema.
-     * 
+     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
+     * ao menu principal do sistema.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBVoltarMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarMovimentacaoActionPerformed

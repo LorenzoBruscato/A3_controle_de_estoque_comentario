@@ -10,10 +10,10 @@ import modelo.dao.ProdutoDao;
 import modelo.dao.db.DbException;
 
 /**
- * Classe que representa a interface gráfica para reajuste de preços de produtos.
- * Permite aumentar ou diminuir preços de todos os produtos ou por categoria específica,
- * com um percentual definido pelo usuário.
- * 
+ * Classe que representa a interface gráfica para reajuste de preços de
+ * produtos. Permite aumentar ou diminuir preços de todos os produtos ou por
+ * categoria específica, com um percentual definido pelo usuário.
+ *
  * @author Victor
  */
 public class FrmReajustarPreco extends javax.swing.JFrame {
@@ -22,36 +22,36 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
      * DAO para operações com categorias.
      */
     private final CategoriaDao categoriaDao;
-    
+
     /**
      * DAO para operações com produtos.
      */
     private ProdutoDao produtoDao;
-    
+
     /**
      * Factory para criação dos DAOs necessários.
      */
     private DaoFactory daoFactory = new DaoFactory();
 
     /**
-     * Constrói a janela de reajuste de preços.
-     * Inicializa os componentes da interface, configura os DAOs e
-     * carrega as categorias disponíveis no ComboBox.
+     * Constrói a janela de reajuste de preços. Inicializa os componentes da
+     * interface, configura os DAOs e carrega as categorias disponíveis no
+     * ComboBox.
      */
     public FrmReajustarPreco() {
-         initComponents();
+        initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();
         produtoDao = daoFactory.instanciarProdutoDao();
         carregarCategoriasNoComboBox();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-     /**
-     * Carrega todas as categorias existentes no ComboBox de seleção.
-     * Adiciona também a opção "Todos Produtos" para reajuste geral.
+    /**
+     * Carrega todas as categorias existentes no ComboBox de seleção. Adiciona
+     * também a opção "Todos Produtos" para reajuste geral.
      */
     private void carregarCategoriasNoComboBox() {
-       ComboBoxReajuste.removeAllItems();
+        ComboBoxReajuste.removeAllItems();
         ComboBoxReajuste.addItem("Todos Produtos");
 
         List<Categoria> categorias = categoriaDao.resgatarCategorias();
@@ -61,9 +61,9 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
     }
 
     /**
-     * Método gerado automaticamente pelo NetBeans para inicialização dos componentes.
-     * AVISO: Não modifique este código. O conteúdo deste método é sempre
-     * regenerado pelo Editor de Formulários.
+     * Método gerado automaticamente pelo NetBeans para inicialização dos
+     * componentes. AVISO: Não modifique este código. O conteúdo deste método é
+     * sempre regenerado pelo Editor de Formulários.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -168,9 +168,9 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Manipulador de evento para o botão Voltar.
-     * Fecha a janela atual e retorna ao menu principal.
-     * 
+     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
+     * ao menu principal.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarActionPerformed
@@ -179,11 +179,11 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_JBVoltarActionPerformed
 
-     /**
-     * Manipulador de evento para o botão Aumentar.
-     * Aplica um aumento percentual nos preços dos produtos selecionados.
-     * Valida o valor informado antes de realizar a operação.
-     * 
+    /**
+     * Manipulador de evento para o botão Aumentar. Aplica um aumento percentual
+     * nos preços dos produtos selecionados. Valida o valor informado antes de
+     * realizar a operação.
+     *
      * @param evt Evento de ação do botão
      */
     private void jBAumentarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAumentarPrecoActionPerformed
@@ -195,56 +195,56 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
                 return;
             }
 
-             String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
+            String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
 
-        if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
-            produtoDao.aumentarTodosPrecos(percentual);
-        } else {
-            produtoDao.aumentarPrecoPorCategoria(percentual, categoriaSelecionada);
+            if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
+                produtoDao.aumentarTodosPrecos(percentual);
+            } else {
+                produtoDao.aumentarPrecoPorCategoria(percentual, categoriaSelecionada);
+            }
+
+            JOptionPane.showMessageDialog(this, "Preços aumentados  com sucesso!");
+
+        } catch (NumberFormatException e) {
+            JTFAjustePorcentagem.setText("");
+            JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
+        } catch (DbException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
         }
-
-        JOptionPane.showMessageDialog(this, "Preços aumentados  com sucesso!");
-
-    } catch (NumberFormatException e) {
-        JTFAjustePorcentagem.setText("");
-        JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
-    } catch (DbException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
-    }
      }//GEN-LAST:event_jBAumentarPrecoActionPerformed
 
     /**
-     * Manipulador de evento para o botão Diminuir.
-     * Aplica uma redução percentual nos preços dos produtos selecionados.
-     * Valida o valor informado antes de realizar a operação.
-     * 
+     * Manipulador de evento para o botão Diminuir. Aplica uma redução
+     * percentual nos preços dos produtos selecionados. Valida o valor informado
+     * antes de realizar a operação.
+     *
      * @param evt Evento de ação do botão
      */
     private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
-    try {
-        double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));
-        if (percentual <= 0) {
+        try {
+            double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));
+            if (percentual <= 0) {
+                JTFAjustePorcentagem.setText("");
+                JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
+                return;
+            }
+
+            String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
+
+            if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
+                produtoDao.diminuirTodosPrecos(percentual);
+            } else {
+                produtoDao.diminuirPrecoPorCategoria(percentual, categoriaSelecionada);
+            }
+
+            JOptionPane.showMessageDialog(this, "Preços diminuídos com sucesso!");
+
+        } catch (NumberFormatException e) {
             JTFAjustePorcentagem.setText("");
-            JOptionPane.showMessageDialog(this, "Informe um valor maior que zero.");
-            return;
+            JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
+        } catch (DbException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
         }
-
-        String categoriaSelecionada = ComboBoxReajuste.getSelectedItem().toString();
-
-        if (categoriaSelecionada.equalsIgnoreCase("Todos Produtos")) {
-            produtoDao.diminuirTodosPrecos(percentual);
-        } else {
-            produtoDao.diminuirPrecoPorCategoria(percentual, categoriaSelecionada);
-        }
-
-        JOptionPane.showMessageDialog(this, "Preços diminuídos com sucesso!");
-
-    } catch (NumberFormatException e) {
-        JTFAjustePorcentagem.setText("");
-        JOptionPane.showMessageDialog(this, "Informe um valor numérico válido para a porcentagem.");
-    } catch (DbException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao acessar o banco de dados: " + e.getMessage());
-    }
     }//GEN-LAST:event_jBDiminuirPrecoActionPerformed
 
 

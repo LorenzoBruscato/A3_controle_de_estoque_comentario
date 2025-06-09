@@ -1,4 +1,3 @@
-
 package visao;
 
 import java.util.Date;
@@ -22,54 +21,53 @@ import modelo.dao.db.DbException;
  *
  * @author Victor
  */
-
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
     /**
      * Registro de movimentação do estoque.
      */
     private Registro registro;
-    
-     /**
+
+    /**
      * DAO para operações com registros de movimentação.
      */
     private RegistroDao registroDao;
-    
-     /**
+
+    /**
      * DAO para operações com categorias.
      */
     private CategoriaDao categoriaDao;
-    
+
     /**
      * DAO para operações com produtos.
      */
     private ProdutoDao produtoDao;
-    
+
     /**
      * Modelo de tabela para exibição dos produtos.
      */
     private DefaultTableModel tabela;
-    
-     /**
+
+    /**
      * Dados iniciais da tabela (vazios).
      */
     private Object[][] dados = new Object[0][0];
-    
+
     /**
-     * Nomes das colunas da tabela de produtos.
-     * Ordem: ID, Nome, Preço, Unidade, Qtd Estoque, Qtd Minima, Qtd Máxima, Categoria.
+     * Nomes das colunas da tabela de produtos. Ordem: ID, Nome, Preço, Unidade,
+     * Qtd Estoque, Qtd Minima, Qtd Máxima, Categoria.
      */
     private String[] colunas = {"ID", "Nome", "Preço", "Unidade", "Qtd Estoque", "Qtd Mínima", "Qtd Máxima", "Categoria"};
-    
-     /**
+
+    /**
      * Factory para criação dos DAOs necessários.
      */
     private DaoFactory daoFactory = new DaoFactory();
 
-     /**
-     * Constrói a janela de gerenciamento de produtos.
-     * Inicializa os componentes da interface, configura os DAOs,
-     * carrega as categorias no ComboBox e preenche a tabela de produtos.
+    /**
+     * Constrói a janela de gerenciamento de produtos. Inicializa os componentes
+     * da interface, configura os DAOs, carrega as categorias no ComboBox e
+     * preenche a tabela de produtos.
      */
     public FrmGerenciarProduto() {
         initComponents();
@@ -122,9 +120,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }
 
     /**
-     * Método gerado automaticamente pelo NetBeans para inicialização dos componentes.
-     * AVISO: Não modifique este código. O conteúdo deste método é sempre
-     * regenerado pelo Editor de Formulários.
+     * Método gerado automaticamente pelo NetBeans para inicialização dos
+     * componentes. AVISO: Não modifique este código. O conteúdo deste método é
+     * sempre regenerado pelo Editor de Formulários.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -399,78 +397,78 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
      * @param evt Evento de ação do botão
      */
     private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
-     try {
-        String proNome = JTFNomeProduto.getText().trim();
-        String proPreco = JTFPrecoUnitario.getText().trim().replace(",", ".");
-        String nomeUnidade = ComboBoxUnidade.getSelectedItem().toString();
-        String proQtdEstoque = JTFQtdEstoque.getText().trim();
-        String proQtdMIN = JTFQtdMinima.getText().trim();
-        String proQtdMAX = JTFQtdMaxima.getText().trim();
+        try {
+            String proNome = JTFNomeProduto.getText().trim();
+            String proPreco = JTFPrecoUnitario.getText().trim().replace(",", ".");
+            String nomeUnidade = ComboBoxUnidade.getSelectedItem().toString();
+            String proQtdEstoque = JTFQtdEstoque.getText().trim();
+            String proQtdMIN = JTFQtdMinima.getText().trim();
+            String proQtdMAX = JTFQtdMaxima.getText().trim();
 
-        double preco = Double.parseDouble(proPreco);
-        int qtdEstoque = Integer.parseInt(proQtdEstoque);
-        int qtdMinima = Integer.parseInt(proQtdMIN);
-        int qtdMaxima = Integer.parseInt(proQtdMAX);
+            double preco = Double.parseDouble(proPreco);
+            int qtdEstoque = Integer.parseInt(proQtdEstoque);
+            int qtdMinima = Integer.parseInt(proQtdMIN);
+            int qtdMaxima = Integer.parseInt(proQtdMAX);
 
-        if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
-            JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+            if (preco < 0 || qtdEstoque < 0 || qtdMinima < 0 || qtdMaxima < 0) {
+                JOptionPane.showMessageDialog(this, "Nenhum valor pode ser negativo!\nErro de cadastro.", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
-        Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
+            String nomeCategoria = (String) ComboBoxCategoria.getSelectedItem();
+            Categoria categoriaExistente = categoriaDao.CategoriabuscarPorNome(nomeCategoria);
 
-        Produto produtoExistente = produtoDao.procurarProdutoPorNomeCategoriaUnidade(proNome, categoriaExistente, nomeUnidade);
+            Produto produtoExistente = produtoDao.procurarProdutoPorNomeCategoriaUnidade(proNome, categoriaExistente, nomeUnidade);
 
-        if (produtoExistente != null) {
+            if (produtoExistente != null) {
+                JOptionPane.showMessageDialog(this,
+                        "Já existe um produto com esse nome, categoria e unidade.\nModifique um dos campos.",
+                        "Erro",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Produto pro = new Produto();
+            pro.setNome(proNome);
+            pro.setPreco(preco);
+            pro.setUnidade(nomeUnidade);
+            pro.setQuantidade(qtdEstoque);
+            pro.setQuantidadeMinima(qtdMinima);
+            pro.setQuantidadeMaxima(qtdMaxima);
+            pro.setCategoria(categoriaExistente);
+
+            Registro registro = new Registro();
+            registro.setData(new java.util.Date());
+            registro.setTipoDoProduto(pro);
+            registro.setQuantidade(qtdEstoque);
+            registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
+            registro.setStatus(Registro.Status.ADICIONADO);
+
+            produtoDao.cadastrarProduto(pro);
+            registroDao.AdicionarProdutoRegistro(registro);
+
+            carregarProdutosNaTela();
+
+            JTFNomeProduto.setText("");
+            JTFPrecoUnitario.setText("");
+            JTFQtdEstoque.setText("");
+            JTFQtdMinima.setText("");
+            JTFQtdMaxima.setText("");
+
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
-                    "Já existe um produto com esse nome, categoria e unidade.\nModifique um dos campos.",
+                    "Erro ao converter número. Verifique os campos numéricos.",
                     "Erro",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
         }
-
-        Produto pro = new Produto();
-        pro.setNome(proNome);
-        pro.setPreco(preco);
-        pro.setUnidade(nomeUnidade);
-        pro.setQuantidade(qtdEstoque);
-        pro.setQuantidadeMinima(qtdMinima);
-        pro.setQuantidadeMaxima(qtdMaxima);
-        pro.setCategoria(categoriaExistente);
-
-        Registro registro = new Registro();
-        registro.setData(new java.util.Date());
-        registro.setTipoDoProduto(pro);
-        registro.setQuantidade(qtdEstoque);
-        registro.setMovimentacao(Registro.Movimentacao.ENTRADA);
-        registro.setStatus(Registro.Status.ADICIONADO);
-
-        produtoDao.cadastrarProduto(pro);
-        registroDao.AdicionarProdutoRegistro(registro);
-
-        carregarProdutosNaTela();
-
-        JTFNomeProduto.setText("");
-        JTFPrecoUnitario.setText("");
-        JTFQtdEstoque.setText("");
-        JTFQtdMinima.setText("");
-        JTFQtdMaxima.setText("");
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "Erro ao converter número. Verifique os campos numéricos.",
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        throw new DbException(e.getMessage());
-    } 
     }//GEN-LAST:event_JBNovoProdutoActionPerformed
 
     /**
-     * Manipulador de evento para clique na tabela de produtos.
-     * Carrega os dados do produto selecionado nos campos de edição.
-     * 
+     * Manipulador de evento para clique na tabela de produtos. Carrega os dados
+     * do produto selecionado nos campos de edição.
+     *
      * @param evt Evento de clique do mouse
      */
     private void JTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProdutosMouseClicked
@@ -503,9 +501,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JTableProdutosMouseClicked
 
     /**
-     * Manipulador de evento para o botão Alterar Produto.
-     * Atualiza os dados do produto selecionado na tabela.
-     * 
+     * Manipulador de evento para o botão Alterar Produto. Atualiza os dados do
+     * produto selecionado na tabela.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
@@ -636,9 +634,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
     /**
-     * Manipulador de evento para o botão Excluir Produto.
-     * Remove o produto selecionado da tabela e do banco de dados.
-     * 
+     * Manipulador de evento para o botão Excluir Produto. Remove o produto
+     * selecionado da tabela e do banco de dados.
+     *
      * @param evt Evento de ação do botão
      */
     private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
@@ -681,9 +679,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_JBExcluirProdutoActionPerformed
 
     /**
-     * Manipulador de evento para o botão Entrada.
-     * Registra uma entrada de quantidade no estoque para o produto selecionado.
-     * 
+     * Manipulador de evento para o botão Entrada. Registra uma entrada de
+     * quantidade no estoque para o produto selecionado.
+     *
      * @param evt Evento de ação do botão
      */
     private void jBEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntradaActionPerformed
@@ -754,9 +752,9 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_jBEntradaActionPerformed
 
     /**
-     * Manipulador de evento para o botão Saída.
-     * Registra uma saída de quantidade no estoque para o produto selecionado.
-     * 
+     * Manipulador de evento para o botão Saída. Registra uma saída de
+     * quantidade no estoque para o produto selecionado.
+     *
      * @param evt Evento de ação do botão
      */
     private void jBSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaidaActionPerformed

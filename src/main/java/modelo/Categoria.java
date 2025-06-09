@@ -1,9 +1,9 @@
 package modelo;
 
 /**
- * Representa uma categoria de produto, contendo informações de nome, tamanho e embalagem.
- * Possui enums internos para os tipos de tamanho e embalagem.
- * 
+ * Representa uma categoria de produto, contendo informações de nome, tamanho e
+ * embalagem. Possui enums internos para os tipos de tamanho e embalagem.
+ *
  * @author Henrique
  */
 public class Categoria {
@@ -22,12 +22,10 @@ public class Categoria {
          *
          */
         PEQUENO,
-
         /**
          *
          */
         MEDIO,
-
         /**
          *
          */
@@ -43,12 +41,10 @@ public class Categoria {
          *
          */
         LATA,
-
         /**
          *
          */
         VIDRO,
-
         /**
          *
          */
@@ -64,7 +60,7 @@ public class Categoria {
 
     /**
      * Construtor completo da categoria.
-     * 
+     *
      * @param id Identificador da categoria
      * @param nome Nome da categoria
      * @param tamanho Tamanho da categoria
@@ -79,7 +75,7 @@ public class Categoria {
 
     /**
      * Retorna o id da categoria.
-     * 
+     *
      * @return id da categoria
      */
     public Integer getId() {
@@ -88,7 +84,7 @@ public class Categoria {
 
     /**
      * Define o id da categoria.
-     * 
+     *
      * @param id novo id da categoria
      */
     public void setId(Integer id) {
@@ -97,7 +93,7 @@ public class Categoria {
 
     /**
      * Retorna o nome da categoria.
-     * 
+     *
      * @return nome da categoria
      */
     public String getNome() {
@@ -106,7 +102,7 @@ public class Categoria {
 
     /**
      * Define o nome da categoria.
-     * 
+     *
      * @param nome novo nome da categoria
      */
     public void setNome(String nome) {
@@ -115,7 +111,7 @@ public class Categoria {
 
     /**
      * Retorna o tamanho da categoria.
-     * 
+     *
      * @return tamanho da categoria
      */
     public Tamanho getTamanho() {
@@ -124,7 +120,7 @@ public class Categoria {
 
     /**
      * Define o tamanho da categoria.
-     * 
+     *
      * @param tamanho novo tamanho da categoria
      */
     public void setTamanho(Tamanho tamanho) {
@@ -133,7 +129,7 @@ public class Categoria {
 
     /**
      * Retorna o tipo de embalagem da categoria.
-     * 
+     *
      * @return tipo de embalagem da categoria
      */
     public Embalagem getEmbalagem() {
@@ -142,7 +138,7 @@ public class Categoria {
 
     /**
      * Define o tipo de embalagem da categoria.
-     * 
+     *
      * @param embalagem novo tipo de embalagem da categoria
      */
     public void setEmbalagem(Embalagem embalagem) {
@@ -156,6 +152,6 @@ public class Categoria {
     @Override
     public String toString() {
         return String.format("ID: %d | nome: %s | tamanho: %s | embalagem: %s",
-            id, nome, tamanho, embalagem);
+                id, nome, tamanho, embalagem);
     }
 }

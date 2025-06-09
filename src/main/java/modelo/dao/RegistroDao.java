@@ -6,7 +6,7 @@ import modelo.Registro;
 /**
  * Interface DAO para operações relacionadas ao registro de movimentações de
  * produtos no sistema.
- * 
+ *
  * @author Diego
  */
 public interface RegistroDao {

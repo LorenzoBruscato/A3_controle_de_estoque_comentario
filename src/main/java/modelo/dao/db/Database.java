@@ -10,11 +10,22 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
+ * Classe utilitária responsável por gerenciar a conexão com o banco de dados.
  *
+ * <p>
+ * Fornece métodos para obter e fechar conexões, além de fechar objetos
+ * {@link Statement} e {@link ResultSet}. Também realiza o carregamento das
+ * configurações de conexão a partir do arquivo de propriedades
+ * <code>db.properties</code>.</p>
+ *
+ * <p>
+ * Utiliza a exceção personalizada {@link DbException} para encapsular possíveis
+ * erros de SQL ou de leitura de arquivos.</p>
  *
  * @author Diego
  */
 public class Database {
+
     /**
      * Atributo do tipo Connection para realizar a conexão com o banco de dados
      */
