@@ -428,6 +428,11 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                 return;
             }
 
+            if (qtdMinima >= qtdMaxima) {
+                JOptionPane.showMessageDialog(this, "A quantidade minima não pode ultrapassar a quatidade máxima.\n", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             Produto pro = new Produto();
             pro.setNome(proNome);
             pro.setPreco(preco);
@@ -555,6 +560,11 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
                                 JOptionPane.WARNING_MESSAGE);
                         return;
                     }
+                }
+
+                if (qtdMaxima >= qtdMinima || qtdMaximaAntiga >= qtdMinimaAntiga) {
+                    JOptionPane.showMessageDialog(this, "A quantidade minima não pode ultrapassar a quatidade máxima.\n", "Erro", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
 
                 // Criar e preencher o objeto Produto
