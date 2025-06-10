@@ -76,7 +76,7 @@ Regras relacionadas:
 
 - RNF01 – O sistema deve emitir relatórios em até 3 segundos.
 - RNF02 – O sistema deve possuir uma interface gráfica de fácil entendimento.
-- RsNF03 – O sistema deve garantir a privacidade dos dados dos usuários.
+- RNF03 – O sistema deve garantir a privacidade dos dados dos usuários.
 - RNF04 – O sistema deve ser compatível com qualquer versão do sistema operacional Windows.
 
 ## 🧱 Estrutura do Banco de Dados
