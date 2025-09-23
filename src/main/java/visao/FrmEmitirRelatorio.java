@@ -7,43 +7,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 
-/**
- * Classe que representa uma janela Swing para emissão de relatórios de
- * produtos. Permite a seleção de diferentes tipos de relatórios e formatos de
- * saída (Excel, DOC, PDF).
- *
- * @author Victor
- */
 public class FrmEmitirRelatorio extends javax.swing.JFrame {
 
-    /**
-     * DAO para operações com produtos e geração de relatórios.
-     */
     private ProdutoDao produtoDao;
 
-    /**
-     * Caminho do arquivo selecionado para salvar o relatório.
-     */
     private String caminhoArquivoSelecionado = null;
 
-    /**
-     * Factory para criação do DAO de produtos.
-     */
     private DaoFactory daoFactory = new DaoFactory();
 
-    /**
-     * Constrói uma nova janela de emissão de relatórios. Inicializa os
-     * componentes da interface e instancia o DAO de produtos.
-     */
     public FrmEmitirRelatorio() {
         initComponents();
         produtoDao = daoFactory.instanciarProdutoDao();
     }
 
-    /**
-     * Inicializa os componentes da interface gráfica. Método gerado
-     * automaticamente pelo NetBeans.
-     */
     @SuppressWarnings("unchecked")
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -165,23 +141,11 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Manipulador de evento para o botão Voltar. Fecha a janela atual e abre o
-     * menu principal.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();    }//GEN-LAST:event_JBVoltarActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Emitir. Gera o relatório no formato e
-     * local selecionados.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBEmitirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBEmitirActionPerformed
         if (caminhoArquivoSelecionado == null) {
             JOptionPane.showMessageDialog(null, "Você precisa selecionar onde salvar o arquivo (clique em 'Salvar como').");
@@ -261,12 +225,6 @@ public class FrmEmitirRelatorio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBEmitirActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Salvar Como. Abre um diálogo para
-     * seleção do local e nome do arquivo de saída.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBSalvarcomoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBSalvarcomoActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Salvar como");

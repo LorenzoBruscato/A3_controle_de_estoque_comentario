@@ -11,40 +11,14 @@ import modelo.Registro;
 import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
-/**
- * Implementação JDBC da interface ProdutoDao para manipulação dos dados da
- * entidade Produto.
- *
- * Esta classe realiza operações CRUD (criar, ler, atualizar, deletar)
- * diretamente no banco de dados, utilizando uma conexão JDBC fornecida. Garante
- * a persistência dos dados dos produtos e mantém a integridade das informações
- * relacionadas a categorias e registros.
- *
- * @author Lorenzo
- */
 public class RegistroDaoJDBC implements RegistroDao {
 
     private Connection conn;
 
-    /**
-     * Construtor que recebe a conexão com o banco.
-     *
-     * @param conn conexão JDBC com o banco de dados
-     */
     public RegistroDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
-    /**
-     * Adiciona um registro representando a entrada de um produto no sistema.
-     *
-     * Essa operação registra a movimentação como uma entrada (inclusão) de
-     * determinada quantidade de um tipo de produto, com data, status e tipo de
-     * movimentação.
-     *
-     * @param reg objeto Registro contendo os dados da entrada do produto
-     * @throws DbException se ocorrer algum erro ao inserir no banco de dados
-     */
     @Override
     public void AdicionarProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
@@ -61,17 +35,6 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
-    /**
-     * Registra a saída de um produto do sistema, ou seja, uma movimentação de
-     * remoção.
-     *
-     * Ao invés de deletar um registro existente, este método adiciona um novo
-     * registro com movimentação do tipo SAIDA e status adequado (como FORA ou
-     * REMOVIDO), mantendo o histórico completo das operações.
-     *
-     * @param reg objeto Registro contendo os dados da saída/remoção do produto
-     * @throws DbException se ocorrer algum erro ao inserir no banco de dados
-     */
     @Override
     public void RemoverProdutoRegistro(Registro reg) {
         String sql = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
@@ -88,16 +51,6 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
-    /**
-     * Registra uma atualização nos dados de um produto como uma nova
-     * movimentação.
-     *
-     * Esse método insere um novo registro na tabela para manter o histórico da
-     * modificação feita no produto, marcando a data atual e os novos dados.
-     *
-     * @param reg objeto Registro com os dados atualizados do produto
-     * @throws DbException se ocorrer algum erro ao inserir no banco de dados
-     */
     @Override
     public void AtualizarProdutoRegistro(Registro reg) {
         String sqlRegistro = "INSERT INTO registro (data, tipo, quantidade, movimentacao, status) VALUES (?, ?, ?, ?, ?)";
@@ -116,16 +69,6 @@ public class RegistroDaoJDBC implements RegistroDao {
         }
     }
 
-    /**
-     * Retorna a lista completa de registros de movimentações de produtos.
-     *
-     * Cada registro representa uma operação realizada sobre um produto,
-     * incluindo entradas, saídas e atualizações, com as informações de data,
-     * tipo, quantidade, tipo de movimentação e status.
-     *
-     * @return lista de registros encontrados no banco de dados
-     * @throws DbException se ocorrer algum erro na consulta ao banco
-     */
     @Override
     public List<Registro> resgatarRegistros() {
         List<Registro> lista = new ArrayList<>();
@@ -154,18 +97,6 @@ public class RegistroDaoJDBC implements RegistroDao {
         return lista;
     }
 
-    /**
-     * Instancia e retorna um objeto Registro a partir dos dados obtidos de um
-     * ResultSet.
-     *
-     * Este método auxilia na conversão dos dados da tabela `registro` para
-     * objetos Java.
-     *
-     * @param rs ResultSet com os dados do banco
-     * @param produto objeto Produto associado ao tipo do registro
-     * @return objeto Registro populado com os dados do ResultSet
-     * @throws SQLException se ocorrer erro durante a leitura dos dados
-     */
     private Registro instanciarRegistro(ResultSet rs, Produto produto) throws SQLException {
         Registro reg = new Registro();
         reg.setId(rs.getInt("id"));

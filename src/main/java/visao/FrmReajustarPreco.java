@@ -18,26 +18,12 @@ import modelo.dao.db.DbException;
  */
 public class FrmReajustarPreco extends javax.swing.JFrame {
 
-    /**
-     * DAO para operações com categorias.
-     */
     private final CategoriaDao categoriaDao;
 
-    /**
-     * DAO para operações com produtos.
-     */
     private ProdutoDao produtoDao;
 
-    /**
-     * Factory para criação dos DAOs necessários.
-     */
     private DaoFactory daoFactory = new DaoFactory();
 
-    /**
-     * Constrói a janela de reajuste de preços. Inicializa os componentes da
-     * interface, configura os DAOs e carrega as categorias disponíveis no
-     * ComboBox.
-     */
     public FrmReajustarPreco() {
         initComponents();
         categoriaDao = daoFactory.instanciarCategoriaDao();
@@ -46,10 +32,6 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    /**
-     * Carrega todas as categorias existentes no ComboBox de seleção. Adiciona
-     * também a opção "Todos Produtos" para reajuste geral.
-     */
     private void carregarCategoriasNoComboBox() {
         ComboBoxReajuste.removeAllItems();
         ComboBoxReajuste.addItem("Todos Produtos");
@@ -60,11 +42,6 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Método gerado automaticamente pelo NetBeans para inicialização dos
-     * componentes. AVISO: Não modifique este código. O conteúdo deste método é
-     * sempre regenerado pelo Editor de Formulários.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,25 +144,14 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
-     * ao menu principal.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void JBVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_JBVoltarActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Aumentar. Aplica um aumento percentual
-     * nos preços dos produtos selecionados. Valida o valor informado antes de
-     * realizar a operação.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void jBAumentarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAumentarPrecoActionPerformed
         try {
             double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));
@@ -213,13 +179,7 @@ public class FrmReajustarPreco extends javax.swing.JFrame {
         }
      }//GEN-LAST:event_jBAumentarPrecoActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Diminuir. Aplica uma redução
-     * percentual nos preços dos produtos selecionados. Valida o valor informado
-     * antes de realizar a operação.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void jBDiminuirPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDiminuirPrecoActionPerformed
         try {
             double percentual = Double.parseDouble(JTFAjustePorcentagem.getText().replace(",", "."));

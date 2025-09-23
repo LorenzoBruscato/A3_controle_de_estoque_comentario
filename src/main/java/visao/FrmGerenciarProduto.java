@@ -14,61 +14,24 @@ import modelo.dao.ProdutoDao;
 import modelo.dao.RegistroDao;
 import modelo.dao.db.DbException;
 
-/**
- * Classe que representa a interface gráfica para gerenciamento de produtos.
- * Permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar) em
- * produtos, além de registrar movimentações de entrada e saída no estoque.
- *
- * @author Victor
- */
 public class FrmGerenciarProduto extends javax.swing.JFrame {
 
-    /**
-     * Registro de movimentação do estoque.
-     */
     private Registro registro;
 
-    /**
-     * DAO para operações com registros de movimentação.
-     */
     private RegistroDao registroDao;
 
-    /**
-     * DAO para operações com categorias.
-     */
     private CategoriaDao categoriaDao;
 
-    /**
-     * DAO para operações com produtos.
-     */
     private ProdutoDao produtoDao;
 
-    /**
-     * Modelo de tabela para exibição dos produtos.
-     */
     private DefaultTableModel tabela;
 
-    /**
-     * Dados iniciais da tabela (vazios).
-     */
     private Object[][] dados = new Object[0][0];
 
-    /**
-     * Nomes das colunas da tabela de produtos. Ordem: ID, Nome, Preço, Unidade,
-     * Qtd Estoque, Qtd Minima, Qtd Máxima, Categoria.
-     */
     private String[] colunas = {"ID", "Nome", "Preço", "Unidade", "Qtd Estoque", "Qtd Mínima", "Qtd Máxima", "Categoria"};
 
-    /**
-     * Factory para criação dos DAOs necessários.
-     */
     private DaoFactory daoFactory = new DaoFactory();
 
-    /**
-     * Constrói a janela de gerenciamento de produtos. Inicializa os componentes
-     * da interface, configura os DAOs, carrega as categorias no ComboBox e
-     * preenche a tabela de produtos.
-     */
     public FrmGerenciarProduto() {
         initComponents();
         registroDao = daoFactory.insinstanciarRegistro();
@@ -119,11 +82,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Método gerado automaticamente pelo NetBeans para inicialização dos
-     * componentes. AVISO: Não modifique este código. O conteúdo deste método é
-     * sempre regenerado pelo Editor de Formulários.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -376,12 +334,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
-     * ao menu principal.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBVoltarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarProdutoActionPerformed
         // TODO add your handling code here:
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
@@ -389,12 +341,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_JBVoltarProdutoActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Novo Produto. Cadastra um novo produto
-     * com os dados informados nos campos.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoProdutoActionPerformed
         try {
             String proNome = JTFNomeProduto.getText().trim();
@@ -469,12 +415,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBNovoProdutoActionPerformed
 
-    /**
-     * Manipulador de evento para clique na tabela de produtos. Carrega os dados
-     * do produto selecionado nos campos de edição.
-     *
-     * @param evt Evento de clique do mouse
-     */
     private void JTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableProdutosMouseClicked
         int linhaSelecionada = JTableProdutos.getSelectedRow();
         if (linhaSelecionada != -1) {
@@ -504,12 +444,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JTableProdutosMouseClicked
 
-    /**
-     * Manipulador de evento para o botão Alterar Produto. Atualiza os dados do
-     * produto selecionado na tabela.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBAlterarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarProdutoActionPerformed
         // Alterar produto de acordo com a linha selecionada da tabela
         int linhaSelecionada = JTableProdutos.getSelectedRow();
@@ -642,12 +576,6 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBAlterarProdutoActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Excluir Produto. Remove o produto
-     * selecionado da tabela e do banco de dados.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBExcluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirProdutoActionPerformed
         int linhaSelecionada = JTableProdutos.getSelectedRow();
 
@@ -687,12 +615,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
 
     }//GEN-LAST:event_JBExcluirProdutoActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Entrada. Registra uma entrada de
-     * quantidade no estoque para o produto selecionado.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void jBEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntradaActionPerformed
         try {
             int linhaSelecionada = JTableProdutos.getSelectedRow();
@@ -760,12 +683,7 @@ public class FrmGerenciarProduto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBEntradaActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Saída. Registra uma saída de
-     * quantidade no estoque para o produto selecionado.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void jBSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaidaActionPerformed
         try {
             int linhaSelecionada = JTableProdutos.getSelectedRow();

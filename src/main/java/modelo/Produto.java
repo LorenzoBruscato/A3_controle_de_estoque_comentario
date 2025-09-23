@@ -1,11 +1,5 @@
 package modelo;
 
-/**
- * Representa um produto, incluindo dados básicos, categoria e controle de
- * estoque. Contém métodos para verificar limites e ajustar preço.
- *
- * @author Henrique
- */
 public class Produto {
 
     private Integer id;
@@ -17,26 +11,10 @@ public class Produto {
     private Integer quantidadeMinima;
     private Integer quantidadeMaxima;
 
-    /**
-     * Construtor padrão que inicializa todos os atributos como nulos.
-     */
     public Produto() {
         this(null, null, null, null, null, null, null, null);
     }
 
-    /**
-     * Construtor completo para criar o produto com todos os atributos
-     * definidos.
-     *
-     * @param id Identificador do produto
-     * @param nome Nome do produto
-     * @param preco Preço unitário do produto
-     * @param unidade Unidade de medida do produto
-     * @param categoria Categoria do produto
-     * @param quantidade Quantidade atual em estoque
-     * @param quantidadeMinima Quantidade mínima permitida
-     * @param quantidadeMaxima Quantidade máxima permitida
-     */
     public Produto(Integer id, String nome, Double preco, String unidade, Categoria categoria,
             Integer quantidade, Integer quantidadeMinima, Integer quantidadeMaxima) {
         this.id = id;
@@ -49,83 +27,38 @@ public class Produto {
         this.quantidadeMaxima = quantidadeMaxima;
     }
 
-    /**
-     * Retorna o identificador do produto.
-     *
-     * @return
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * Define o identificador do produto.
-     *
-     * @param id
-     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * Retorna o nome do produto.
-     *
-     * @return
-     */
     public String getNome() {
         return nome;
     }
 
-    /**
-     * Define o nome do produto.
-     *
-     * @param nome
-     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * Retorna o preço unitário do produto.
-     *
-     * @return
-     */
     public Double getPreco() {
         return preco;
     }
 
-    /**
-     * Define o preço unitário do produto.
-     *
-     * @param preco
-     */
     public void setPreco(Double preco) {
         this.preco = preco;
     }
 
-    /**
-     * Retorna a unidade de medida do produto.
-     *
-     * @return
-     */
     public String getUnidade() {
         return unidade;
     }
 
-    /**
-     * Define a unidade de medida do produto.
-     *
-     * @param unidade
-     */
     public void setUnidade(String unidade) {
         this.unidade = unidade;
     }
 
-    /**
-     * Retorna a categoria do produto.
-     *
-     * @return
-     */
     public Categoria getCategoria() {
         return categoria;
     }

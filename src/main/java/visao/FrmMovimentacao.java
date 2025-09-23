@@ -8,51 +8,20 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import modelo.dao.RegistroDao;
 
-/**
- * Classe que representa a janela de movimentação de estoque do sistema. Exibe
- * um histórico completo de todas as entradas, saídas e alterações de produtos
- * no estoque em formato tabular.
- *
- * @author Victor
- */
 public class FrmMovimentacao extends javax.swing.JFrame {
 
-    /**
-     * DAO para operações com produtos.
-     */
     private ProdutoDao produtoDao;
 
-    /**
-     * DAO para operações com registros de movimentação.
-     */
     private RegistroDao registroDao;
 
-    /**
-     * Modelo de tabela para exibição dos registros de movimentação.
-     */
     private DefaultTableModel tabela;
 
-    /**
-     * Modelo de tabela para exibição dos registros de movimentação.
-     */
     private Object[][] dados = new Object[0][0];
 
-    /**
-     * Nomes das colunas da tabela de movimentação. Ordem das colunas: ID, Data,
-     * Tipo, Quantidade, Movimentação, Status Estoque.
-     */
     private String[] colunas = {"ID", "Data", "Tipo", "Quntidade", "Movimentação", "Status Estoque"};
 
-    /**
-     * Factory para criação dos DAOs necessários.
-     */
     private DaoFactory daoFactory = new DaoFactory();
 
-    /**
-     * Constrói a janela de movimentação de estoque. Inicializa os componentes
-     * da interface, configura os DAOs e carrega os registros de movimentação na
-     * tabela.
-     */
     public FrmMovimentacao() {
         initComponents();
         registroDao = daoFactory.insinstanciarRegistro();
@@ -69,11 +38,6 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         carregarRegistroNaTela();
     }
 
-    /**
-     * Carrega os registros de movimentação do banco de dados e os exibe na
-     * tabela. Atualiza a interface com todos os registros existentes,
-     * formatando adequadamente os dados para exibição.
-     */
     private void carregarRegistroNaTela() {
         tabela.setRowCount(0);
 
@@ -91,11 +55,6 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Método gerado automaticamente pelo NetBeans para inicialização dos
-     * componentes. AVISO: Não modifique este código. O conteúdo deste método é
-     * sempre regenerado pelo Editor de Formulários.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,12 +126,7 @@ public class FrmMovimentacao extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
-     * ao menu principal do sistema.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void JBVoltarMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarMovimentacaoActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);

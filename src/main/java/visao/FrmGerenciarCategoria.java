@@ -17,54 +17,22 @@ import modelo.dao.DaoFactory;
 import modelo.dao.ProdutoDao;
 import modelo.dao.RegistroDao;
 
-/**
- * Classe que representa a interface gráfica para gerenciamento de categorias de
- * produtos. Permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar)
- * em categorias, além de visualizar as categorias existentes em uma tabela.
- *
- * @author Victor
- */
 public class FrmGerenciarCategoria extends javax.swing.JFrame {
 
-    /**
-     * Factory para criação dos DAOs necessários.
-     */
     private DaoFactory daoFactory = new DaoFactory();
 
-    /**
-     * DAO para operações com registros de movimentação.
-     */
     private RegistroDao resgistroDao;
 
-    /**
-     * DAO para operações com categorias.
-     */
     private CategoriaDao categoriaDao;
 
-    /**
-     * DAO para operações com produtos.
-     */
     private ProdutoDao produtoDao;
 
-    /**
-     * Modelo de tabela para exibição das categorias.
-     */
     private DefaultTableModel tabela;
 
-    /**
-     * Dados iniciais da tabela (vazios).
-     */
     private Object[][] dados = new Object[0][0];
 
-    /**
-     * Nomes das colunas da tabela.
-     */
     private String[] colunas = {"ID", "Nome", "Tamanho", "Embalagem"};
 
-    /**
-     * Constrói a janela de gerenciamento de categorias. Inicializa os
-     * componentes da interface e configura os DAOs necessários.
-     */
     public FrmGerenciarCategoria() {
         initComponents();
         resgistroDao = daoFactory.insinstanciarRegistro();
@@ -80,20 +48,11 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         carregarCategoriasNaTela();
     }
 
-    /**
-     * Remove acentos e caracteres especiais de uma string.
-     *
-     * @param texto O texto a ser normalizado
-     * @return O texto sem acentos e caracteres especiais
-     */
     public static String removerAcentos(String texto) {
         return Normalizer.normalize(texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
-    /**
-     * Carrega as categorias do banco de dados e as exibe na tabela.
-     */
     private void carregarCategoriasNaTela() {
         try {
             // Busca todas as categorias atualizadas do banco
@@ -117,12 +76,6 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Manipulador de evento para o botão Novo. Cria uma nova categoria com os
-     * dados informados nos campos.
-     *
-     * @param evt Evento de ação do botão
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -262,12 +215,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Manipulador de evento para o botão Novo. Cria uma nova categoria com os
-     * dados informados nos campos.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void JBNovoGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNovoGerenciamentoCActionPerformed
         String catNome = JTFNomeDeCategoria.getText().trim();
         String catNomeNormalizado = removerAcentos(catNome).trim().toUpperCase();
@@ -302,33 +250,18 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBNovoGerenciamentoCActionPerformed
 
-    /**
-     * Método chamado quando a janela é aberta. Carrega as categorias na tabela.
-     *
-     * @param evt Evento de abertura da janela
-     */
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         carregarCategoriasNaTela();
     }//GEN-LAST:event_formWindowOpened
 
-    /**
-     * Manipulador de evento para o botão Voltar. Fecha a janela atual e retorna
-     * ao menu principal.
-     *
-     * @param evt Evento de ação do botão
-     */
+
     private void JBVoltarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBVoltarCategoriaActionPerformed
         FrmMenuPrincipal janela = new FrmMenuPrincipal();
         janela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_JBVoltarCategoriaActionPerformed
 
-    /**
-     * Manipulador de evento para o botão Alterar. Atualiza os dados da
-     * categoria selecionada na tabela.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBAlterarGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAlterarGerenciamentoCActionPerformed
         try {
             int linhaSelecionada = JTableCategoria.getSelectedRow();
@@ -374,12 +307,7 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JBAlterarGerenciamentoCActionPerformed
 
-    /**
-     * Manipulador de evento para clique na tabela. Carrega os dados da
-     * categoria selecionada nos campos de edição.
-     *
-     * @param evt Evento de clique do mouse
-     */
+
     private void JTableCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableCategoriaMouseClicked
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
@@ -413,53 +341,47 @@ public class FrmGerenciarCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JTableCategoriaMouseClicked
 
-    /**
-     * Manipulador de evento para o botão Excluir. Remove a categoria
-     * selecionada e seus produtos associados.
-     *
-     * @param evt Evento de ação do botão
-     */
     private void JBExcluirGerenciamentoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBExcluirGerenciamentoCActionPerformed
         int linhaSelecionada = JTableCategoria.getSelectedRow();
 
-    if (linhaSelecionada == -1) {
-        JOptionPane.showMessageDialog(this, "Selecione uma categoria para excluir.");
-        return;
-    }
-
-    DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
-    int idCategoria = (int) tabela.getValueAt(linhaSelecionada, 0);
-    String nomeCategoria = (String) tabela.getValueAt(linhaSelecionada, 1);
-
-    try {
-        // 1. Buscar os produtos da categoria
-        List<Produto> produtos = produtoDao.buscarProdutosPorNomeCategoria(nomeCategoria);
-
-        // 2. Para cada produto, criar registro de movimentação "SAIDA" com status "DELETADO"
-        for (Produto p : produtos) {
-            Registro r = new Registro();
-            r.setTipoDoProduto(p);
-            r.setData(new Date()); // ou new Date()
-            r.setMovimentacao(Registro.Movimentacao.SAIDA);
-            r.setStatus(Registro.Status.DELETADO);
-            r.setQuantidade(p.getQuantidade());
-
-            resgistroDao.AdicionarProdutoRegistro(r); // Assumindo que esse método já existe
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma categoria para excluir.");
+            return;
         }
 
-        // 3. Remover os produtos da categoria
-        produtoDao.removerPorNomeCategoria(nomeCategoria);
+        DefaultTableModel tabela = (DefaultTableModel) JTableCategoria.getModel();
+        int idCategoria = (int) tabela.getValueAt(linhaSelecionada, 0);
+        String nomeCategoria = (String) tabela.getValueAt(linhaSelecionada, 1);
 
-        // 4. Remover a categoria
-        categoriaDao.deletarCategoriaPorId(idCategoria);
+        try {
+            // 1. Buscar os produtos da categoria
+            List<Produto> produtos = produtoDao.buscarProdutosPorNomeCategoria(nomeCategoria);
 
-        // 5. Limpar e atualizar a interface
-        carregarCategoriasNaTela();
-        this.JTFNomeDeCategoria.setText("");
+            // 2. Para cada produto, criar registro de movimentação "SAIDA" com status "DELETADO"
+            for (Produto p : produtos) {
+                Registro r = new Registro();
+                r.setTipoDoProduto(p);
+                r.setData(new Date()); // ou new Date()
+                r.setMovimentacao(Registro.Movimentacao.SAIDA);
+                r.setStatus(Registro.Status.DELETADO);
+                r.setQuantidade(p.getQuantidade());
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
+                resgistroDao.AdicionarProdutoRegistro(r); // Assumindo que esse método já existe
+            }
+
+            // 3. Remover os produtos da categoria
+            produtoDao.removerPorNomeCategoria(nomeCategoria);
+
+            // 4. Remover a categoria
+            categoriaDao.deletarCategoriaPorId(idCategoria);
+
+            // 5. Limpar e atualizar a interface
+            carregarCategoriasNaTela();
+            this.JTFNomeDeCategoria.setText("");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao excluir: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_JBExcluirGerenciamentoCActionPerformed
 
 
