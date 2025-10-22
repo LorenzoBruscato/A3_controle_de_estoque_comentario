@@ -63,11 +63,6 @@ public class Produto {
         return categoria;
     }
 
-    /**
-     * Define a categoria do produto.
-     *
-     * @param categoria
-     */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
